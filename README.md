@@ -12,9 +12,11 @@ O **Dia a Dia Vovôs** é uma plataforma digital voltada para o acompanhamento d
 
 ___
 
-**🛠️ Tecnologias Utilizadas🌐** 
-* Front-endHTML5
-*   CSS3   
+## 🛠️ Tecnologias Utilizadas 
+
+**🌐Front-end**
+*  HTML
+*   CSS   
 *  JavaScript   
 *   React   
    
@@ -29,7 +31,8 @@ ___
 
 *    MySQL   
  ___   
-**📂 Documentação**
+## 📂 Documentação
+
     
 A documentação do projeto está organizada de acordo com os Requisitos do Sistema:
 
