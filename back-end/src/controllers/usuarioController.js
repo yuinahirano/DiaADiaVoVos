@@ -1,4 +1,4 @@
-import usuarioRepository from "../../../repositories/usuarioRepository.js";
+import usuarioRepository from "../repositories/usuarioRepository.js";
 import axios from "axios";
 import { Usuario } from "../models/Usuario.js";
 import { Enderecos } from "../models/Enderecos.js";
