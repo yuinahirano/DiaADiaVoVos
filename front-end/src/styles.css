@@ -1,0 +1,13 @@
+:root {
+  --bs-primary: #740001;
+  --bs-primary-rgb: 116, 0, 1;
+  /* para alterar os textos também */
+  --bs-secondary: #D3A625;
+  --bs-success: #EEBA30;
+  /* pode usar como tertiary */
+}
+
+body {
+  font-family: 'Manrope', 'Inter', sans-serif;
+  background-color: #FAF9F8;
+}

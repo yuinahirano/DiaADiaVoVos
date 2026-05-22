@@ -33,7 +33,7 @@ A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Ad
 ![Tabela de usuário geral](usuario.png)
 
 * **`enderecos`**: Armazena a localização dos usuários. Se relaciona com a entidade Usuario (muitos para um);
-![Tabela de endereço](endereco.png)
+![alt text](endereco.png)
 
 * **`idoso`**: Identifica usuários que se enquadram como idoso. Se relaciona com as entidades Usuario (um para um), registroSaude (um para muitos opicional), medicamento (um para muitos opicional), doenca (um para muitos opicional), consulta (um para muitos opicional), idoso_cuidador (um para muitos opicional);
 ![Tabela de usuário idoso](idoso.png)
