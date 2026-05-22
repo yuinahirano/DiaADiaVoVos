@@ -62,7 +62,7 @@ A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Ad
 * **`consulta`**: Agendamento de compromissos com `nome_medico`, `horario` e `local_consulta`.
 
 
-* **`receitaMedica`**: Armazena descrições e datas de emissão vinculadas às consultas médicas.
+* **`receitaMedica`**: Armazena descrições e datas de emissão vinculadas às consultas médicas em `descricao` e em `data_emissao`.
 
 
 ## 👥Diagrama de Entidade e Relacionamento
