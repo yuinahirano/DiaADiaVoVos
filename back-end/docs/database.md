@@ -36,7 +36,7 @@ A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Ad
 ![Tabela de endereço](endereco.png)
 
 * **`idoso`**: Identifica usuários que se enquadram como idoso. Se relaciona com as entidades Usuario (um para um), registroSaude (um para muitos opicional), medicamento (um para muitos opicional), doenca (um para muitos opicional), consulta (um para muitos opicional), idoso_cuidador (um para muitos opicional);
-![Tabela de usuários idoso](idoso.png)
+![Tabela de idoso](idoso.png)
 
 * **`cuidador`**: Identifica usuários que se enquadram como cuidador, responsável pela gestão de saúde dos usuários idosos vinculados à ele. Se relaciona com as entidades Usuario (um para um), idoso_cuidador (um para muitos opicional);
 ![Tabela de usuários cuidador](cuidador.png)
