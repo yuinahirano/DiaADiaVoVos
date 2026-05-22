@@ -30,31 +30,31 @@ A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Ad
 ## 👤 Entidades
 
 * **`usuario`**: Tabela central contendo as informações de um usuário geral. Se relaciona com as entidades Idoso (um para um), Cuidador (um para um) e Endereco (um para muitos);
-![Tabela de usuário geral](usuario.png)
+![Tabela de usuário](usuario.png)
 
 * **`enderecos`**: Armazena a localização dos usuários. Se relaciona com a entidade Usuario (muitos para um);
 ![Tabela de endereço](endereco.png)
 
 * **`idoso`**: Identifica usuários que se enquadram como idoso. Se relaciona com as entidades Usuario (um para um), registroSaude (um para muitos opicional), medicamento (um para muitos opicional), doenca (um para muitos opicional), consulta (um para muitos opicional), idoso_cuidador (um para muitos opicional);
-![Tabela de usuário idoso](idoso.png)
+![Tabela de idoso](idoso.png)
 
 * **`cuidador`**: Identifica usuários que se enquadram como cuidador, responsável pela gestão de saúde dos usuários idosos vinculados à ele. Se relaciona com as entidades Usuario (um para um), idoso_cuidador (um para muitos opicional);
-![Tabela de usuário cuidador](cuidador.png)
+![Tabela de usuários cuidador](cuidador.png)
 
-* **`idoso_cuidador`**: Tabela associativa que vincula um idoso a um cuidador e para isso precisa obrigatoriamente de um usário de cada tipo. Se relaciona com Cuidador (muitos opicional para um), Idoso (muitos opicional para um);
-![Tabela de vínculo de idoso e cuidador](idoso_cuidador.png)
+* **`idosoCuidador`**: Tabela associativa que vincula um idoso a um cuidador e para isso precisa obrigatoriamente de um usário de cada tipo. Se relaciona com Cuidador (muitos opicional para um), Idoso (muitos opicional para um);
+![Tabela de vínculo idoso e cuidador](idosoCuidador.png)
 
 * **`registroSaude`**: Armazena os dados da saúde do idoso, esses sendo `pressao_arterial`, `glicemia`, `peso`, além do vínculo com o `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela de informações de saúde](registroSaude.png)
+![Tabela de registros de saúde](registroSaude.png)
 
 * **`medicamentos`**: Registra os medicamentos que o idoso consome, inclui `nome`, `dosagem`, `horario`, `frequencia`, `observacoes`, além do vínculo com o `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela de medicamentos](medicamento.png)
+![Tabela de medicamento](medicamentos.png)
 
 * **`doenca`**: Registra as doenças que o idoso possui, contendo `nome`, `descricao`, além do vínculo com `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela de doencas](doenca.png)
+![Tabela de doenças](doenca.png)
 
 * **`consulta`**: Registra as informações de uma consulta médica que o idoso compareceu ou comparecerá, contendo `nome_medico`, `horario`, `local_consulta`, alpem do vínculo com `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela que registra de consultas](consulta.png)
+![Tabela de consulta](consulta.png)
 
 * **`receitaMedica`**: Armazena as informações que foram passadas em uma consulta, contendo `descricao` e `data_emissao`. Se relaciona com Consulta (um para um);
 ![Tabela de receita médica](receitaMedica.png)
