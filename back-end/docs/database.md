@@ -10,6 +10,11 @@ A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Ad
 
 # 🧩 Estrutura das Tabelas
 
+## 👥Diagrama de Entidade e Relacionamento
+
+![Diagrama Entidade e Relacionamento](DER_dia_a_dia_vovos_svg.drawio.png)
+
+
 ## 👤 Núcleo de Usuários
 
 * **`usuario`**: Tabela central contendo `nome`, `cpf`, `email`, `senha` e `data_nascimento`.
@@ -64,10 +69,6 @@ A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Ad
 
 * **`receitaMedica`**: Armazena descrições e datas de emissão vinculadas às consultas médicas em `descricao` e em `data_emissao`.
 
-
-## 👥Diagrama de Entidade e Relacionamento
-
-![Diagrama Entidade e Relacionamento](DER_dia_a_dia_vovos_svg.drawio.png)
 
 ---
 
