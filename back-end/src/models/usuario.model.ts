@@ -5,22 +5,18 @@ import { EmailUtils } from "../utils/validarEmail.utils";
 import { SenhaUtils } from "../utils/validarSenha.utils";
 import { EstadoCivil } from "../enums/estadoCivil.enums";
 
-// Importa um tipo do mysql2 que representa uma linha retornada do banco de dados
-export interface IUsuario  extends RowDataPacket {
-  // Interface que define o formato dos dados de um Usuario
-
-  id?: number;
+export interface IUsuario extends RowDataPacket {
+  id?: string;
   nome: string;
   cpf: string;
   email: string;
   senha: string;
-  dataNascimento: number;
+  dataNascimento: string;
   estadoCivil: EstadoCivil;
 }
 
 export class Usuario {
-  // Classe principal de entidade Usuaurio
-  private _id?: number;
+  private _id?: string;
   private _nome!: string;
   private _cpf!: string;
   private _email!: string;
@@ -35,19 +31,18 @@ export class Usuario {
     senha: string,
     dataNascimento: number,
     estadoCivil: EstadoCivil,
-    id?: number,
+    id?: string,
   ) {
     this._id = id;
-    this.Nome = nome;                       
-    this.Cpf = cpf;                         
-    this.Email = email;                     
-    this.Senha = senha;                     
-    this.DataNascimento = dataNascimento;   
-    this.EstadoCivil = estadoCivil;         
+    this.Nome = nome;
+    this.Cpf = cpf;
+    this.Email = email;
+    this.Senha = senha;
+    this.DataNascimento = dataNascimento;
+    this.EstadoCivil = estadoCivil;
   }
 
-  //GETTERS
-  public get Id(): number | undefined {
+  public get Id(): string | undefined {
     return this._id;
   }
 
@@ -71,21 +66,18 @@ export class Usuario {
     return this._dataNascimento;
   }
 
-public get EstadoCivil(): EstadoCivil {
-     return this._estadoCivil; } 
+  public get EstadoCivil(): EstadoCivil {
+    return this._estadoCivil;
+  }
 
-
-  //Setters
   public set Nome(value: string) {
     this._validarNome(value);
     this._nome = value;
   }
 
   private _validarNome(value: string): void {
-    if (!value || value.trim().length < 3) {
-      // verifica se o nome existe e possui ao menos 3 caracteres
+    if (!value || value.trim().length < 3)
       throw new Error("O campo nome deve ter pelo menos 3 caracteres");
-    }
   }
 
   public set Cpf(value: string) {
@@ -117,9 +109,13 @@ public get EstadoCivil(): EstadoCivil {
     if (!valido) throw new Error(erros.join(", "));
   }
 
+  public definirSenhaHash(hash: string): void {
+    this._senha = hash;
+  }
+
   public set DataNascimento(value: number) {
     this._validarDataNascimento(value);
-    this._dataNascimento = value
+    this._dataNascimento = value;
   }
 
   private _validarDataNascimento(value: number): void {
@@ -142,11 +138,31 @@ public get EstadoCivil(): EstadoCivil {
     if (!value) throw new Error("Estado civil é obrigatório");
   }
 
-  // Factory methods
-  public static criar(nome: string, cpf: string, email: string, senha: string, dataNascimento: number, estadoCivil: EstadoCivil,  ): Usuario {
+  public get DataNascimentoFormatada(): string {
+    const str = this._dataNascimento.toString();
+    return `${str.slice(0, 4)}-${str.slice(4, 6)}-${str.slice(6, 8)}`;
+  }
+
+  public static criar(
+    nome: string,
+    cpf: string,
+    email: string,
+    senha: string,
+    dataNascimento: number,
+    estadoCivil: EstadoCivil,
+  ): Usuario {
     return new Usuario(nome, cpf, email, senha, dataNascimento, estadoCivil);
-    }
-      public static editar(nome: string, cpf: string, email: string, senha: string, dataNascimento: number, estadoCivil: EstadoCivil, id: number) {
-        return new Usuario(nome, cpf, email, senha, dataNascimento, estadoCivil, id);
-    }
+  }
+
+  public static editar(
+    nome: string,
+    cpf: string,
+    email: string,
+    senha: string,
+    dataNascimento: number,
+    estadoCivil: EstadoCivil,
+    id: string,
+  ): Usuario {
+    return new Usuario(nome, cpf, email, senha, dataNascimento, estadoCivil, id);
+  }
 }

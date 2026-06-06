@@ -1,10 +1,8 @@
-// A camada Service é responsável pela lógica de negócio da aplicação.
-// Ela fica entre o Controller (que recebe as requisições) e o Repository (que acessa o banco).
-// Aqui ficam regras como: verificar duplicatas, hashear senhas e gerar tokens JWT.
 import { UsuarioRepository } from "../repository/usuario.repository";
 import { Usuario } from "../models/usuario.model";
 import { EstadoCivil } from "../enums/estadoCivil.enums";
 import { hashSenha, compararSenha } from "../config/bcrypt.config";
+import { CpfUtils } from "../utils/validarCpf.utils";
 import jwt from "jsonwebtoken";
 
 export class UsuarioService {
@@ -14,8 +12,12 @@ export class UsuarioService {
     return await this._repository.selecionarTodos();
   }
 
-  async selecionarPorId(id: number) {
+  async selecionarPorId(id: string) {
     return await this._repository.selecionarPorId(id);
+  }
+
+  async selecionarPorEmail(email: string) {
+    return await this._repository.selecionarPorEmail(email);
   }
 
   async criar(
@@ -26,25 +28,31 @@ export class UsuarioService {
     dataNascimento: number,
     estadoCivil: EstadoCivil
   ) {
-    // verifica se CPF já está cadastrado
     const cpfExistente = await this._repository.selecionarPorCpf(cpf);
     if (cpfExistente.length > 0)
       throw new Error("CPF já cadastrado");
 
-    // verifica se email já está cadastrado
     const emailExistente = await this._repository.selecionarPorEmail(email);
     if (emailExistente.length > 0)
       throw new Error("Email já cadastrado");
 
-    const senhaHash = await hashSenha(senha);
-    // hasheia a senha antes de salvar — a classe valida o formato, o service faz o hash
+    const usuario = Usuario.criar(nome, cpf, email, senha, dataNascimento, estadoCivil);
 
-    const usuario = Usuario.criar(nome, cpf, email, senhaHash, dataNascimento, estadoCivil);
-    return await this._repository.criar(usuario);
+    const senhaHash = await hashSenha(senha);
+    usuario.definirSenhaHash(senhaHash);
+
+    return await this._repository.criar({
+      nome: usuario.Nome,
+      cpf: CpfUtils.limpar(usuario.Cpf),
+      email: usuario.Email,
+      senha: usuario.Senha,
+      dataNascimento: usuario.DataNascimentoFormatada,
+      estadoCivil: usuario.EstadoCivil,
+    });
   }
 
   async editar(
-    id: number,
+    id: string,
     nome: string,
     cpf: string,
     email: string,
@@ -52,18 +60,26 @@ export class UsuarioService {
     dataNascimento: number,
     estadoCivil: EstadoCivil
   ) {
-    // verifica se o usuário existe
     const usuarioExistente = await this._repository.selecionarPorId(id);
     if (usuarioExistente.length === 0)
       throw new Error("Usuário não encontrado");
 
-    const senhaHash = await hashSenha(senha);
+    const usuario = Usuario.editar(nome, cpf, email, senha, dataNascimento, estadoCivil, id);
 
-    const usuario = Usuario.editar(nome, cpf, email, senhaHash, dataNascimento, estadoCivil, id);
-    return await this._repository.editar(id, usuario);
+    const senhaHash = await hashSenha(senha);
+    usuario.definirSenhaHash(senhaHash);
+
+    return await this._repository.editar(id, {
+      nome: usuario.Nome,
+      cpf: CpfUtils.limpar(usuario.Cpf),
+      email: usuario.Email,
+      senha: usuario.Senha,
+      dataNascimento: usuario.DataNascimentoFormatada,
+      estadoCivil: usuario.EstadoCivil,
+    });
   }
 
-  async deletar(id: number) {
+  async deletar(id: string) {
     const usuarioExistente = await this._repository.selecionarPorId(id);
     if (usuarioExistente.length === 0)
       throw new Error("Usuário não encontrado");
@@ -72,17 +88,14 @@ export class UsuarioService {
   }
 
   async login(email: string, senha: string) {
-    // busca o usuário pelo email
     const [usuario] = await this._repository.selecionarPorEmail(email);
     if (!usuario)
       throw new Error("Email ou senha inválidos");
 
-    // compara a senha digitada com o hash do banco
     const senhaValida = await compararSenha(senha, usuario.senha);
     if (!senhaValida)
       throw new Error("Email ou senha inválidos");
 
-    // gera o token JWT
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email },
       process.env.JWT_SECRET as string,

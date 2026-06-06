@@ -11,7 +11,7 @@ export class UsuarioRepository {
     return rows;
   }
 
-  async selecionarPorId(id: number): Promise<IUsuario[]> {
+  async selecionarPorId(id: string): Promise<IUsuario[]> {
     const sql = "SELECT * FROM usuario WHERE id=?;";
     const values = [id];
     const [rows] = await db.execute<IUsuario[]>(sql, values);
@@ -34,7 +34,7 @@ export class UsuarioRepository {
 
   async criar(dados: Omit<IUsuario, "id">): Promise<ResultSetHeader> {
     const sql = `INSERT INTO usuario 
-      (nome, cpf, email, senha, dataNascimento, estadoCivil) 
+    (nome, cpf, email, senha, data_nascimento, estado_civil)  
       VALUES (?,?,?,?,?,?);`;
     const values = [
       dados.nome,
@@ -48,9 +48,9 @@ export class UsuarioRepository {
     return rows;
   }
 
-  async editar(id: number, dados: Omit<IUsuario, "id">): Promise<ResultSetHeader> {
+  async editar(id: string, dados: Omit<IUsuario, "id">): Promise<ResultSetHeader> {
     const sql = `UPDATE usuario SET 
-      nome=?, cpf=?, email=?, senha=?, dataNascimento=?, estadoCivil=? 
+      nome=?, cpf=?, email=?, senha=?, data_nascimento=?, estado_civil=? 
       WHERE id=?;`;
     const values = [
       dados.nome,
@@ -65,7 +65,7 @@ export class UsuarioRepository {
     return rows;
   }
 
-  async deletar(id: number): Promise<ResultSetHeader> {
+  async deletar(id: string): Promise<ResultSetHeader> {
     const sql = "DELETE FROM usuario WHERE id=?;";
     const values = [id];
     const [rows] = await db.execute<ResultSetHeader>(sql, values);
