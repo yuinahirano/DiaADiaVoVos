@@ -21,7 +21,7 @@ class Database {
             password: EnvVar.DB_PASSWORD,
             database: EnvVar.DB_DATABASE,
             port: EnvVar.DB_PORT,
-            ssl: { rejectUnauthorized: true },
+            //ssl: { rejectUnauthorized: true },
             waitForConnections: true,
             connectionLimit: 100,
             queueLimit: 0
