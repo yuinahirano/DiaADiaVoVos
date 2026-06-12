@@ -12,7 +12,7 @@ A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Ad
 
 ## 👥Diagrama de Entidade e Relacionamento
 
-![Diagrama Entidade e Relacionamento](DER_dia_a_dia_vovos_svg.drawio.png)
+![Diagrama Entidade e Relacionamento](der_dia_a_dia_vovos_svg.drawio.png)
 
 ## 👤 Núcleo de Usuários
 
