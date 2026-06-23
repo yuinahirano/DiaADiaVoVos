@@ -21,7 +21,7 @@ export class Usuario {
   private _cpf!: string;
   private _email!: string;
   private _senha!: string;
-  private _dataNascimento!: number;
+  private _dataNascimento!: string;
   private _estadoCivil!: EstadoCivil;
 
   constructor(
@@ -29,7 +29,7 @@ export class Usuario {
     cpf: string,
     email: string,
     senha: string,
-    dataNascimento: number,
+    dataNascimento: string,
     estadoCivil: EstadoCivil,
     id?: string,
   ) {
@@ -62,7 +62,7 @@ export class Usuario {
     return this._senha;
   }
 
-  public get DataNascimento(): number {
+  public get DataNascimento(): string {
     return this._dataNascimento;
   }
 
@@ -113,12 +113,12 @@ export class Usuario {
     this._senha = hash;
   }
 
-  public set DataNascimento(value: number) {
+  public set DataNascimento(value: string) {
     this._validarDataNascimento(value);
     this._dataNascimento = value;
   }
 
-  private _validarDataNascimento(value: number): void {
+  private _validarDataNascimento(value: string): void {
     if (!DataUtils.validarData(value))
       throw new Error("Data de nascimento inválida");
 
@@ -139,8 +139,7 @@ export class Usuario {
   }
 
   public get DataNascimentoFormatada(): string {
-    const str = this._dataNascimento.toString();
-    return `${str.slice(0, 4)}-${str.slice(4, 6)}-${str.slice(6, 8)}`;
+    return this._dataNascimento;
   }
 
   public static criar(
@@ -148,7 +147,7 @@ export class Usuario {
     cpf: string,
     email: string,
     senha: string,
-    dataNascimento: number,
+    dataNascimento: string,
     estadoCivil: EstadoCivil,
   ): Usuario {
     return new Usuario(nome, cpf, email, senha, dataNascimento, estadoCivil);
@@ -159,7 +158,7 @@ export class Usuario {
     cpf: string,
     email: string,
     senha: string,
-    dataNascimento: number,
+    dataNascimento: string,
     estadoCivil: EstadoCivil,
     id: string,
   ): Usuario {

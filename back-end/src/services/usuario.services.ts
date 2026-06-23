@@ -25,7 +25,7 @@ export class UsuarioService {
     cpf: string,
     email: string,
     senha: string,
-    dataNascimento: number,
+    dataNascimento: string,
     estadoCivil: EstadoCivil
   ) {
     const cpfExistente = await this._repository.selecionarPorCpf(cpf);
@@ -41,7 +41,7 @@ export class UsuarioService {
     const senhaHash = await hashSenha(senha);
     usuario.definirSenhaHash(senhaHash);
 
-    return await this._repository.criar({
+    const resultado = await this._repository.criar({
       nome: usuario.Nome,
       cpf: CpfUtils.limpar(usuario.Cpf),
       email: usuario.Email,
@@ -49,6 +49,14 @@ export class UsuarioService {
       dataNascimento: usuario.DataNascimentoFormatada,
       estadoCivil: usuario.EstadoCivil,
     });
+
+    const token = jwt.sign(
+      { id: resultado.insertId, email: usuario.Email },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "8h" }
+    );
+
+    return { token };
   }
 
   async editar(
@@ -57,7 +65,7 @@ export class UsuarioService {
     cpf: string,
     email: string,
     senha: string,
-    dataNascimento: number,
+    dataNascimento: string,
     estadoCivil: EstadoCivil
   ) {
     const usuarioExistente = await this._repository.selecionarPorId(id);
