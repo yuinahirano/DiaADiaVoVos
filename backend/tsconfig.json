@@ -8,9 +8,9 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "sourceMap": true,
     "ignoreDeprecations": "5.0"
   },
-  "include": ["src"]
+  "include": ["src", "server.ts"]
 }

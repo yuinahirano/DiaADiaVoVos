@@ -1,6 +1,6 @@
 import express from "express";
-import { EnvVar } from "./config/EnvVar.config";
-import router from "./routes/routes";
+import { EnvVar } from "./src/config/EnvVar.config";
+import router from "./src/routes/routes";
 
 const app = express();
 app.use(express.json());
