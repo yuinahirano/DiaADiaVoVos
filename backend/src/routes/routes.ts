@@ -1,6 +1,7 @@
 import { Router } from "express";
 import usuarioRoutes from "./usuario.routes";
 import cuidadorRoutes from "./cuiador.routes";
+import idosoRoutes from "./idoso.routes";
 
 const router = Router();
 
