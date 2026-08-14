@@ -4,8 +4,8 @@ export async function login(email, senha) {
     try {
         // Envia o email e senha no corpo (body) da requisição
         const resposta = await api_diadiavovos.post(`/usuarios/login`, { email, senha });
-        console.log(resposta.data);
-        return resposta.data;
+        console.log(resposta.data.login.token);
+        return resposta.data.login.token;
     } catch (erro) {
         console.error('Erro ao realizar login:', erro);
         throw erro; // Lança o erro para o componente poder tratar (ex: exibir mensagem)
