@@ -1,4 +1,5 @@
 import { useUsers } from "../hooks/useUsers";
+import logoImg from "../assets/logo.png";
 
 export default function PaginaLogin() {
     const { 
@@ -23,7 +24,7 @@ export default function PaginaLogin() {
                 >
                     
                     <div className="logo-container">
-                        <img src="../src/assets/logo.png" alt="Logo Dia a Dia Vovôs" className="logo-arredondado" />
+                        <img src={logoImg} alt="Logo Dia a Dia Vovôs" className="logo-arredondado" />
                     </div>
 
                     <div className="input-wrapper mb-3">

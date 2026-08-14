@@ -3,7 +3,8 @@ import { api_diadiavovos } from "./api";
 export async function login(email, senha) {
     try {
         // Envia o email e senha no corpo (body) da requisição
-        const resposta = await api_diadiavovos.post(`/login`, { email, senha });
+        const resposta = await api_diadiavovos.post(`/usuarios/login`, { email, senha });
+        console.log(resposta.data);
         return resposta.data;
     } catch (erro) {
         console.error('Erro ao realizar login:', erro);
