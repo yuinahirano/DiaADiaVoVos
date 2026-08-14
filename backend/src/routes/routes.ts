@@ -5,6 +5,7 @@ import idosoRoutes from "./idoso.routes";
 import idosoCuidadorRoutes from "./idosoCuidador.routes";
 import consultaRoutes from "./consulta.routes";
 import DoencaRoutes from "./doenca.routes";
+import medicamentoRoutes from "./medicamento.routes";
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/', cuidadorRoutes);
 router.use('/', idosoCuidadorRoutes);
 router.use('/', consultaRoutes);
 router.use('/', DoencaRoutes);
+router.use('/', medicamentoRoutes);
 
 export default router;
