@@ -23,7 +23,7 @@ export function useUsers() {
             try {
                 const data = await login(email, senha);
                 setJwt(data);
-                console.log("Login efetuado com sucesso!", data)
+                console.log("Login efetuado com sucesso!")
 
             } catch (error) {
                 console.log("Erro ao buscar as pessoas", error);
