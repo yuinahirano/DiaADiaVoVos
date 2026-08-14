@@ -1,0 +1,122 @@
+/* --- FUNDO DA PÁGINA (Azul claro sutil) --- */
+body {
+    background-color: #E2F2FD; 
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+/* --- CARD DE LOGIN --- */
+.login-card {
+    background-color: #FFFFFF;
+    border: 3.5px solid #1A2229; /* Borda escura bem grossa estilo cartoon */
+    border-radius: 35px; /* Cantos bem arredondados do card */
+    padding: 2.5rem 2.2rem;
+    width: 100%;
+    max-width: 390px; /* Mantém o card compacto e centralizado */
+    box-shadow: 0 10px 25px rgba(28, 36, 43, 0.08);
+}
+
+/* --- CONFIGURAÇÃO DA LOGO (Redonda com Borda Preta) --- */
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.logo-arredondado {
+    width: 135px !important;       /* Tamanho ideal para excelente visibilidade */
+    height: 135px !important;      /* Mantém a proporção idêntica de largura e altura */
+    object-fit: contain;           /* Garante que o desenho da logo apareça por inteiro sem cortes ruins */
+    border-radius: 50% !important; /* Força a imagem a virar um círculo perfeito */
+    background-color: #FFFFFF;     /* Fundo branco puro por trás do desenho */
+    padding: 6px;                  /* Espaço interno para a logo respirar e não colar na borda */
+    box-shadow: 4px 10px 4px rgba(26, 34, 41, 0.1); /* Sombra 3D leve sob o círculo */
+    display: block !important;
+}
+
+/* --- AJUSTE DOS INPUTS E ALINHAMENTO DOS ÍCONES --- */
+.form-container {
+    padding-right: 20px;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    margin-left: 20px; /* Dá o recuo para o ícone aparecer na lateral */
+}
+
+/* Posiciona os bonequinhos do lado esquerdo externo da caixa */
+.input-icon {
+    font-size: 1.5rem;
+    color: #1A2229;
+    position: absolute;
+    left: -32px; 
+}
+
+/* Caixas de input em formato pílula cinza */
+.form-input-custom {
+    width: calc(100% - 20px);
+    padding: 0.75rem 1.2rem;
+    font-size: 1rem;
+    color: #5A6A75;
+    background-color: #F0F4F8; /* Cor interna cinza clara */
+    border: 3.5px solid #1A2229; /* Borda grossa escura */
+    border-radius: 20px;
+    outline: none;
+    font-weight: bold;
+}
+
+.form-input-custom::placeholder {
+    color: #90A4AE;
+}
+
+/* --- BOTÃO ROXO COM SOMBRA EM BLOCO --- */
+.button-wrapper {
+    padding-left: 15px;
+}
+
+.btn-painel-roxo {
+    background-color: #A393D0; /* Tom de roxo exato do seu painel */
+    color: #1A2229;
+    font-size: 1.15rem;
+    font-weight: 900;
+    padding: 0.75rem;
+    border: 3.5px solid #1A2229;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 5px 0px #1A2229; /* Sombra sólida marcante embaixo */
+    transition: all 0.05s ease;
+    margin-top: 5px;
+}
+
+/* Efeito mecânico ao clicar no botão */
+.btn-painel-roxo:active {
+    transform: translateY(3px);
+    box-shadow: 0 2px 0px #1A2229;
+}
+
+/* --- LINK INFERIOR EM NEGRITO --- */
+.link-wrapper {
+    padding-left: 15px;
+}
+
+.link-rodape {
+    color: #1A2229;
+    font-size: 1.05rem;
+    font-weight: 900;
+    text-decoration: none;
+    letter-spacing: -0.3px;
+    transition: color 0.2s ease; /* Faz a mudança de cor ser suave ao passar o mouse */
+}
+
+/* EFEITO MODIFICADO: Muda para roxo forte e adiciona o sublinhado ao passar o mouse */
+.link-rodape:hover {
+    color: #FFD600; /* Cor roxa bem forte e destacada */
+    text-decoration: underline;
+}
