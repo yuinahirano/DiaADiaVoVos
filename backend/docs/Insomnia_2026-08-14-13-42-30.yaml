@@ -1,0 +1,1158 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: diaDia
+meta:
+  id: wrk_d79cb3b5c4594222a63c255ef477e0da
+  created: 1781282037411
+  modified: 1781282037411
+  description: ""
+collection:
+  - name: usuario
+    meta:
+      id: fld_07e4ee0b4dbd4afdb549f9aef9b47613
+      created: 1781282057115
+      modified: 1786724031882
+      sortKey: -1781282057115
+      description: ""
+    children:
+      - url: localhost:8000/usuarios
+        name: selecionar
+        meta:
+          id: req_55274e0bff2c4cf994a527404f98b5d6
+          created: 1781282058999
+          modified: 1786723983032
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/usuarios
+        name: cadastro
+        meta:
+          id: req_8f516d8339284eb9a4c5796955ba2fb5
+          created: 1781283423830
+          modified: 1786723960153
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Para APAGAR",
+              "cpf": "844.125.260-20",
+              "email": "apaga@email.com",
+              "senha": "Senh@123",
+              "dataNascimento": "1995-06-15",
+              "estadoCivil": "solteiro"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/usuarios/1cfd5459-9285-11f1-b40b-0a0027000003
+        name: editar
+        meta:
+          id: req_2b581b549d9e458a8e947d4fbc3e9184
+          created: 1781284917302
+          modified: 1786723976231
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "apaga",
+              "cpf": "841.700.320-71",
+              "email": "joao.pereira@email.com",
+              "senha": "Joao@2024",
+              "dataNascimento": "1988-03-22",
+              "estadoCivil": "casado"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFjZmQ1NDU5LTkyODUtMTFmMS1iNDBiLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiYXBhZ2FAZW1haWwuY29tIiwiaWF0IjoxNzg2MTIzNjAxLCJleHAiOjE3ODYxNTI0MDF9.SpyOD5FKxFoBdZM7D9li6OamxB7bfo4CFB6IvBvOBfA
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/usuarios/1cfd5459-9285-11f1-b40b-0a0027000003
+        name: apagar
+        meta:
+          id: req_ffa27b84ef7c48ab961e4e7c26ff2164
+          created: 1781286688811
+          modified: 1786724002734
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjFjZmQ1NDU5LTkyODUtMTFmMS1iNDBiLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiYXBhZ2FAZW1haWwuY29tIiwiaWF0IjoxNzg2MTIzNjAxLCJleHAiOjE3ODYxNTI0MDF9.SpyOD5FKxFoBdZM7D9li6OamxB7bfo4CFB6IvBvOBfA
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/usuarios/login
+        name: login
+        meta:
+          id: req_20c1863495994944b8e8f465c4de5a2f
+          created: 1781896834240
+          modified: 1786723966518
+          isPrivate: false
+          description: ""
+          sortKey: -1781283082622.25
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "apaga@email.com",
+              "senha": "Senh@123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: cuidadores
+    meta:
+      id: fld_9484432e0f334b8181b28195396ec220
+      created: 1781289817744
+      modified: 1781290258350
+      sortKey: -1780376839003.5
+      description: ""
+    children:
+      - url: localhost:8000/cuidadores/0edce362-668f-11f1-88f9-0a0027000003
+        name: editar
+        meta:
+          id: req_3bf1b9787e024c619429d83c424cb7eb
+          created: 1781289817744
+          modified: 1786724088545
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "telefone": "34 96323-4922",
+              "idUsuario": "e5fbf56e-6686-11f1-88f9-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/cuidadores
+        name: criar
+        meta:
+          id: req_45531255d3cc4fd3ac9657c3295a8d00
+          created: 1781289817744
+          modified: 1786724076682
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "telefone": "19 999182381",
+              "idUsuario": "e5fbf56e-6686-11f1-88f9-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/cuidadores/f9962a04-8cf8-11f1-be1c-0a0027000003
+        name: deletar
+        meta:
+          id: req_9683876359504599928fecca68136ef0
+          created: 1781289817744
+          modified: 1786724099209
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/cuidadores
+        name: selecionar
+        meta:
+          id: req_a42c96d21564442e86b6f23771a12121
+          created: 1781289817744
+          modified: 1786724094296
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: idosoCuidador
+    meta:
+      id: fld_8e527e617c604c47ad18ad5912928e66
+      created: 1781609726553
+      modified: 1781609726553
+      sortKey: -1779924229947.75
+      description: ""
+    children:
+      - url: localhost:8000/idosoCuidador/22
+        name: editar
+        meta:
+          id: req_46e3682f628049658bccab2d2e87e966
+          created: 1781609726553
+          modified: 1786724125275
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            			"idIdoso": "d1d0bbee-668e-11f1-88f9-0a0027000003",
+            			"idCuidador": "e986af5a-6977-11f1-88f9-0a0027000003",
+            			"telefoneEmergencia": "62988533813"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/idosoCuidador
+        name: selecionar
+        meta:
+          id: req_63519719e7b5459dafbe475b937b2d41
+          created: 1781609726553
+          modified: 1786724130342
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/idosoCuidador/22
+        name: apagar
+        meta:
+          id: req_ad188b4b9bcf4275b1fac937e25b27fe
+          created: 1781609726553
+          modified: 1786724135976
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/idosoCuidador
+        name: criar
+        meta:
+          id: req_ebe2065a71a640ca8d01e9d469fdef49
+          created: 1781609726553
+          modified: 1786724120724
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "idIdoso": "08ad144c-8d07-11f1-be1c-0a0027000003",
+              "idCuidador": "0cdc4ce8-8d07-11f1-be1c-0a0027000003",
+            	"telefoneEmergencia":"8994670-3636"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: doenca
+    meta:
+      id: fld_7a78cc748bcf4743a3863f194b9d0ed4
+      created: 1781631049097
+      modified: 1781631049097
+      sortKey: -1779697925419.875
+      description: ""
+    children:
+      - url: localhost:8000/doenca/08e66ffa-69ae-11f1-88f9-0a0027000003
+        name: apagar
+        meta:
+          id: req_16880a951a634742bc8c7a4925f4d5f0
+          created: 1781631049097
+          modified: 1786724154544
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/doenca
+        name: criar
+        meta:
+          id: req_277618228cb04fdbbbdb100b30999904
+          created: 1781631049097
+          modified: 1786724141902
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "idIdoso": "d1d0bbee-668e-11f1-88f9-0a0027000003",
+              "nome": "tralaleiro",
+            	"descricao":"sixseven"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/doenca
+        name: selecionar
+        meta:
+          id: req_720e3fe6bfd0401aa94861e1be1587f5
+          created: 1781631049097
+          modified: 1786724150476
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/doenca/08e66ffa-69ae-11f1-88f9-0a0027000003
+        name: editar
+        meta:
+          id: req_77cc6d5354424fe3ae74345d1b17ebd3
+          created: 1781631049097
+          modified: 1786724146035
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "idIdoso": "d1d0bbee-668e-11f1-88f9-0a0027000003",
+              "nome": "orcaleiro",
+            	"descricao":"sixseven"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: consulta
+    meta:
+      id: fld_ca265c88f3ff4b40ba48ee41b73b7169
+      created: 1781867541132
+      modified: 1781867541132
+      sortKey: -1779584773155.9375
+      description: ""
+    children:
+      - url: localhost:8000/consulta/ee85c474-97fc-11f1-93fe-0a0027000003
+        name: deletar
+        meta:
+          id: req_8063f7249e204f5a99d3e62cd84ecdbd
+          created: 1781867541132
+          modified: 1786724865162
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/consulta/ee85c474-97fc-11f1-93fe-0a0027000003
+        name: editar
+        meta:
+          id: req_84ae7484bef8499a894497e305ee06fb
+          created: 1781867541132
+          modified: 1786724857954
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "nomeMedico": "orca",
+            	"horario":"14:30",
+            	"localConsulta":"Avenida Salerno",
+            	"idIdoso": "e4375a8e-8d08-11f1-be1c-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/consulta
+        name: selecionar
+        meta:
+          id: req_8c1c61ebc626406b90b73002fd6e6ee6
+          created: 1781867541132
+          modified: 1786724169951
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/consulta
+        name: criar
+        meta:
+          id: req_9b022d3a9ef9404ca23cad2ff504d640
+          created: 1781867541132
+          modified: 1786724802939
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |
+            {
+              "nomeMedico": "tralaleiro",
+            	"horario":"14:30",
+            	"localConsulta":"Avenida Salerno",
+            	"idIdoso": "e4375a8e-8d08-11f1-be1c-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: medicamento
+    meta:
+      id: fld_5c99b90bf86c499b981c31052c8ab8ba
+      created: 1781876760402
+      modified: 1781892675343
+      sortKey: -1779528197023.9688
+      description: ""
+    children:
+      - url: localhost:8000/medicamento
+        name: criar
+        meta:
+          id: req_09f2138b6a024194b300a322777b75a3
+          created: 1781876760402
+          modified: 1786724213689
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "clonazepan",
+              "dosagem": "1mg",
+            	"horario": "10:00",
+            	"frequencia": "4 Vezes ao dia",
+            	"observacoes": "tralaleiro",
+            	"idIdoso": "e597f36a-6bd2-11f1-9d42-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/medicamento/504e026f-6c0c-11f1-9d42-0a0027000003
+        name: deletar
+        meta:
+          id: req_558fd4e4441e4b21b3235548eae0f18c
+          created: 1781876760402
+          modified: 1786724235367
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/medicamento/504e026f-6c0c-11f1-9d42-0a0027000003
+        name: selecionar
+        meta:
+          id: req_91a196d864a94b9695393e0dd16f3d42
+          created: 1781876760402
+          modified: 1786724230416
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/medicamento/504e026f-6c0c-11f1-9d42-0a0027000003
+        name: editar
+        meta:
+          id: req_d2bf293236cd49c69542007be56583a0
+          created: 1781876760402
+          modified: 1786724225258
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Sertralina",
+              "dosagem": "1mg",
+            	"horario": "10:00",
+            	"frequencia": "4 Vezes ao dia",
+            	"observacoes": "tralaleiro",
+            	"idIdoso": "e597f36a-6bd2-11f1-9d42-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: idoso
+    meta:
+      id: fld_6b7f67e72fcd48fab924099559302669
+      created: 1781895333457
+      modified: 1786724027847
+      sortKey: -1780886654158.5
+      description: ""
+    children:
+      - url: localhost:8000/idosos
+        name: selecionar
+        meta:
+          id: req_3cf25fccfd6f400ba010995637de84d0
+          created: 1781895333457
+          modified: 1786724057493
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/idosos/fd286d2e-928b-11f1-b40b-0a0027000003
+        name: editar
+        meta:
+          id: req_493bfa6e2b7e4f598bcb9cbdf685dc0d
+          created: 1781895333457
+          modified: 1786724046950
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "tipoSanguineo": "B-",
+              "telefone": "19 999182381",
+              "pcd": "Sim",
+              "idUsuario": "e31118a4-8d06-11f1-be1c-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/idosos/e9bcf0e7-8d06-11f1-be1c-0a0027000003
+        name: apagar
+        meta:
+          id: req_61593d8e073f4d17a7ba8b2b7cf7316d
+          created: 1781895333457
+          modified: 1786724063393
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/idosos
+        name: criar
+        meta:
+          id: req_c7f46ee8bce24a0497b84c4c1150385d
+          created: 1781895333457
+          modified: 1786724037731
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "tipoSanguineo": "O+",
+              "telefone": "19 999182381",
+              "pcd": "Sim",
+              "idUsuario": "e31118a4-8d06-11f1-be1c-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: receitaMed
+    meta:
+      id: fld_f6dce63570a04a7f8fd1986f8189dc34
+      created: 1786721248970
+      modified: 1786721248970
+      sortKey: -1779499908957.9844
+      description: ""
+    children:
+      - url: localhost:8000/receita
+        name: selecionar
+        meta:
+          id: req_10ac37c540204942a5be13e678dd29ea
+          created: 1786721248970
+          modified: 1786725352538
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/receita
+        name: criar
+        meta:
+          id: req_6f80885ff3a2410da2588a94ebcd9d9d
+          created: 1786721248970
+          modified: 1786725037808
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+              "descricao": "Uso contínuo de Losartana 50mg, 1 comprimido pela manhã",
+              "dataEmissao": "2026-08-14",
+              "dataVencimento": "2026-11-14",
+              "idConsulta": "16c8c66e-97fd-11f1-93fe-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/receita/ef2b373c-97fd-11f1-93fe-0a0027000003
+        name: apagar
+        meta:
+          id: req_71337fc97055466d82b8853655008ae8
+          created: 1786721248970
+          modified: 1786725359009
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/receita/ef2b373c-97fd-11f1-93fe-0a0027000003
+        name: editar
+        meta:
+          id: req_ee7a26541591470fb4f63886abe311c4
+          created: 1786721248970
+          modified: 1786725355561
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "descricao": "Uso de Losartana 50mg, 1 comprimido pela manhã",
+              "dataEmissao": "2026-08-14",
+              "dataVencimento": "2026-11-14",
+              "idConsulta": "16c8c66e-97fd-11f1-93fe-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: enderecos
+    meta:
+      id: fld_490a2f4393194106a35dbeee31d5cc22
+      created: 1786722803488
+      modified: 1786722803488
+      sortKey: -1779485764924.9922
+      description: ""
+    children:
+      - url: localhost:8000/enderecos/9513b6f5-97f9-11f1-93fe-0a0027000003
+        name: editar
+        meta:
+          id: req_13301ea1f05f4807b05aa4ad1403ea31
+          created: 1786722803488
+          modified: 1786725417529
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "numero": 123,
+              "complemento": "predio fiesp",
+              "cep": "01310100",
+              "idUsuario": "08ad144c-8d07-11f1-be1c-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/enderecos
+        name: criar
+        meta:
+          id: req_406fcbb8687548cea2c14c178f3a6ef5
+          created: 1786722803488
+          modified: 1786725390912
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "numero": 123,
+              "complemento": "Apto 45",
+              "cep": "01310100",
+              "idUsuario": "08ad144c-8d07-11f1-be1c-0a0027000003"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/enderecos
+        name: selecionar
+        meta:
+          id: req_516f70bafab44a1c88f9d43c216a462a
+          created: 1786722803488
+          modified: 1786724322061
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/enderecos/9513b6f5-97f9-11f1-93fe-0a0027000003
+        name: apagar
+        meta:
+          id: req_ef12233d9dfd4c478a7d2d97ccf8657b
+          created: 1786722803488
+          modified: 1786725420522
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_fd1ef406086a452ec026cdb0cac765f4217b2403
+    created: 1781282037435
+    modified: 1781282037435
+environments:
+  name: Base Environment
+  meta:
+    id: env_fd1ef406086a452ec026cdb0cac765f4217b2403
+    created: 1781282037426
+    modified: 1781613190301
+    isPrivate: false
