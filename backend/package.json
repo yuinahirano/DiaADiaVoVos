@@ -1,6 +1,7 @@
 {
-  "scripts": {
-    "dev": "nodemon --exec ts-node server.ts"
+"scripts": {
+  "dev": "nodemon --exec ts-node server.ts",
+  "seed:admin": "ts-node src/database/seeds/adminSeed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
