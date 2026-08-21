@@ -10,7 +10,11 @@
     "outDir": "./dist",
     "rootDir": "./",
     "sourceMap": true,
-    "ignoreDeprecations": "5.0"
+    "ignoreDeprecations": "5.0",
+    "typeRoots": ["./node_modules/@types", "./src/@types"]
+  },
+  "ts-node": {
+    "files": true
   },
   "include": ["src", "server.ts"]
 }
