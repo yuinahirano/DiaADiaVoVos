@@ -1,13 +1,16 @@
-import { useState } from 'react'
-import './App.css'
-import PaginaLogin from './components/PaginaLogin'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+
+import PaginaLogin from "./components/PaginaLogin"
+import RegistroSaude from "./components/RegistroSaude"
 
 function App() {
-
   return (
-    <>
-      <PaginaLogin/>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<PaginaLogin />} />
+        <Route path="/registro-saude" element={<RegistroSaude />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
