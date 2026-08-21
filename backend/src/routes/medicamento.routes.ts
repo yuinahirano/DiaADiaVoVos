@@ -5,9 +5,10 @@ const medicamentoRoutes = Router();
 const medicamentoController = new (MedicamentoController);
 
 medicamentoRoutes.get('/medicamento', medicamentoController.selecionar);
+medicamentoRoutes.get('/medicamento/idosos/:idIdoso', medicamentoController.selecionarPorIdoso);
 medicamentoRoutes.get('/medicamento/:id', medicamentoController.selecionar);
 medicamentoRoutes.post('/medicamento', medicamentoController.criar);
 medicamentoRoutes.put('/medicamento/:id', medicamentoController.editar);
-medicamentoRoutes.delete('/medicamento/:id',medicamentoController.deletar);
+medicamentoRoutes.delete('/medicamento/:id', medicamentoController.deletar);
     
 export default medicamentoRoutes;

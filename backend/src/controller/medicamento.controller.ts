@@ -24,6 +24,22 @@ export class MedicamentoController {
     }
   };
 
+  selecionarPorIdoso = async (req: Request, res: Response) => {
+  try {
+    const idIdoso = String(req.params.idIdoso);
+    const result = await this._service.selecionarPorIdIdoso(idIdoso);
+    return res.status(200).json({ result });
+  } catch (error) {
+    console.error(error);
+    const message =
+      error instanceof Error ? error.message : "Erro desconhecido";
+    return res.status(500).json({
+      message: "Ocorreu um erro no servidor",
+      errorMessage: message,
+    });
+  }
+};
+
 criar = async (req: Request, res: Response) => {
   try {
     const { nome, dosagem, horario, frequencia, observacoes, idIdoso } = req.body;
