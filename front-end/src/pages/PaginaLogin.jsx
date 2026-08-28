@@ -1,5 +1,5 @@
 import { useUsers } from "../hooks/useUsers";
-import logoImg from "../assets/logo.png";
+import logoImg from "../assets/logo_DiaADia.png";
 
 export default function PaginaLogin() {
     const { 
