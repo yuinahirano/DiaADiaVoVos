@@ -10,12 +10,12 @@
 #### Corpo de requisição: 
 ```json
  {
-	"nome": "string",
-	"cpf" : "string",
-	"email": "string@email.com",
-	"senha": "Senha@1234",
-	"dataNascimento": 20000820,
-	"estadoCivil": "Solteiro"
+    "nome": "string",
+    "cpf" : "string",
+    "email": "string@email.com",
+    "senha": "Senha@1234",
+    "dataNascimento": 20000820,
+    "estadoCivil": "Solteiro"
 }
 ```
 <br>
@@ -70,39 +70,39 @@
 #### Resposta de Sucesso: 
 ```json
 {
-	"novo": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 0
-	}
+    "novo": {
+        "fieldCount": 0,
+        "affectedRows": 1,
+        "insertId": 0,
+        "info": "",
+        "serverStatus": 2,
+        "warningStatus": 0,
+        "changedRows": 0
+    }
 }
 ```
 #### Possíveis erros
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "CPF inválido"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "CPF inválido"
 }
 ```
 <br>
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "Email deve conter @, Formato de email inválido"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "Email deve conter @, Formato de email inválido"
 }
 ```
 <br>
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "Senha deve conter ao menos uma letra maiúscula, Senha deve conter ao menos um número, Senha deve conter ao menos um caractere especial (!@#$%^&*), Senha deve ter no mínimo 8 caracteres"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "Senha deve conter ao menos uma letra maiúscula, Senha deve conter ao menos um número, Senha deve conter ao menos um caractere especial (!@#$%^&*), Senha deve ter no mínimo 8 caracteres"
 }
 ```
 ---
@@ -116,17 +116,17 @@
 #### Resposta de Sucesso: 
 ```json
 {
-	"result": [
-		{
-			"id": "6c808ab5-6673-11f1-88f9-0a0027000003",
-			"nome": "user",
-			"cpf": "49037627854",
-			"email": "user@gmail.com",
-			"senha": "senha_hash",
-			"data_nascimento": "2000-08-20T03:00:00.000Z",
-			"estado_civil": "solteiro"
-		}
-	]
+    "result": [
+        {
+            "id": "6c808ab5-6673-11f1-88f9-0a0027000003",
+            "nome": "user",
+            "cpf": "49037627854",
+            "email": "user@gmail.com",
+            "senha": "senha_hash",
+            "data_nascimento": "2000-08-20T03:00:00.000Z",
+            "estado_civil": "solteiro"
+        }
+    ]
 }
 ```
 <br>
@@ -154,17 +154,17 @@ GET http://localhost:8000/usuarios/6c808ab5-6673-11f1-88f9-0a0027000003
 #### Resposta de Sucesso:
 ```json
 {
-	"result": [
-		{
-			"id": "id",
-			"nome": "user",
-			"cpf": "49037627854",
-			"email": "user@gmail.com",
-			"senha": "senha_hash",
-			"data_nascimento": "2000-08-20T03:00:00.000Z",
-			"estado_civil": "solteiro"
-		}
-	]
+    "result": [
+        {
+            "id": "id",
+            "nome": "user",
+            "cpf": "49037627854",
+            "email": "user@gmail.com",
+            "senha": "senha_hash",
+            "data_nascimento": "2000-08-20T03:00:00.000Z",
+            "estado_civil": "solteiro"
+        }
+    ]
 }
 ```
 <br>
@@ -186,12 +186,12 @@ GET http://localhost:8000/usuarios/6c808ab5-6673-11f1-88f9-0a0027000003
 #### Corpo da requisição
 ```json
  {
-	"nome": "string",
-	"cpf" : "string",
-	"email": "string@email.com",
-	"senha": "Senha@1234",
-	"dataNascimento": 20000820,
-	"estadoCivil": "Solteiro"
+    "nome": "string",
+    "cpf" : "string",
+    "email": "string@email.com",
+    "senha": "Senha@1234",
+    "dataNascimento": 20000820,
+    "estadoCivil": "Solteiro"
 }
 ```
 <br>
@@ -245,15 +245,15 @@ GET http://localhost:8000/usuarios/6c808ab5-6673-11f1-88f9-0a0027000003
 #### Resposta de Sucesso
 ```json
 {
-	"editado": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 1
-	}
+    "editado": {
+        "fieldCount": 0,
+        "affectedRows": 1,
+        "insertId": 0,
+        "info": "Rows matched: 1  Changed: 1  Warnings: 0",
+        "serverStatus": 2,
+        "warningStatus": 0,
+        "changedRows": 1
+    }
 }
 ```
 <br>
@@ -262,24 +262,24 @@ GET http://localhost:8000/usuarios/6c808ab5-6673-11f1-88f9-0a0027000003
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "CPF inválido"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "CPF inválido"
 }
 ```
 <br>
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "Email deve conter @, Formato de email inválido"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "Email deve conter @, Formato de email inválido"
 }
 ```
 <br>
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "Senha deve conter ao menos uma letra maiúscula, Senha deve conter ao menos um número, Senha deve conter ao menos um caractere especial (!@#$%^&*), Senha deve ter no mínimo 8 caracteres"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "Senha deve conter ao menos uma letra maiúscula, Senha deve conter ao menos um número, Senha deve conter ao menos um caractere especial (!@#$%^&*), Senha deve ter no mínimo 8 caracteres"
 }
 ```
 <br>
@@ -293,8 +293,8 @@ GET http://localhost:8000/usuarios/6c808ab5-6673-11f1-88f9-0a0027000003
 #### Corpo de requisição: 
 ```json
 {
-	"email": "string@email.com",
-	"senha": "string"
+    "email": "string@email.com",
+    "senha": "string"
 }
 ```
 <br>
@@ -325,17 +325,17 @@ GET http://localhost:8000/usuarios/6c808ab5-6673-11f1-88f9-0a0027000003
 #### Resposta de Sucesso: 
 ```json
 {
-	"login": {
-		"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZjODA4YWI1LTY2NzMtMTFmMS04OGY5LTBhMDAyNzAwMDAwMyIsImVtYWlsIjoic3RyaW5nQGVtYWlsLmNvbSIsImlhdCI6MTc4MTI4MzUyMCwiZXhwIjoxNzgxMzEyMzIwfQ.d4B36RAF9lbh0z8Hh73acFB0BI2nmlHst8Dw4m6pkZ0"
-	}
+    "login": {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZjODA4YWI1LTY2NzMtMTFmMS04OGY5LTBhMDAyNzAwMDAwMyIsImVtYWlsIjoic3RyaW5nQGVtYWlsLmNvbSIsImlhdCI6MTc4MTI4MzUyMCwiZXhwIjoxNzgxMzEyMzIwfQ.d4B36RAF9lbh0z8Hh73acFB0BI2nmlHst8Dw4m6pkZ0"
+    }
 }
 ```
 #### Possíveis erros
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "Email ou senha inválidos"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "Email ou senha inválidos"
 }
 ```
 <br>
@@ -380,15 +380,15 @@ Exemplo:
 #### Resposta de Sucesso
 ```json
 {
-	"deletado": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 0
-	}
+    "deletado": {
+        "fieldCount": 0,
+        "affectedRows": 1,
+        "insertId": 0,
+        "info": "",
+        "serverStatus": 2,
+        "warningStatus": 0,
+        "changedRows": 0
+    }
 }
 ```
 <br>
@@ -397,22 +397,22 @@ Exemplo:
 
 ```json
 {
-	"erro": "Token não informado"
+    "erro": "Token não informado"
 }
 ```
 <br>
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "Usuário não encontrado"
+    "message": "Ocorreu um erro no servidor",
+    "errorMessage": "Usuário não encontrado"
 }
 ```
 <br>
 
 ```json
 {
-	"erro": "Token inválido ou expirado"
+    "erro": "Token inválido ou expirado"
 }
 ```
 <br>
