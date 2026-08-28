@@ -1,19 +1,27 @@
 import { useState,useEffect } from "react";
 import MedicamentosList from "../components/medicamentos/MedicamentosList";
 import {useMedicamentos} from '../hooks/useMedicamentos';
+import { useNavigate } from "react-router-dom";
 
 export default function MedicationPage() {
   const {medicamentos, loading} = useMedicamentos(); //para carregar os medicamentos
+  const navigate = useNavigate();
+
+  //função para tratar o clique do botão de adicionar
+  const handleAddMedicamento = () => {
+    navigate("/medicamentos/addMedicamento"); //direciona para a página de adicionar medicamento
+  }
 
   return (
     <div style={styles.container}>
-      {/* Header estático mantendo o design da imagem */}
+      {/* header com o nome do idoso e o botão de voltar*/}
       <header style={styles.header}>
         <div style={styles.titleSection}>
           <span style={styles.backButton}>&lt;</span>
           <h1 style={styles.title}>Idoso 1</h1>
         </div>
 
+{/* barra de navegação */}
         <nav style={styles.nav}>
           <button style={styles.inactiveNav}>Doenças</button>
           <button style={styles.inactiveNav}>Consultas</button>
@@ -21,6 +29,14 @@ export default function MedicationPage() {
           <button style={styles.inactiveNav}>Registro Saúde</button>
         </nav>
       </header>
+
+{/* botão de adicionar medicamento */}
+      <div style={styles.actionRow}>
+        <button style={styles.addButton} onClick={handleAddMedicamento}> {/* associa o evento do click com a função de ir para outra página */}
+          <span style={styles.addIcon}>+</span> {/* span para estilizar de forma separada do texto do botão */}
+          Adicionar medicamento
+        </button>
+      </div>
 
       {/*chama os cards*/}
       <main style={styles.grid}>
@@ -97,6 +113,34 @@ const styles = {
   color: '#000000',
   outline: 'none'
   },
+
+  actionRow: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginBottom: '25px'
+  },
+
+  addButton: {
+    backgroundColor: '#FFE866',
+    color: '#000000',
+    border: 'none',
+    borderRadius: '25px',
+    padding: '10px 24px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+    outline: 'none'
+  },
+  addIcon: {
+    fontSize: '20px',
+    fontWeight: 'bold',
+    lineHeight: '1'
+  },
+
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',

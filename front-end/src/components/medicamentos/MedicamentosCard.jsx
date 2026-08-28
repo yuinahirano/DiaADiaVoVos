@@ -28,7 +28,7 @@ export default function MedicationCard({ medicamento }) {
 // Estilos
 const styles = {
   card: {
-    backgroundColor: '#FFE866',
+    backgroundColor: '#ffffff',
     borderRadius: '24px',
     padding: '30px',
     display: 'flex',
@@ -37,8 +37,8 @@ const styles = {
     boxShadow: '0 4px 10px rgba(0,0,0,0.03)'
   },
   cardTitle: {
-    color: '#8A52FF',
-    fontSize: '24px',
+    color: '#000000',
+    fontSize: '30px',
     fontWeight: 'bold',
     margin: '0 0 10px 0'
   },
