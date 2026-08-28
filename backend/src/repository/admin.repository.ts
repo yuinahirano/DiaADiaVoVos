@@ -60,4 +60,8 @@ async editar(
     const [rows] = await db.execute<ResultSetHeader>(sql, values);
     return rows;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> develop
