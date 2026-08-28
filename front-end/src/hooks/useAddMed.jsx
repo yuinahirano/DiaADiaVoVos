@@ -16,6 +16,7 @@ export function useAddMedicamento() {
     const [efetuarCadastro, setEfetuarCadastro] = useState(false);
     const [sucesso, setSucesso] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [erro, setErro] = useState(null);
 
     //pega o valor que foi inserido e ja insere também no formulário que vai ser enviado
     const handleChange = (e) => {
@@ -32,6 +33,8 @@ export function useAddMedicamento() {
 
         async function cadastrar() {
             setLoading(true);
+            setErro(false); //limpa erros anteriores
+
             try {
                 
                 await addMedicamento(formData);
@@ -39,6 +42,7 @@ export function useAddMedicamento() {
 
             } catch (error) {
                 console.error("Erro no cadastro:", error);
+                setErro(error.respose?.data?.message || "Falha ao cadastrar novo medicamento");//salva a mensagem de erro e passa para o modal
             } finally {
                 setLoading(false);
                 setEfetuarCadastro(false);
@@ -54,6 +58,8 @@ export function useAddMedicamento() {
         setEfetuarCadastro,
         sucesso,
         setSucesso,
-        loading
+        loading,
+        erro,
+        setErro
     };
 }

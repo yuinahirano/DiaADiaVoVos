@@ -1,17 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { useAddMedicamento } from '../hooks/useAddMed';
 
-export default function CadastrarMedicamento() {
-    const navigate = useNavigate(); //para navegação de telas
-
+export default function CadastrarMedicamento({isOpen, onClose}) {
     const {
         formData,
         handleChange,
         setEfetuarCadastro,
         sucesso,
         setSucesso,
-        loading
+        loading,
+        erro,
+        setErro
     } = useAddMedicamento();
+
+    //nulo se o modal tiver fechado
+    if (!isOpen) return null;
 
     //no clique do cadastro altera o estado gatilho no hook para iniciar a requisição
     const handleSubmit = (e) => {
@@ -19,10 +22,15 @@ export default function CadastrarMedicamento() {
         setEfetuarCadastro(true);
     };
 
-    //função do botão OK do modal de confirmação
+    //modal de confirmação de sucesso
     const handleConfirmModal = () => {
         setSucesso(false);
-        navigate(-1);
+        onClose(); //fecha o modal após a confirmação
+    };
+
+    //modal de confirmação quando da erro
+    const handleErrorModal = () => {
+        setErro(null); //fecha apenas o modal de erro
     };
 
     //cancelar
@@ -31,12 +39,11 @@ export default function CadastrarMedicamento() {
     };
 
     return (
-        <div style={styles.pageContainer}>
+        <div style={styles.modalOverlay}>
             <div style={styles.card}>
                 <h1 style={styles.title}>Cadastrar Medicamento</h1>
 
                 <form onSubmit={handleSubmit} style={styles.form}>
-                    {/* Nome */}
                     <div style={styles.inputGroup}>
                         <label style={styles.label} htmlFor="nome">Nome:</label>
                         <input
@@ -50,7 +57,6 @@ export default function CadastrarMedicamento() {
                         />
                     </div>
 
-                    {/* Dosagem */}
                     <div style={styles.inputGroup}>
                         <label style={styles.label} htmlFor="dosagem">Dosagem:</label>
                         <input
@@ -64,7 +70,6 @@ export default function CadastrarMedicamento() {
                         />
                     </div>
 
-                    {/* Horário */}
                     <div style={styles.inputGroup}>
                         <label style={styles.label} htmlFor="horario">Horário:</label>
                         <input
@@ -78,7 +83,6 @@ export default function CadastrarMedicamento() {
                         />
                     </div>
 
-                    {/* Frequência */}
                     <div style={styles.inputGroup}>
                         <label style={styles.label} htmlFor="frequencia">Frequência:</label>
                         <input
@@ -91,7 +95,6 @@ export default function CadastrarMedicamento() {
                         />
                     </div>
 
-                    {/* Observações */}
                     <div style={styles.inputGroup}>
                         <label style={styles.label} htmlFor="observacoes">Observações:</label>
                         <input
@@ -105,14 +108,12 @@ export default function CadastrarMedicamento() {
                         />
                     </div>
 
-                    {/* Botões do Formulário */}
                     <div style={styles.buttonRow}>
                         <button
                             type="button"
-                            onClick={handleCancel}
+                            onClick={onClose}
                             style={styles.cancelButton}
                             disabled={loading}
-                            
                         >
                             Cancelar
                         </button>
@@ -128,16 +129,33 @@ export default function CadastrarMedicamento() {
                 </form>
             </div>
 
-            {/* Modal exibido apenas quando o estado 'sucesso' retornado pelo Hook for verdadeiro */}
+            {/* submodal de confirmação */}
             {sucesso && (
-                <div style={styles.modalOverlay}>
+                <div style={styles.innerModalOverlay}>
                     <div style={styles.modalContent}>
-                        <h2 style={styles.modalTitle}>Medicamento Cadastrado!</h2>
+                        <h2 style={styles.modalTitle}>Sucesso!</h2>
                         <p style={styles.modalText}>
-                            O medicamento foi salvo com sucesso. Você será redirecionado para a lista.
+                            O medicamento foi salvo com sucesso.
                         </p>
                         <button
                             onClick={handleConfirmModal}
+                            style={styles.modalButton}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {erro && (
+                <div style={styles.innerModalOverlay}>
+                    <div style={styles.modalContent}>
+                        <h2 style={styles.modalTitle}>Erro</h2>
+                        <p style={styles.modalText}>
+                            Falha ao cadastrar o medicamento.
+                        </p>
+                        <button
+                            onClick={handleErrorModal}
                             style={styles.modalButton}
                         >
                             OK
@@ -151,44 +169,54 @@ export default function CadastrarMedicamento() {
 
 //estilização
 const styles = {
-    pageContainer: {
-        backgroundColor: '#EBF3FF',
-        minHeight: '100vh',
+    modalOverlay: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        width: '100vw',  // Garante a largura total da viewport
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        zIndex: 1000,
         padding: '20px',
-        fontFamily: 'Arial, sans-serif'
     },
+
+    //card do modal
     card: {
         backgroundColor: '#FFFFFF',
         borderRadius: '28px',
-        padding: '40px 50px',
+        padding: '30px 40px',
         width: '100%',
-        maxWidth: '520px',
-        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+        maxHeight: '500px',
+        maxWidth: '500px',
+        overflowY: 'auto', //permite rolar o card pelo eixo y (cima e baixo)
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
         boxSizing: 'border-box'
     },
     title: {
-        fontSize: '28px',
+        fontSize: '26px',
         fontWeight: 'bold',
         color: '#000000',
         textAlign: 'center',
         marginTop: 0,
-        marginBottom: '25px'
+        marginBottom: '20px'
     },
     form: {
         display: 'flex',
         flexDirection: 'column',
-        gap: '16px'
+        gap: '14px'
     },
     inputGroup: {
         display: 'flex',
         flexDirection: 'column',
-        gap: '6px'
+        gap: '4px'
     },
     label: {
-        fontSize: '16px',
+        fontSize: '15px',
         fontWeight: 'bold',
         color: '#000000'
     },
@@ -199,13 +227,15 @@ const styles = {
         height: '38px',
         padding: '0 14px',
         fontSize: '15px',
-        outline: 'none'
+        outline: 'none',
+        width: '100%',
+        boxSizing: 'border-box'
     },
     buttonRow: {
         display: 'flex',
-        justifyContent: 'space-between',
-        gap: '20px',
-        marginTop: '20px'
+        justify: 'space-between',
+        gap: '16px',
+        marginTop: '15px'
     },
     cancelButton: {
         flex: 1,
@@ -213,7 +243,7 @@ const styles = {
         color: '#000000',
         border: 'none',
         borderRadius: '18px',
-        height: '46px',
+        height: '44px',
         fontSize: '16px',
         fontWeight: 'bold',
         cursor: 'pointer',
@@ -225,34 +255,32 @@ const styles = {
         color: '#000000',
         border: 'none',
         borderRadius: '18px',
-        height: '46px',
+        height: '44px',
         fontSize: '16px',
         fontWeight: 'bold',
         cursor: 'pointer',
         outline: 'none'
     },
-
-    //MODAL
-    modalOverlay: {
+    innerModalOverlay: {
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: 1000
+        zIndex: 1100
     },
     modalContent: {
         backgroundColor: '#FFFFFF',
         borderRadius: '24px',
         padding: '30px',
         width: '90%',
-        maxWidth: '400px',
+        maxWidth: '380px',
         textAlign: 'center',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)'
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
     },
     modalTitle: {
         fontSize: '22px',
@@ -264,8 +292,7 @@ const styles = {
     modalText: {
         fontSize: '15px',
         color: '#444444',
-        marginBottom: '24px',
-        lineHeight: '1.4'
+        marginBottom: '24px'
     },
     modalButton: {
         backgroundColor: '#FFE866',

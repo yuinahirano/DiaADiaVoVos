@@ -5,13 +5,13 @@ export default function MedicationCard({ medicamento }) {
     <div style={styles.card}>
       <h2 style={styles.cardTitle}>{medicamento.nome.toUpperCase()}</h2>
 
-      <div style={styles.cardField}>
+      <div style={styles.borderDosagem}>
         <strong>Dosagem:</strong> {medicamento.dosagem}
       </div>
 
       <div style={styles.cardField}>
         <strong>Horário:</strong>
-        <span style={styles.horarioValue}>{medicamento.horario}</span>
+        <span style={styles.horarioValue}>{medicamento.horario.slice(0, 5)}</span> {/* slice(0, 5) é para mostrar só hora e minuto. o 0 é onde o corte começa e o 5 é onde termina */}
       </div>
 
       <div style={styles.cardField}>
@@ -30,7 +30,7 @@ const styles = {
   card: {
     backgroundColor: '#ffffff',
     borderRadius: '24px',
-    padding: '30px',
+    padding: '10px',
     display: 'flex',
     flexDirection: 'column',
     gap: '18px',
@@ -40,17 +40,25 @@ const styles = {
     color: '#000000',
     fontSize: '30px',
     fontWeight: 'bold',
-    margin: '0 0 10px 0'
+    margin: '10px 0 10px 10px',
   },
   cardField: {
     fontSize: '18px',
-    color: '#000000'
+    color: '#000000',
+    padding: '0px 10px 10px'
   },
   cardFieldInline: {
     fontSize: '18px',
     color: '#000000',
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  
+  borderDosagem: {
+    fontSize: '18px',
+    color: '#000000',
+    backgroundColor: '#FFE866',
+    padding: '10px',
+    borderRadius: '20px'
+  },
+
 };

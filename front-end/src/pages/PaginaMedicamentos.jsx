@@ -1,16 +1,11 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import MedicamentosList from "../components/medicamentos/MedicamentosList";
-import {useMedicamentos} from '../hooks/useMedicamentos';
-import { useNavigate } from "react-router-dom";
+import { useMedicamentos } from '../hooks/useMedicamentos';
+import CadastrarMedicamento from "./PaginaAddMedicamento";
 
 export default function MedicationPage() {
-  const {medicamentos, loading} = useMedicamentos(); //para carregar os medicamentos
-  const navigate = useNavigate();
-
-  //função para tratar o clique do botão de adicionar
-  const handleAddMedicamento = () => {
-    navigate("/medicamentos/addMedicamento"); //direciona para a página de adicionar medicamento
-  }
+  const { medicamentos, loading } = useMedicamentos(); //para carregar os medicamentos
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div style={styles.container}>
@@ -21,7 +16,7 @@ export default function MedicationPage() {
           <h1 style={styles.title}>Idoso 1</h1>
         </div>
 
-{/* barra de navegação */}
+        {/* barra de navegação */}
         <nav style={styles.nav}>
           <button style={styles.inactiveNav}>Doenças</button>
           <button style={styles.inactiveNav}>Consultas</button>
@@ -30,9 +25,9 @@ export default function MedicationPage() {
         </nav>
       </header>
 
-{/* botão de adicionar medicamento */}
+      {/* botão de adicionar medicamento */}
       <div style={styles.actionRow}>
-        <button style={styles.addButton} onClick={handleAddMedicamento}> {/* associa o evento do click com a função de ir para outra página */}
+        <button style={styles.addButton} onClick={() => setIsModalOpen(true)}> {/*ativa o modal */}
           <span style={styles.addIcon}>+</span> {/* span para estilizar de forma separada do texto do botão */}
           Adicionar medicamento
         </button>
@@ -43,9 +38,16 @@ export default function MedicationPage() {
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p> //mensagem enquanto carrega informações
         ) : (
-          <MedicamentosList medicamentos={medicamentos}/>
+          <MedicamentosList medicamentos={medicamentos} />
         )}
       </main>
+
+      {/* o modal é rendenrizado quando isModalOpen é true */}
+      <CadastrarMedicamento
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+
     </div>
   );
 }
@@ -96,22 +98,22 @@ const styles = {
   },
   activeTab: {
     backgroundColor: '#FFE866',
-  border: 'none',
-  borderRadius: '25px',
-  padding: '8px 25px',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  cursor: 'pointer',
-  outline: 'none'
+    border: 'none',
+    borderRadius: '25px',
+    padding: '8px 25px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    outline: 'none'
   },
   inactiveNav: {
     backgroundColor: 'transparent',
-  border: 'none',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  cursor: 'pointer',
-  color: '#000000',
-  outline: 'none'
+    border: 'none',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    color: '#000000',
+    outline: 'none'
   },
 
   actionRow: {
