@@ -2,10 +2,27 @@ import { useState, useEffect } from "react";
 import MedicamentosList from "../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from '../hooks/useMedicamentos';
 import CadastrarMedicamento from "./PaginaAddMedicamento";
+import { deleteMedicamentos } from "../service/medicamentoApi";
 
 export default function MedicationPage() {
-  const { medicamentos, loading } = useMedicamentos(); //para carregar os medicamentos
+  const { medicamentos, loading, deletarMedicamento } = useMedicamentos(); //para carregar os medicamentos
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //para o modal de confirmação de exclusão
+  const [idParaDeletar, setIdParaDeletar] = useState(null);
+
+  //abre o aviso com o id
+  const handleAbrirConfirmacao = (id) => {
+    setIdParaDeletar(id);
+  };
+
+  //execute o delete se for confirmado a exclusão
+  const handleConfirmarDeletar = async () => {
+    if (idParaDeletar) {
+      await deletarMedicamento(idParaDeletar);
+      setIdParaDeletar(null); //fecha modal
+    }
+  };
 
   return (
     <div style={styles.container}>
@@ -38,7 +55,7 @@ export default function MedicationPage() {
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p> //mensagem enquanto carrega informações
         ) : (
-          <MedicamentosList medicamentos={medicamentos} />
+          <MedicamentosList medicamentos={medicamentos} onDelete={handleAbrirConfirmacao} /> //apenas abre o modal
         )}
       </main>
 
@@ -47,6 +64,30 @@ export default function MedicationPage() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
+
+      {/* modal de confirmação para exclusão*/}
+      {idParaDeletar && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalBox}>
+            <h3>Tem certeza que deseja excluir?</h3>
+            <p>Esta ação não poderá ser desfeita.</p>
+            <div style={styles.modalButtons}>
+              <button 
+                style={styles.cancelBtn} 
+                onClick={() => setIdParaDeletar(null)}
+              >
+                Cancelar
+              </button>
+              <button 
+                style={styles.confirmBtn} 
+                onClick={handleConfirmarDeletar}
+              >
+                Sim, excluir
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );
@@ -152,5 +193,48 @@ const styles = {
     fontSize: '18px',
     fontWeight: 'bold',
     color: '#333'
+  },
+
+  //MODAL
+  modalOverlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1000
+  },
+  modalBox: {
+    backgroundColor: '#ffffff',
+    padding: '30px',
+    borderRadius: '20px',
+    textAlign: 'center',
+    maxWidth: '400px',
+    width: '90%'
+  },
+  modalButtons: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    marginTop: '20px'
+  },
+  cancelBtn: {
+    padding: '10px 20px',
+    borderRadius: '10px',
+    border: '1px solid #ccc',
+    backgroundColor: '#fff',
+    cursor: 'pointer'
+  },
+  confirmBtn: {
+    padding: '10px 20px',
+    borderRadius: '10px',
+    border: 'none',
+    backgroundColor: '#ff4d4d',
+    color: '#fff',
+    fontWeight: 'bold',
+    cursor: 'pointer'
   }
 };
