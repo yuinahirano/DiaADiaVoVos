@@ -15,10 +15,10 @@ export default function MedicationPage() {
         </div>
 
         <nav style={styles.nav}>
-          <span style={styles.inactiveNav}>Doenças</span>
-          <span style={styles.inactiveNav}>Consultas</span>
-          <span style={styles.activeTab}>Medicamentos</span>
-          <span style={styles.inactiveNav}>Registro Saúde</span>
+          <button style={styles.inactiveNav}>Doenças</button>
+          <button style={styles.inactiveNav}>Consultas</button>
+          <button style={styles.activeTab}>Medicamentos</button>
+          <button style={styles.inactiveNav}>Registro Saúde</button>
         </nav>
       </header>
 
@@ -80,14 +80,22 @@ const styles = {
   },
   activeTab: {
     backgroundColor: '#FFE866',
-    borderRadius: '25px',
-    padding: '8px 20px',
-    fontSize: '16px',
-    fontWeight: 'bold'
+  border: 'none',
+  borderRadius: '25px',
+  padding: '8px 25px',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  outline: 'none'
   },
   inactiveNav: {
-    fontSize: '16px',
-    fontWeight: 'bold'
+    backgroundColor: 'transparent',
+  border: 'none',
+  fontSize: '16px',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  color: '#000000',
+  outline: 'none'
   },
   grid: {
     display: 'grid',
