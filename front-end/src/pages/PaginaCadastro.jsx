@@ -162,15 +162,13 @@ export default function PaginaCadastro() {
               Data de nascimento:
             </label>
             <input 
-              type="text" 
+              type="date" 
               name="dataNascimento"
-              placeholder="AAAA-MM-DD"
               className="form-control text-center fw-bold px-2 py-1" 
               style={{ 
                 backgroundColor: '#E5ECF0', 
                 border: '2px solid #1A2229', 
-                borderRadius: '12px',
-                maxWidth: '160px'
+                borderRadius: '12px'
               }}
               value={formData.dataNascimento}
               onChange={handleChange}

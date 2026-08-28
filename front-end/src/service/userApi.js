@@ -1,23 +1,28 @@
-import { api_diadiavovos } from "./api";
+import { api_diadiavovos } from './api';
 
 export async function login(email, senha) {
-    try {
-        const resposta = await api_diadiavovos.post(`/usuarios/login`, { email, senha });
-        const token = resposta.data.login.token;
-        return token;
-    } catch (erro) {
-        console.error('Erro ao realizar login:', erro);
-        throw erro;
-    }
+  // Alterado de '/login' para '/usuarios/login'
+  const resposta = await api_diadiavovos.post('/usuarios/login', { email, senha });
+  if (resposta.data?.token) {
+    localStorage.setItem('token', resposta.data.token);
+  }
+  return resposta.data;
 }
 
-// Função para enviar os dados de cadastro para a API
-export async function cadastrarUsuario(dadosUsuario) {
-    try {
-        const resposta = await api_diadiavovos.post(`/usuarios`, dadosUsuario);
-        return resposta.data;
-    } catch (erro) {
-        console.error('Erro ao cadastrar usuário:', erro);
-        throw erro;
-    }
+export async function cadastrarUsuario(dados) {
+  const resposta = await api_diadiavovos.post('/usuarios', dados);
+  return resposta.data;
 }
+
+export async function cadastrarDadosIdoso(dados) {
+  const resposta = await api_diadiavovos.post('/idosos', dados);
+  return resposta.data;
+}
+
+export async function cadastrarDadosCuidador(dados) {
+  const resposta = await api_diadiavovos.post('/cuidadores', dados);
+  return resposta.data;
+}
+
+// Exportações duplicadas (aliases) para compatibilidade com as páginas existentes
+export { cadastrarDadosIdoso as cadastrarIdoso, cadastrarDadosCuidador as cadastrarCuidador };

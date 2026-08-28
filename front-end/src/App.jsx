@@ -6,7 +6,7 @@ import PaginaCadastro from './pages/PaginaCadastro';
 import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
 import PaginaDadosIdoso from './pages/PaginaDadosIdoso';
 import PaginaDadosCuidador from './pages/PaginaDadosCuidador';
-import PaginaAdicionarFoto from './pages/PaginaAdicionarFoto';
+
 
 function App() {
   return (
@@ -20,7 +20,6 @@ function App() {
         <Route path='/tipo-usuario' element={<PaginaTipoUsuario/>}/>
         <Route path='/completar-idoso' element={<PaginaDadosIdoso/>}/>
         <Route path='/completar-cuidador' element={<PaginaDadosCuidador/>}/>
-        <Route path='/adicionar-foto' element={<PaginaAdicionarFoto/>}/>
       </Routes>
     </BrowserRouter>
   );
