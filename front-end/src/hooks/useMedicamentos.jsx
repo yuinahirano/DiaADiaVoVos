@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getMedicamentos } from "../service/medicamentoApi";
+import { deleteMedicamentos, getMedicamentos } from "../service/medicamentoApi";
 
 export function useMedicamentos() {
     const [medicamentos, setMedicamentos] = useState([]); //array de objetos
@@ -27,5 +27,20 @@ export function useMedicamentos() {
         
     }, []);
 
-    return { medicamentos, loading };
+    //remover medicamento pelo id
+    async function deletarMedicamento(id) {
+        try {
+            //chama metodo da api
+            if (deleteMedicamentos) {
+                await deleteMedicamentos(id);
+            }
+
+            // Atualiza o estado removendo o item instantaneamente da tela
+            setMedicamentos((prev) => prev.filter((item) => item.id !== id));
+        } catch (error) {
+            console.log("Erro ao deletar medicamento:", error);
+        }
+    }
+
+    return { medicamentos, loading, deletarMedicamento };
 }

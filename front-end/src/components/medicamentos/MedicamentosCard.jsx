@@ -1,5 +1,8 @@
-export default function MedicationCard({ medicamento }) {
- 
+import ButtonDelete from "./BotaoDeletar";
+
+export default function MedicationCard({ medicamento, onDelete }) {
+
+  if (!medicamento) return null;
 
   return (
     <div style={styles.card}>
@@ -20,6 +23,10 @@ export default function MedicationCard({ medicamento }) {
 
       <div style={styles.cardField}>
         <strong>Observações:</strong> {medicamento.observacoes}
+      </div>
+
+      <div style={styles.buttonContainer}>
+        <ButtonDelete onClick={() => onDelete(medicamento.id)} />
       </div>
     </div>
   );
@@ -60,5 +67,9 @@ const styles = {
     padding: '10px',
     borderRadius: '20px'
   },
+  buttonContainer: {
+    alignSelf: 'flex-end', 
+    marginTop: 'auto'
+  }
 
 };
