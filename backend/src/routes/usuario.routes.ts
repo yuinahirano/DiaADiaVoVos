@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // usuario.routes.ts
+=======
+>>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
 import { Router } from "express";
 import { UsuarioController } from "../controller/usuario.controller";
 import { autenticarToken } from "../middlewares/jwt.middlewares";

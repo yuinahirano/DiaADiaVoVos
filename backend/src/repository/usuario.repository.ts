@@ -12,7 +12,16 @@ export class UsuarioRepository {
   }
 
   async selecionarPorId(id: string): Promise<IUsuario[]> {
-    const sql = "SELECT * FROM usuario WHERE id=?;";
+const sql = `
+SELECT
+  u.*,
+  i.id AS idIdoso,
+  c.id AS idCuidador
+FROM usuario u
+LEFT JOIN idoso i ON i.id_usuario = u.id
+LEFT JOIN cuidador c ON c.id_usuario = u.id
+WHERE u.id = ?;
+  `;
     const values = [id];
     const [rows] = await db.execute<IUsuario[]>(sql, values);
     return rows;

@@ -7,6 +7,13 @@ export class MedicamentoService {
     private _idosoRepository = new IdosoRepository()
 ) {}
 
+<<<<<<< HEAD
+=======
+  async selecionarPorIdIdoso(idIdoso: string) {
+  return await this._repository.selecionarPorIdIdoso(idIdoso);
+}
+
+>>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
   async selecionarTodos() {
     return await this._repository.selecionarTodos();
   }

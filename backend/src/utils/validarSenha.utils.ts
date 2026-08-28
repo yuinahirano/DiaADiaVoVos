@@ -1,4 +1,3 @@
-// senha.utils.ts
 export class SenhaUtils {
 
   static validar(value: string): { valido: boolean; erros: string[] } {

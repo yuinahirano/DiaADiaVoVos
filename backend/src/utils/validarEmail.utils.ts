@@ -1,4 +1,3 @@
-// email.utils.ts
 export class EmailUtils {
 
   static validar(value: string): { valido: boolean; erros: string[] } {

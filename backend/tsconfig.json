@@ -8,9 +8,17 @@
     "strict": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "./",
     "sourceMap": true,
+<<<<<<< HEAD
     "ignoreDeprecations": "5.0"
+=======
+    "ignoreDeprecations": "5.0",
+    "typeRoots": ["./node_modules/@types", "./src/@types"]
+>>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
   },
-  "include": ["src"]
+  "ts-node": {
+    "files": true
+  },
+  "include": ["src", "server.ts"]
 }

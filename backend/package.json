@@ -1,9 +1,19 @@
 {
+<<<<<<< HEAD
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
+=======
+"scripts": {
+  "dev": "nodemon --exec ts-node server.ts",
+  "seed:admin": "ts-node src/database/seeds/adminSeed.ts"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
+>>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.1.0",
@@ -15,8 +25,14 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+<<<<<<< HEAD
     "axios": "^1.17.0",
     "bcrypt": "^6.0.0",
+=======
+    "axios": "^1.19.0",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+>>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "firebase-admin": "^14.0.0",
