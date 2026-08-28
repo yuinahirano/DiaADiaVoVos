@@ -30,7 +30,13 @@ export function useCadastro() {
         e.preventDefault();
         setLoading(true);
         try {
-            await cadastrarUsuario(formData);
+            const resposta = await cadastrarUsuario(formData);
+            
+            // Guarda o ID do usuário recém-criado para associar nos passos do idoso/cuidador
+            if (resposta?.id) {
+                localStorage.setItem('usuarioId', resposta.id);
+            }
+
             if (onSuccess) onSuccess();
         } catch (error) {
             const mensagemServidor = error.response?.data?.errorMessage || error.response?.data?.message || "Erro ao realizar cadastro.";

@@ -16,7 +16,7 @@ export default function PaginaCadastro() {
   const handleSubmit = (e) => {
     submitCadastro(e, () => {
       alert('Cadastro realizado com sucesso!');
-      navigate('/');
+      navigate('/tipo-usuario');
     });
   };
 
