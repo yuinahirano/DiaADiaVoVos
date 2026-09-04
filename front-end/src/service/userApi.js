@@ -1,14 +1,28 @@
-import { api_diadiavovos } from "./api";
+import { api_diadiavovos } from './api';
 
 export async function login(email, senha) {
-    try {
-        // Envia o email e senha no corpo (body) da requisição
-        const resposta = await api_diadiavovos.post(`/usuarios/login`, { email, senha });
-        const token = resposta.data.login.token;
-        return token;
-
-    } catch (erro) {
-        console.error('Erro ao realizar login:', erro);
-        throw erro; // Lança o erro para o componente poder tratar (ex: exibir mensagem)
-    }
+  // Alterado de '/login' para '/usuarios/login'
+  const resposta = await api_diadiavovos.post('/usuarios/login', { email, senha });
+  if (resposta.data?.token) {
+    localStorage.setItem('token', resposta.data.token);
+  }
+  return resposta.data;
 }
+
+export async function cadastrarUsuario(dados) {
+  const resposta = await api_diadiavovos.post('/usuarios', dados);
+  return resposta.data;
+}
+
+export async function cadastrarDadosIdoso(dados) {
+  const resposta = await api_diadiavovos.post('/idosos', dados);
+  return resposta.data;
+}
+
+export async function cadastrarDadosCuidador(dados) {
+  const resposta = await api_diadiavovos.post('/cuidadores', dados);
+  return resposta.data;
+}
+
+// Exportações duplicadas (aliases) para compatibilidade com as páginas existentes
+export { cadastrarDadosIdoso as cadastrarIdoso, cadastrarDadosCuidador as cadastrarCuidador };
