@@ -5,11 +5,11 @@ import { autenticarToken } from "../middlewares/jwt.middlewares";
 const usuarioController = new UsuarioController();
 const usuarioRoutes = Router();
 
-usuarioRoutes.get("/usuarios", usuarioController.selecionar);
-usuarioRoutes.get("/usuarios/:id", usuarioController.selecionar);
-usuarioRoutes.post("/usuarios", usuarioController.criar);
-usuarioRoutes.put("/usuarios/:id", autenticarToken, usuarioController.editar);
-usuarioRoutes.delete("/usuarios/:id", autenticarToken, usuarioController.deletar);
-usuarioRoutes.post("/usuarios/login", usuarioController.login);
-
+usuarioRoutes.get("/usuarios", usuarioController.selecionarTodos);
+usuarioRoutes.get("/usuario/me", usuarioController.selecionarPorToken);
+usuarioRoutes.get("/usuario/:id", usuarioController.selecionarPorId);
+usuarioRoutes.post("/usuario", usuarioController.criar);
+usuarioRoutes.put("/usuario/:id", autenticarToken, usuarioController.editar);
+usuarioRoutes.delete("/usuario/:id", autenticarToken, usuarioController.deletar);
+usuarioRoutes.post("/usuario/login", usuarioController.login);
 export default usuarioRoutes;

@@ -16,7 +16,12 @@ const sql = `
 SELECT
   u.*,
   i.id AS idIdoso,
-  c.id AS idCuidador
+  c.id AS idCuidador,
+  CASE
+    WHEN i.id IS NOT NULL THEN 'idoso'
+    WHEN c.id IS NOT NULL THEN 'cuidador'
+    ELSE NULL
+  END AS role
 FROM usuario u
 LEFT JOIN idoso i ON i.id_usuario = u.id
 LEFT JOIN cuidador c ON c.id_usuario = u.id
