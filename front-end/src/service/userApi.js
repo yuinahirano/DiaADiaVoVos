@@ -10,7 +10,7 @@ export async function login(email, senha) {
 }
 
 export async function cadastrarUsuario(dados) {
-  const resposta = await api_diadiavovos.post('/usuarios', dados);
+  const resposta = await api_diadiavovos.post('/usuario', dados);
   return resposta.data;
 }
 

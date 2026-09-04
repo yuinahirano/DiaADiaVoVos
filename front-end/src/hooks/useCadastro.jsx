@@ -37,6 +37,10 @@ export function useCadastro() {
     setLoading(true);
 
     try {
+      // Limpa dados de sessão antigos que causam o erro 401
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('usuarioId');
+
       const cpfLimpo = formData.cpf.replace(/\D/g, '');
       const dadosParaEnviar = {
         ...formData,
@@ -44,15 +48,27 @@ export function useCadastro() {
         dataNascimento: padronizarData(formData.dataNascimento)
       };
 
-      // 1. Cadastra o usuário
+      // Exibe os dados preenchidos no Console (F12)
+      console.log('--- Dados preenchidos para envio ---', dadosParaEnviar);
+
+      // 1. Executa a requisição de cadastro do usuário
       const response = await cadastrarUsuario(dadosParaEnviar);
 
-      // 2. Tenta obter o ID fazendo login na rota correta (/usuarios/login)
+      // Exibe no console o retorno recebido da API
+      console.log('--- Resposta da API de Cadastro ---', response);
+
+      // 2. Realiza o login automático para resgatar o novo token JWT
       try {
-        const resLogin = await api.post('/usuarios/login', {
-          email: formData.email,
-          senha: formData.senha
-        });
+        const resLogin = await api.post(
+          '/usuarios/login',
+          {
+            email: formData.email,
+            senha: formData.senha
+          },
+          {
+            headers: { Authorization: undefined }
+          }
+        );
 
         const token = resLogin.data?.token || resLogin.data?.login?.token;
         if (token) {
