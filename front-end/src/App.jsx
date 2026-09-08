@@ -4,11 +4,6 @@ import './App.css';
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import PaginaLogin from './pages/PaginaLogin';
-<<<<<<< HEAD
-import PaginaMedicamentos from './pages/PaginaMedicamentos';
-import PaginaAddMedicamentos from './pages/PaginaAddMedicamento';
-=======
->>>>>>> fix/correcao-autenticacao-usuarios-medicamentos
 import PaginaCadastro from './pages/PaginaCadastro';
 import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
 import PaginaDadosCuidador from './pages/PaginaDadosCuidador';
