@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as userApi from '../service/userApi';
+import { AuthContext } from '../contexts/AuthContext';
 import logoImg from '../assets/logo_DiaADia.png';
 
 export default function PaginaLogin() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [loading, setLoading] = useState(false);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -14,12 +15,14 @@ export default function PaginaLogin() {
     setLoading(true);
 
     try {
-      if (!userApi.login) {
-        throw new Error('A função login não está acessível na API.');
-      }
+      const { user } = await login(email, senha);
 
-      await userApi.login(email, senha);
-      navigate('/medicamentos');
+      if (user?.role === 'cuidador' || user?.role === 'idoso') {
+        navigate('/medicamentos');
+      } else {
+        // Usuário autenticado mas sem vínculo de cuidador/idoso: obrigatório escolher
+        navigate('/tipo-usuario');
+      }
     } catch (error) {
       const msg = error.response?.data?.errorMessage || error.response?.data?.message || error.message || 'E-mail ou senha incorretos.';
       alert(msg);
@@ -31,46 +34,41 @@ export default function PaginaLogin() {
   return (
     <div className="min-vh-100 d-flex align-items-center justify-content-center p-3" style={{ backgroundColor: '#EBF3FF', fontFamily: 'Arial, sans-serif' }}>
       <div className="bg-white p-4 p-md-5 w-100 shadow-sm text-center" style={{ maxWidth: '460px', borderRadius: '35px' }}>
-        
-        {/* Imagem/Logo ampliada */}
+
         <div className="mb-4 text-center">
-          <img 
-            src={logoImg} 
-            alt="Logo Dia a Dia Vovôs" 
-            style={{ 
-              maxWidth: '220px', 
-              maxHeight: '220px', 
-              objectFit: 'contain' 
-            }} 
+          <img
+            src={logoImg}
+            alt="Logo Dia a Dia Vovôs"
+            style={{ maxWidth: '220px', maxHeight: '220px', objectFit: 'contain' }}
           />
         </div>
-        
+
         <form onSubmit={handleLogin}>
           <div className="mb-3">
-            <input 
-              type="email" 
-              placeholder="E-mail" 
+            <input
+              type="email"
+              placeholder="E-mail"
               className="form-control py-2 fw-bold"
               style={{ backgroundColor: '#E5ECF0', border: '2px solid #1A2229', borderRadius: '16px' }}
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="mb-4">
-            <input 
-              type="password" 
-              placeholder="Senha" 
+            <input
+              type="password"
+              placeholder="Senha"
               className="form-control py-2 fw-bold"
               style={{ backgroundColor: '#E5ECF0', border: '2px solid #1A2229', borderRadius: '16px' }}
-              value={senha} 
-              onChange={(e) => setSenha(e.target.value)} 
-              required 
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
             />
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
             className="btn fw-bold py-2 border-0 w-100 mb-3"
             style={{ backgroundColor: '#FFEB60', color: '#000', borderRadius: '20px', fontSize: '1.2rem' }}
@@ -78,8 +76,8 @@ export default function PaginaLogin() {
             {loading ? 'Entrando...' : 'Entrar'}
           </button>
 
-          <button 
-            type="button" 
+          <button
+            type="button"
             onClick={() => navigate('/cadastro')}
             className="btn btn-link text-decoration-none text-dark fw-bold"
           >

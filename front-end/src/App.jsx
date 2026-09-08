@@ -1,29 +1,39 @@
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
+import { AuthProvider } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
 import PaginaLogin from './pages/PaginaLogin';
+<<<<<<< HEAD
 import PaginaMedicamentos from './pages/PaginaMedicamentos';
 import PaginaAddMedicamentos from './pages/PaginaAddMedicamento';
+=======
+>>>>>>> fix/correcao-autenticacao-usuarios-medicamentos
 import PaginaCadastro from './pages/PaginaCadastro';
 import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
-import PaginaDadosIdoso from './pages/PaginaDadosIdoso';
 import PaginaDadosCuidador from './pages/PaginaDadosCuidador';
+import PaginaDadosIdoso from './pages/PaginaDadosIdoso';
+import PaginaVincularCuidador from './pages/PaginaVincularCuidador';
+import PaginaMedicamentos from './pages/PaginaMedicamentos';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<PaginaLogin />} />
-        <Route path='/cadastro' element={<PaginaCadastro />} />
-        <Route path='/medicamentos' element={<PaginaMedicamentos />} />
-        {/* <Route path='/medicamentos/addMedicamento' element={<PaginaAddMedicamentos />} /> */}
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<PaginaLogin />} />
+          <Route path='/cadastro' element={<PaginaCadastro />} />
+          <Route path='/tipo-usuario' element={<PaginaTipoUsuario />} />
+          <Route path='/dados-cuidador' element={<PaginaDadosCuidador />} />
+          <Route path='/dados-idoso' element={<PaginaDadosIdoso />} />
+          <Route path='/vincular-cuidador' element={<PaginaVincularCuidador />} />
 
-        {/* Novas rotas do fluxo de cadastro */}
-        <Route path='/tipo-usuario' element={<PaginaTipoUsuario />} />
-        <Route path='/completar-idoso' element={<PaginaDadosIdoso />} />
-        <Route path='/completar-cuidador' element={<PaginaDadosCuidador />} />
-      </Routes>
-    </BrowserRouter>
+          <Route element={<ProtectedRoute />}>
+            <Route path='/medicamentos' element={<PaginaMedicamentos />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

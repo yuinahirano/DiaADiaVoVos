@@ -1,16 +1,22 @@
-import axios from 'axios';
+import axios from "axios";
 
-// Instância base exportada como nomeada e default
+const TOKEN_KEY = "@DiaADiaVoVos:token";
+
+export const api_auth = axios.create({
+  baseURL: "http://localhost:8000",
+  timeout: 5000,
+});
+
 export const api_diadiavovos = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  baseURL: "http://localhost:8000",
+  timeout: 5000,
 });
 
-api_diadiavovos.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
+function attachToken(config) {
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
-});
+}
 
-export default api_diadiavovos;
+api_auth.interceptors.request.use(attachToken, (error) => Promise.reject(error));
+api_diadiavovos.interceptors.request.use(attachToken, (error) => Promise.reject(error));
