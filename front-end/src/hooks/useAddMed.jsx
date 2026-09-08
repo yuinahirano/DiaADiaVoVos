@@ -1,65 +1,62 @@
 import { useState, useEffect } from "react";
-import { addMedicamento } from "../service/medicamentoApi"; // Ajuste o caminho do seu arquivo de API
+import { addMedicamento } from "../service/medicamentoApi";
 
 export function useAddMedicamento() {
+  const [formData, setFormData] = useState({
+    nome: '',
+    dosagem: '',
+    horario: '',
+    frequencia: '',
+    observacoes: '',
+    idIdoso: ''
+  });
 
-    //para armazenar os dados que vao ser inseridos
-    const [formData, setFormData] = useState({
-        nome: '',
-        dosagem: '',
-        horario: '',
-        frequencia: '',
-        observacoes: '',
-        idIdoso: ''
-    });
+  const [efetuarCadastro, setEfetuarCadastro] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [erro, setErro] = useState(null);
 
-    const [efetuarCadastro, setEfetuarCadastro] = useState(false);
-    const [sucesso, setSucesso] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [erro, setErro] = useState(null);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    //pega o valor que foi inserido e ja insere também no formulário que vai ser enviado
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+  useEffect(() => {
+    if (!efetuarCadastro) return;
 
-        setFormData((prev) => ({
-            ...prev, //pega o objeto como tava antes
-            [name]: value//soberscreve apenas o campo que mudou
-        }));
-    };
+    async function cadastrar() {
+      if (!formData.idIdoso) {
+        setErro("Selecione o idoso para o qual o medicamento será cadastrado.");
+        setEfetuarCadastro(false);
+        return;
+      }
 
-    useEffect(() => {
-        if (!efetuarCadastro) return;
+      setLoading(true);
+      setErro(false);
 
-        async function cadastrar() {
-            setLoading(true);
-            setErro(false); //limpa erros anteriores
+      try {
+        await addMedicamento(formData);
+        setSucesso(true);
+      } catch (error) {
+        console.error("Erro no cadastro:", error);
+        setErro(error.response?.data?.message || "Falha ao cadastrar novo medicamento");
+      } finally {
+        setLoading(false);
+        setEfetuarCadastro(false);
+      }
+    }
 
-            try {
-                
-                await addMedicamento(formData);
-                setSucesso(true);
+    cadastrar();
+  }, [efetuarCadastro, formData]);
 
-            } catch (error) {
-                console.error("Erro no cadastro:", error);
-                setErro(error.respose?.data?.message || "Falha ao cadastrar novo medicamento");//salva a mensagem de erro e passa para o modal
-            } finally {
-                setLoading(false);
-                setEfetuarCadastro(false);
-            }
-        }
-
-        cadastrar();
-    }, [efetuarCadastro, formData]);
-
-    return {
-        formData,
-        handleChange,
-        setEfetuarCadastro,
-        sucesso,
-        setSucesso,
-        loading,
-        erro,
-        setErro
-    };
+  return {
+    formData,
+    handleChange,
+    setEfetuarCadastro,
+    sucesso,
+    setSucesso,
+    loading,
+    erro,
+    setErro
+  };
 }

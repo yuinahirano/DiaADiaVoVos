@@ -3,9 +3,8 @@ import { Navigate, Outlet } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function ProtectedRoute({ allowedRoles }) {
-  const { isAuthenticated, user, loading } = useContext(AuthContext);
+  const { isAuthenticated, user, loading, semRole } = useContext(AuthContext);
 
-  // Exibe um loader simples enquanto o backend valida a persistência
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
@@ -15,17 +14,18 @@ export default function ProtectedRoute({ allowedRoles }) {
       </div>
     );
   }
-  
-  // 1. Se não estiver autenticado, redireciona para login
+
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
-  
-  // 2. Se a rota exige a propriedade de roles específicos e o usuário não possui nenhum deles
-  if (allowedRoles && !allowedRoles.includes(user?.role)) {
-    return <Navigate to="/" />; // Redireciona para a Home
+    return <Navigate to="/" />;
   }
 
-  // Se estiver autenticado, renderiza a rota filha (<Outlet />). 
+  if (semRole) {
+    return <Navigate to="/tipo-usuario" />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user?.role)) {
+    return <Navigate to="/" />;
+  }
+
   return <Outlet />;
 }

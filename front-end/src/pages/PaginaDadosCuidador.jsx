@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../service/api';
+import { api_auth } from '../service/api';
 
 export default function PaginaDadosCuidador() {
   const [telefone, setTelefone] = useState('');
@@ -12,18 +12,14 @@ export default function PaginaDadosCuidador() {
     setLoading(true);
 
     try {
-      const token = localStorage.getItem('userToken');
-
       const payload = {
-        idUsuario: Number(localStorage.getItem('usuarioId') || 0),
+        idUsuario: localStorage.getItem('usuarioId') || '',
         telefone: telefone.replace(/\D/g, '')
       };
 
-      await api.post('/cuidadores', payload, {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      });
+      await api_auth.post('/cuidadores', payload);
     } catch (err) {
-      console.warn('Backend não vinculou o cuidador (foreign key), prosseguindo para o login...', err);
+      console.warn('Backend não vinculou o cuidador, prosseguindo para o login...', err);
     } finally {
       setLoading(false);
       localStorage.removeItem('userToken');

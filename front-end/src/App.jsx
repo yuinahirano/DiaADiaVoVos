@@ -1,24 +1,32 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import CuidadorDashbord from './pages/CuidadorDashbord';
-import IdosoDashboard from './pages/IdosoDashboard';
 import { AuthProvider } from './contexts/AuthContext';
-import { ThemeProvider } from './contexts/ThemeContext'; 
+import ProtectedRoute from './components/ProtectedRoute';
+import PaginaLogin from './pages/PaginaLogin';
+import PaginaCadastro from './pages/PaginaCadastro';
+import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
+import PaginaDadosCuidador from './pages/PaginaDadosCuidador';
+import PaginaDadosIdoso from './pages/PaginaDadosIdoso';
+import PaginaVincularCuidador from './pages/PaginaVincularCuidador';
+import PaginaMedicamentos from './pages/PaginaMedicamentos';
+
 function App() {
   return (
     <AuthProvider>
-      <ThemeProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<Login/>}/>
-            <Route path='/home' element={<Home/>}/>
-            <Route path='/cuidador-dashboard' element={<CuidadorDashbord/>}/>
-            <Route path='/idoso-dashboard' element={<IdosoDashboard/>}/>
-          </Routes>
-        </BrowserRouter>
-      </ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<PaginaLogin />} />
+          <Route path='/cadastro' element={<PaginaCadastro />} />
+          <Route path='/tipo-usuario' element={<PaginaTipoUsuario />} />
+          <Route path='/dados-cuidador' element={<PaginaDadosCuidador />} />
+          <Route path='/dados-idoso' element={<PaginaDadosIdoso />} />
+          <Route path='/vincular-cuidador' element={<PaginaVincularCuidador />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path='/medicamentos' element={<PaginaMedicamentos />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
   );
 }

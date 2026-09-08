@@ -1,39 +1,32 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import MedicamentosList from "../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from '../hooks/useMedicamentos';
 import CadastrarMedicamento from "./PaginaAddMedicamento";
-import { deleteMedicamentos } from "../service/medicamentoApi";
 
 export default function MedicationPage() {
-  const { medicamentos, loading, deletarMedicamento } = useMedicamentos(); //para carregar os medicamentos
+  const { medicamentos, loading, deletarMedicamento } = useMedicamentos();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  //para o modal de confirmação de exclusão
   const [idParaDeletar, setIdParaDeletar] = useState(null);
 
-  //abre o aviso com o id
   const handleAbrirConfirmacao = (id) => {
     setIdParaDeletar(id);
   };
 
-  //execute o delete se for confirmado a exclusão
   const handleConfirmarDeletar = async () => {
     if (idParaDeletar) {
       await deletarMedicamento(idParaDeletar);
-      setIdParaDeletar(null); //fecha modal
+      setIdParaDeletar(null);
     }
   };
 
   return (
     <div style={styles.container}>
-      {/* header com o nome do idoso e o botão de voltar*/}
       <header style={styles.header}>
         <div style={styles.titleSection}>
           <span style={styles.backButton}>&lt;</span>
           <h1 style={styles.title}>Idoso 1</h1>
         </div>
 
-        {/* barra de navegação */}
         <nav style={styles.nav}>
           <button style={styles.inactiveNav}>Doenças</button>
           <button style={styles.inactiveNav}>Consultas</button>
@@ -42,44 +35,40 @@ export default function MedicationPage() {
         </nav>
       </header>
 
-      {/* botão de adicionar medicamento */}
       <div style={styles.actionRow}>
-        <button style={styles.addButton} onClick={() => setIsModalOpen(true)}> {/*ativa o modal */}
-          <span style={styles.addIcon}>+</span> {/* span para estilizar de forma separada do texto do botão */}
+        <button style={styles.addButton} onClick={() => setIsModalOpen(true)}>
+          <span style={styles.addIcon}>+</span>
           Adicionar medicamento
         </button>
       </div>
 
-      {/*chama os cards*/}
       <main style={styles.grid}>
         {loading ? (
-          <p style={styles.loadingText}>Carregando medicamentos...</p> //mensagem enquanto carrega informações
+          <p style={styles.loadingText}>Carregando medicamentos...</p>
         ) : (
-          <MedicamentosList medicamentos={medicamentos} onDelete={handleAbrirConfirmacao} /> //apenas abre o modal
+          <MedicamentosList medicamentos={medicamentos} onDelete={handleAbrirConfirmacao} />
         )}
       </main>
 
-      {/* o modal é rendenrizado quando isModalOpen é true */}
       <CadastrarMedicamento
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
 
-      {/* modal de confirmação para exclusão*/}
       {idParaDeletar && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalBox}>
             <h3>Tem certeza que deseja excluir?</h3>
             <p>Esta ação não poderá ser desfeita.</p>
             <div style={styles.modalButtons}>
-              <button 
-                style={styles.cancelBtn} 
+              <button
+                style={styles.cancelBtn}
                 onClick={() => setIdParaDeletar(null)}
               >
                 Cancelar
               </button>
-              <button 
-                style={styles.confirmBtn} 
+              <button
+                style={styles.confirmBtn}
                 onClick={handleConfirmarDeletar}
               >
                 Sim, excluir
@@ -88,12 +77,10 @@ export default function MedicationPage() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
 
-// Estilos do layout da Tela
 const styles = {
   container: {
     backgroundColor: '#EBF3FF',
@@ -156,13 +143,11 @@ const styles = {
     color: '#000000',
     outline: 'none'
   },
-
   actionRow: {
     display: 'flex',
     justifyContent: 'flex-end',
     marginBottom: '25px'
   },
-
   addButton: {
     backgroundColor: '#FFE866',
     color: '#000000',
@@ -183,7 +168,6 @@ const styles = {
     fontWeight: 'bold',
     lineHeight: '1'
   },
-
   grid: {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
@@ -194,8 +178,6 @@ const styles = {
     fontWeight: 'bold',
     color: '#333'
   },
-
-  //MODAL
   modalOverlay: {
     position: 'fixed',
     top: 0,

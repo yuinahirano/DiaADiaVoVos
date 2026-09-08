@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
       if (storedToken && storedUser) {
         try {
           const data = await getMeRequest();
-          setUser(data.result[0]); 
+          setUser(data.result[0]);
         } catch (error) {
           logout();
         }
@@ -31,15 +31,17 @@ export function AuthProvider({ children }) {
     const response = await loginRequest(email, password);
     const token = response.login.token;
 
-    // Salva o token primeiro, para que o interceptor do axios
-    // já consiga usá-lo na próxima chamada (/usuario/me)
     localStorage.setItem("@DiaADiaVoVos:token", token);
 
-    // Busca os dados do usuário logado (o login não retorna isso)
     const meData = await getMeRequest();
-    const loggedUser = meData.result[0]; 
+    const loggedUser = meData.result[0];
     setUser(loggedUser);
     localStorage.setItem("@DiaADiaVoVos:user", JSON.stringify(loggedUser));
+
+    // Necessário para as telas de vínculo (cuidador/idoso) que leem esse id
+    if (loggedUser?.id) {
+      localStorage.setItem("usuarioId", String(loggedUser.id));
+    }
 
     return { user: loggedUser };
   }
@@ -47,12 +49,13 @@ export function AuthProvider({ children }) {
   function logout() {
     localStorage.removeItem("@DiaADiaVoVos:token");
     localStorage.removeItem("@DiaADiaVoVos:user");
-
+    localStorage.removeItem("usuarioId");
     setUser(null);
   }
 
   const isCuidador = user?.role === "cuidador";
   const isIdoso = user?.role === "idoso";
+  const semRole = !!user && !isCuidador && !isIdoso;
 
   return (
     <AuthContext.Provider
@@ -64,6 +67,7 @@ export function AuthProvider({ children }) {
         loading,
         isCuidador,
         isIdoso,
+        semRole,
       }}
     >
       {children}

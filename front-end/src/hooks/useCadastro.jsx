@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { cadastrarUsuario } from '../service/userApi';
-import api from '../service/api';
+import { api_auth } from '../service/api';
 
 export function useCadastro() {
   const [formData, setFormData] = useState({
@@ -37,7 +37,6 @@ export function useCadastro() {
     setLoading(true);
 
     try {
-      // Limpa dados de sessão antigos que causam o erro 401
       localStorage.removeItem('userToken');
       localStorage.removeItem('usuarioId');
 
@@ -48,27 +47,16 @@ export function useCadastro() {
         dataNascimento: padronizarData(formData.dataNascimento)
       };
 
-      // Exibe os dados preenchidos no Console (F12)
       console.log('--- Dados preenchidos para envio ---', dadosParaEnviar);
 
-      // 1. Executa a requisição de cadastro do usuário
       const response = await cadastrarUsuario(dadosParaEnviar);
-
-      // Exibe no console o retorno recebido da API
       console.log('--- Resposta da API de Cadastro ---', response);
 
-      // 2. Realiza o login automático para resgatar o novo token JWT
       try {
-        const resLogin = await api.post(
-          '/usuarios/login',
-          {
-            email: formData.email,
-            senha: formData.senha
-          },
-          {
-            headers: { Authorization: undefined }
-          }
-        );
+        const resLogin = await api_auth.post('/usuario/login', {
+          email: formData.email,
+          senha: formData.senha
+        });
 
         const token = resLogin.data?.token || resLogin.data?.login?.token;
         if (token) {
@@ -76,7 +64,7 @@ export function useCadastro() {
           const payloadBase64 = token.split('.')[1];
           const payloadDecodificado = JSON.parse(atob(payloadBase64));
 
-          if (payloadDecodificado?.id && payloadDecodificado.id !== 0) {
+          if (payloadDecodificado?.id) {
             localStorage.setItem('usuarioId', String(payloadDecodificado.id));
           }
         }

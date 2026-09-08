@@ -1,74 +1,39 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import imgCuidador from '../assets/cuidador.png';
-import imgIdoso from '../assets/idoso.png';
 
 export default function PaginaTipoUsuario() {
   const navigate = useNavigate();
 
-  const handleAvancar = (tipo) => {
-    if (tipo === 'CUIDADOR') {
-      navigate('/completar-cuidador');
-    } else if (tipo === 'IDOSO') {
-      navigate('/completar-idoso');
-    }
-  };
-
   return (
-    <div 
-      className="min-vh-100 d-flex flex-column align-items-center justify-content-center p-3" 
+    <div
+      className="min-vh-100 d-flex align-items-center justify-content-center p-3"
       style={{ backgroundColor: '#EBF3FF', fontFamily: 'Arial, sans-serif' }}
     >
-      <h2 className="fw-bold mb-4 text-center" style={{ color: '#000', fontSize: '2rem' }}>
-        Qual o tipo de Usuário?
-      </h2>
+      <div
+        className="bg-white p-4 p-md-5 w-100 shadow-sm text-center"
+        style={{ maxWidth: '460px', borderRadius: '35px' }}
+      >
+        <h3 className="fw-bold mb-4" style={{ color: '#000' }}>
+          Você é cuidador ou idoso?
+        </h3>
 
-      <div className="d-flex flex-row justify-content-center gap-4 flex-wrap">
-        {/* Card Cuidador */}
-        <button
-          onClick={() => handleAvancar('CUIDADOR')}
-          className="btn p-0 border-0 bg-transparent"
-          style={{
-            cursor: 'pointer',
-            transition: 'transform 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          <img 
-            src={imgCuidador} 
-            alt="Cuidador" 
-            style={{ 
-              width: '200px', 
-              height: '200px', 
-              borderRadius: '28px',
-              objectFit: 'cover' 
-            }} 
-          />
-        </button>
+        <div className="d-flex flex-column gap-3">
+          <button
+            className="btn fw-bold py-2 border-0"
+            style={{ backgroundColor: '#FFEB60', color: '#000', borderRadius: '20px', fontSize: '1.2rem' }}
+            onClick={() => navigate('/dados-cuidador')}
+          >
+            Sou Cuidador
+          </button>
 
-        {/* Card Idoso */}
-        <button
-          onClick={() => handleAvancar('IDOSO')}
-          className="btn p-0 border-0 bg-transparent"
-          style={{
-            cursor: 'pointer',
-            transition: 'transform 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          <img 
-            src={imgIdoso} 
-            alt="Idoso" 
-            style={{ 
-              width: '200px', 
-              height: '200px', 
-              borderRadius: '28px',
-              objectFit: 'cover' 
-            }} 
-          />
-        </button>
+          <button
+            className="btn fw-bold py-2"
+            style={{ backgroundColor: '#E5ECF0', color: '#000', border: '2px solid #1A2229', borderRadius: '20px', fontSize: '1.2rem' }}
+            onClick={() => navigate('/dados-idoso')}
+          >
+            Sou Idoso
+          </button>
+        </div>
       </div>
     </div>
   );

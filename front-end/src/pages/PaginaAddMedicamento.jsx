@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import { useAddMedicamento } from '../hooks/useAddMed';
+import { useIdososDoCuidador } from '../hooks/useIdososDoCuidador';
 
-export default function CadastrarMedicamento({isOpen, onClose}) {
+export default function CadastrarMedicamento({ isOpen, onClose }) {
     const {
         formData,
         handleChange,
@@ -13,12 +13,14 @@ export default function CadastrarMedicamento({isOpen, onClose}) {
         setErro
     } = useAddMedicamento();
 
+    const { idosos, loading: loadingIdosos, erro: erroIdosos } = useIdososDoCuidador();
+
     //nulo se o modal tiver fechado
     if (!isOpen) return null;
 
     //no clique do cadastro altera o estado gatilho no hook para iniciar a requisição
     const handleSubmit = (e) => {
-        e.preventDefault(); //impede recarregamento da imagem
+        e.preventDefault(); //impede recarregamento da página
         setEfetuarCadastro(true);
     };
 
@@ -28,14 +30,9 @@ export default function CadastrarMedicamento({isOpen, onClose}) {
         onClose(); //fecha o modal após a confirmação
     };
 
-    //modal de confirmação quando da erro
+    //modal de confirmação quando dá erro
     const handleErrorModal = () => {
         setErro(null); //fecha apenas o modal de erro
-    };
-
-    //cancelar
-    const handleCancel = () => {
-        navigate(-1);
     };
 
     return (
@@ -44,6 +41,31 @@ export default function CadastrarMedicamento({isOpen, onClose}) {
                 <h1 style={styles.title}>Cadastrar Medicamento</h1>
 
                 <form onSubmit={handleSubmit} style={styles.form}>
+                    <div style={styles.inputGroup}>
+                        <label style={styles.label} htmlFor="idIdoso">Idoso:</label>
+                        <select
+                            id="idIdoso"
+                            name="idIdoso"
+                            value={formData.idIdoso}
+                            onChange={handleChange}
+                            style={styles.input}
+                            required
+                            disabled={loadingIdosos}
+                        >
+                            <option value="" disabled>
+                                {loadingIdosos ? 'Carregando idosos...' : 'Selecione o idoso'}
+                            </option>
+                            {idosos.map((idoso) => (
+                                <option key={idoso.id} value={idoso.id}>
+                                    {idoso.nome}
+                                </option>
+                            ))}
+                        </select>
+                        {erroIdosos && (
+                            <span style={styles.fieldError}>{erroIdosos}</span>
+                        )}
+                    </div>
+
                     <div style={styles.inputGroup}>
                         <label style={styles.label} htmlFor="nome">Nome:</label>
                         <input
@@ -152,7 +174,7 @@ export default function CadastrarMedicamento({isOpen, onClose}) {
                     <div style={styles.modalContent}>
                         <h2 style={styles.modalTitle}>Erro</h2>
                         <p style={styles.modalText}>
-                            Falha ao cadastrar o medicamento.
+                            {erro}
                         </p>
                         <button
                             onClick={handleErrorModal}
@@ -175,7 +197,7 @@ const styles = {
         left: 0,
         right: 0,
         bottom: 0,
-        width: '100vw',  // Garante a largura total da viewport
+        width: '100vw',
         height: '100vh',
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
         display: 'flex',
@@ -193,7 +215,7 @@ const styles = {
         width: '100%',
         maxHeight: '500px',
         maxWidth: '500px',
-        overflowY: 'auto', //permite rolar o card pelo eixo y (cima e baixo)
+        overflowY: 'auto',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
         boxSizing: 'border-box'
     },
@@ -230,6 +252,10 @@ const styles = {
         outline: 'none',
         width: '100%',
         boxSizing: 'border-box'
+    },
+    fieldError: {
+        color: '#B00020',
+        fontSize: '13px'
     },
     buttonRow: {
         display: 'flex',
