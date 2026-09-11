@@ -14,7 +14,7 @@ import PaginaHomeCuidador from './pages/PaginaHomeCuidador';
 import PaginaConsultas from './pages/PaginaConsultas';
 import PaginaMedicamentosIdoso from './pages/PaginaMedicamentosIdoso';
 import PaginaNotificacoesIdoso from './pages/PaginaNotificacoesIdoso';
-
+import PaginaDoencas from './pages/PaginaDoencas';
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
             <Route path='/consultas' element={<PaginaConsultas />} />
             <Route path='/medicamentos-idoso' element={<PaginaMedicamentosIdoso />} />
             <Route path="/notificacoes-idoso" element={<PaginaNotificacoesIdoso />} />
+            <Route path='/doencas' element={<PaginaDoencas />} />
           </Route>
 
           {/* Rotas protegidas exclusivas do CUIDADOR */}

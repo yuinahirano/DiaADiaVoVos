@@ -35,6 +35,13 @@ export default function PaginaConsultas() {
         </button>
 
         <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
+        </button>
+
+        <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
           onClick={() => navigate("/notificacoes-idoso")}

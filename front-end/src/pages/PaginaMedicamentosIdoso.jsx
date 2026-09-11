@@ -33,6 +33,14 @@ export default function PaginaMedicamentosIdoso() {
         </button>
 
         <button className="home-idoso-btn-ativo">Medicamentos</button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
+        </button>
+
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
