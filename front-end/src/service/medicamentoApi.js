@@ -10,6 +10,16 @@ export async function getMedicamentos() {
   }
 }
 
+export async function getMedicamentosPorIdoso(idIdoso) {
+  try {
+    const resposta = await api_diadiavovos.get(`/medicamento/idosos/${idIdoso}`);
+    return resposta.data;
+  } catch (erro) {
+    console.error("Erro ao buscar medicamentos do idoso:", erro);
+    throw erro;
+  }
+}
+
 export async function addMedicamento(dadosMedicamento) {
   try {
     const resposta = await api_diadiavovos.post(`/medicamento`, dadosMedicamento);
