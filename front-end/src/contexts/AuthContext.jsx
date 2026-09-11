@@ -15,7 +15,13 @@ export function AuthProvider({ children }) {
       if (storedToken && storedUser) {
         try {
           const data = await getMeRequest();
-          setUser(data.result[0]);
+          const loggedUser = data.result[0];
+          
+          setUser(loggedUser);
+
+          if (loggedUser?.id) {
+            localStorage.setItem("usuarioId", String(loggedUser.id));
+          }
         } catch (error) {
           logout();
         }
@@ -35,10 +41,10 @@ export function AuthProvider({ children }) {
 
     const meData = await getMeRequest();
     const loggedUser = meData.result[0];
+    
     setUser(loggedUser);
     localStorage.setItem("@DiaADiaVoVos:user", JSON.stringify(loggedUser));
 
-    // Necessário para as telas de vínculo (cuidador/idoso) que leem esse id
     if (loggedUser?.id) {
       localStorage.setItem("usuarioId", String(loggedUser.id));
     }

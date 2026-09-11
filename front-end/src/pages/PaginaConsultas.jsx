@@ -34,7 +34,11 @@ export default function PaginaConsultas() {
           Medicamentos
         </button>
 
-        <button className="home-idoso-icone-btn" aria-label="Notificações">
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Notificações"
+          onClick={() => navigate("/notificacoes-idoso")}
+        >
           <i className="bi bi-bell"></i>
         </button>
       </header>
@@ -55,25 +59,29 @@ export default function PaginaConsultas() {
           </div>
         )}
 
-{!loading &&
-  !error &&
-  consultas.map((consulta) => (
-    <div className="consulta-card" key={consulta.id}>
-      <h2 className="consulta-card-titulo">{consulta.nome_medico}</h2>
+        {!loading &&
+          !error &&
+          consultas.map((consulta) => (
+            <div className="consulta-card" key={consulta.id}>
+              <h2 className="consulta-card-titulo">{consulta.nome_medico}</h2>
 
-      <div className="consulta-card-info">
-        <p className="consulta-card-label">
-          Horário:{" "}
-          <span className="consulta-card-valor">{consulta.horario}</span>
-        </p>
+              <div className="consulta-card-info">
+                <p className="consulta-card-label">
+                  Horário:{" "}
+                  <span className="consulta-card-valor">
+                    {consulta.horario}
+                  </span>
+                </p>
 
-        <p className="consulta-card-label">
-          Local:{" "}
-          <span className="consulta-card-valor">{consulta.local_consulta}</span>
-        </p>
-      </div>
-    </div>
-  ))}
+                <p className="consulta-card-label">
+                  Local:{" "}
+                  <span className="consulta-card-valor">
+                    {consulta.local_consulta}
+                  </span>
+                </p>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

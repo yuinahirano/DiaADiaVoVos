@@ -74,3 +74,55 @@
   color: #1a1a1a;
   margin: 0;
 }
+
+.consulta-card-acoes {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.notificacao-btn-aceitar,
+.notificacao-btn-recusar {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.notificacao-btn-aceitar {
+  background-color: #8fd19e;
+  color: #1a1a1a;
+}
+
+.notificacao-btn-recusar {
+  background-color: #f28b82;
+  color: #1a1a1a;
+}
+
+.notificacoes-acoes {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.notificacoes-btn-limpar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: 12px;
+  padding: 10px 16px;
+  background-color: #f28b82;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.notificacoes-btn-limpar:hover {
+  opacity: 0.85;
+}
