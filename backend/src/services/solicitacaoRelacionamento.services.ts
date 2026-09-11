@@ -135,4 +135,13 @@ export class SolicitacaoCuidadorService {
 
     return await this._repository.cancelar(id);
   }
+
+  async deletarPorIdoso(idIdoso: string) {
+  const solicitacoes = await this._repository.selecionarPorIdoso(idIdoso);
+
+  if (solicitacoes.length === 0)
+    throw new Error("Nenhuma solicitação encontrada para este idoso");
+
+  return await this._repository.deletarPorIdoso(idIdoso);
+}
 }

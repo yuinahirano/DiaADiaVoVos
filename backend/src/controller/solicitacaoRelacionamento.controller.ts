@@ -123,4 +123,17 @@ export class SolicitacaoCuidadorController {
       return res.status(500).json({ message: "Ocorreu um erro no servidor", errorMessage: message });
     }
   };
+
+deletarPorIdoso = async (req: Request, res: Response) => {
+  try {
+    const idIdoso = String(req.params.idIdoso);
+    const resultado = await this._service.deletarPorIdoso(idIdoso);
+    return res.status(200).json(resultado);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({
+      message: (error as Error).message,
+    });
+  }
+};
 }

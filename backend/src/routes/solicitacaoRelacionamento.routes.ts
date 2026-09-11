@@ -18,4 +18,6 @@ solicitacaoCuidadorRoutes.patch("/solicitacaoCuidador/:id/aceitar", autenticarTo
 solicitacaoCuidadorRoutes.patch("/solicitacaoCuidador/:id/recusar", autenticarToken, solicitacaoCuidadorController.recusar);
 solicitacaoCuidadorRoutes.patch("/solicitacaoCuidador/:id/cancelar", autenticarToken, solicitacaoCuidadorController.cancelar);
 
+solicitacaoCuidadorRoutes.delete("/solicitacaoCuidador/idoso/limpar/:idIdoso", autenticarToken, solicitacaoCuidadorController.deletarPorIdoso);
+
 export default solicitacaoCuidadorRoutes;

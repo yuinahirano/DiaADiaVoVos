@@ -67,6 +67,15 @@ export class SolicitacaoCuidadorRepository {
     return rows;
   }
 
+  async deletarPorIdoso(idIdoso: string): Promise<ResultSetHeader> {
+  const sql = "DELETE FROM solicitacao_cuidador WHERE id_idoso=?;";
+  const values = [idIdoso];
+
+  const [rows] = await db.execute<ResultSetHeader>(sql, values);
+
+  return rows;
+}
+
   async aceitar(id: string): Promise<ResultSetHeader> {
     const [dados] = await this.selecionarPorId(id);
     if (!dados) throw new Error("Solicitação não encontrada");
