@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-import logoImg from '../assets/logo_DiaADia.png';
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import logoImg from "../assets/logo_DiaADia.png";
 
 export default function PaginaLogin() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -17,14 +17,18 @@ export default function PaginaLogin() {
     try {
       const { user } = await login(email, senha);
 
-      if (user?.role === 'cuidador' || user?.role === 'idoso') {
-        navigate('/medicamentos');
+      if (user?.role === "cuidador" || user?.role === "idoso") {
+        navigate("/home-idoso");
       } else {
         // Usuário autenticado mas sem vínculo de cuidador/idoso: obrigatório escolher
-        navigate('/tipo-usuario');
+        navigate("/tipo-usuario");
       }
     } catch (error) {
-      const msg = error.response?.data?.errorMessage || error.response?.data?.message || error.message || 'E-mail ou senha incorretos.';
+      const msg =
+        error.response?.data?.errorMessage ||
+        error.response?.data?.message ||
+        error.message ||
+        "E-mail ou senha incorretos.";
       alert(msg);
     } finally {
       setLoading(false);
@@ -32,14 +36,23 @@ export default function PaginaLogin() {
   };
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center p-3" style={{ backgroundColor: '#EBF3FF', fontFamily: 'Arial, sans-serif' }}>
-      <div className="bg-white p-4 p-md-5 w-100 shadow-sm text-center" style={{ maxWidth: '460px', borderRadius: '35px' }}>
-
+    <div
+      className="min-vh-100 d-flex align-items-center justify-content-center p-3"
+      style={{ backgroundColor: "#EBF3FF", fontFamily: "Arial, sans-serif" }}
+    >
+      <div
+        className="bg-white p-4 p-md-5 w-100 shadow-sm text-center"
+        style={{ maxWidth: "460px", borderRadius: "35px" }}
+      >
         <div className="mb-4 text-center">
           <img
             src={logoImg}
             alt="Logo Dia a Dia Vovôs"
-            style={{ maxWidth: '220px', maxHeight: '220px', objectFit: 'contain' }}
+            style={{
+              maxWidth: "220px",
+              maxHeight: "220px",
+              objectFit: "contain",
+            }}
           />
         </div>
 
@@ -49,7 +62,11 @@ export default function PaginaLogin() {
               type="email"
               placeholder="E-mail"
               className="form-control py-2 fw-bold"
-              style={{ backgroundColor: '#E5ECF0', border: '2px solid #1A2229', borderRadius: '16px' }}
+              style={{
+                backgroundColor: "#E5ECF0",
+                border: "2px solid #1A2229",
+                borderRadius: "16px",
+              }}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -60,7 +77,11 @@ export default function PaginaLogin() {
               type="password"
               placeholder="Senha"
               className="form-control py-2 fw-bold"
-              style={{ backgroundColor: '#E5ECF0', border: '2px solid #1A2229', borderRadius: '16px' }}
+              style={{
+                backgroundColor: "#E5ECF0",
+                border: "2px solid #1A2229",
+                borderRadius: "16px",
+              }}
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
@@ -71,14 +92,19 @@ export default function PaginaLogin() {
             type="submit"
             disabled={loading}
             className="btn fw-bold py-2 border-0 w-100 mb-3"
-            style={{ backgroundColor: '#FFEB60', color: '#000', borderRadius: '20px', fontSize: '1.2rem' }}
+            style={{
+              backgroundColor: "#FFEB60",
+              color: "#000",
+              borderRadius: "20px",
+              fontSize: "1.2rem",
+            }}
           >
-            {loading ? 'Entrando...' : 'Entrar'}
+            {loading ? "Entrando..." : "Entrar"}
           </button>
 
           <button
             type="button"
-            onClick={() => navigate('/cadastro')}
+            onClick={() => navigate("/cadastro")}
             className="btn btn-link text-decoration-none text-dark fw-bold"
           >
             Não tem uma conta? Cadastre-se

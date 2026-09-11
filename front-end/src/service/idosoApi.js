@@ -14,3 +14,8 @@ export async function getUsuarios() {
   const resposta = await api_auth.get(`/usuarios`);
   return resposta.data.result;
 }
+
+export async function getConsultas() {
+  const resposta = await api_auth.get(`/consulta`);
+  return resposta.data.result;
+}
