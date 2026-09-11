@@ -17,10 +17,13 @@ export default function PaginaLogin() {
     try {
       const { user } = await login(email, senha);
 
-      if (user?.role === "cuidador" || user?.role === "idoso") {
+      const role = user?.role || user?.tipo || localStorage.getItem("userRole");
+
+      if (role === "cuidador") {
+        navigate("/home-cuidador");
+      } else if (role === "idoso") {
         navigate("/home-idoso");
       } else {
-        // Usuário autenticado mas sem vínculo de cuidador/idoso: obrigatório escolher
         navigate("/tipo-usuario");
       }
     } catch (error) {

@@ -1,7 +1,7 @@
 import { useAddMedicamento } from '../hooks/useAddMed';
 import { useIdososDoCuidador } from '../hooks/useIdososDoCuidador';
 
-export default function CadastrarMedicamento({ isOpen, onClose }) {
+export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEditando = null }) {
     const {
         formData,
         handleChange,
@@ -10,35 +10,34 @@ export default function CadastrarMedicamento({ isOpen, onClose }) {
         setSucesso,
         loading,
         erro,
-        setErro
-    } = useAddMedicamento();
+        setErro,
+        emEdicao
+    } = useAddMedicamento(medicamentoEditando);
 
     const { idosos, loading: loadingIdosos, erro: erroIdosos } = useIdososDoCuidador();
 
-    //nulo se o modal tiver fechado
     if (!isOpen) return null;
 
-    //no clique do cadastro altera o estado gatilho no hook para iniciar a requisição
     const handleSubmit = (e) => {
-        e.preventDefault(); //impede recarregamento da página
+        e.preventDefault();
         setEfetuarCadastro(true);
     };
 
-    //modal de confirmação de sucesso
     const handleConfirmModal = () => {
         setSucesso(false);
-        onClose(); //fecha o modal após a confirmação
+        onClose();
     };
 
-    //modal de confirmação quando dá erro
     const handleErrorModal = () => {
-        setErro(null); //fecha apenas o modal de erro
+        setErro(null);
     };
 
     return (
         <div style={styles.modalOverlay}>
             <div style={styles.card}>
-                <h1 style={styles.title}>Cadastrar Medicamento</h1>
+                <h1 style={styles.title}>
+                    {emEdicao ? 'Editar Medicamento' : 'Cadastrar Medicamento'}
+                </h1>
 
                 <form onSubmit={handleSubmit} style={styles.form}>
                     <div style={styles.inputGroup}>
@@ -50,7 +49,7 @@ export default function CadastrarMedicamento({ isOpen, onClose }) {
                             onChange={handleChange}
                             style={styles.input}
                             required
-                            disabled={loadingIdosos}
+                            disabled={loadingIdosos || emEdicao}
                         >
                             <option value="" disabled>
                                 {loadingIdosos ? 'Carregando idosos...' : 'Selecione o idoso'}
@@ -145,19 +144,22 @@ export default function CadastrarMedicamento({ isOpen, onClose }) {
                             style={styles.submitButton}
                             disabled={loading}
                         >
-                            {loading ? 'Salvando...' : 'Cadastrar'}
+                            {loading
+                                ? 'Salvando...'
+                                : (emEdicao ? 'Salvar alterações' : 'Cadastrar')}
                         </button>
                     </div>
                 </form>
             </div>
 
-            {/* submodal de confirmação */}
             {sucesso && (
                 <div style={styles.innerModalOverlay}>
                     <div style={styles.modalContent}>
                         <h2 style={styles.modalTitle}>Sucesso!</h2>
                         <p style={styles.modalText}>
-                            O medicamento foi salvo com sucesso.
+                            {emEdicao
+                                ? 'O medicamento foi atualizado com sucesso.'
+                                : 'O medicamento foi salvo com sucesso.'}
                         </p>
                         <button
                             onClick={handleConfirmModal}
@@ -207,7 +209,6 @@ const styles = {
         padding: '20px',
     },
 
-    //card do modal
     card: {
         backgroundColor: '#FFFFFF',
         borderRadius: '28px',

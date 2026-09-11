@@ -1,6 +1,11 @@
 import { useState, useEffect } from "react";
 import { getMeRequest } from "../service/userApi";
-import { getIdosos, getIdosoCuidador, getUsuarios } from "../service/idosoApi";
+import {
+  getIdosos,
+  getIdosoCuidador,
+  getUsuarios,
+  getCuidadores,
+} from "../service/userApi";
 
 export function useIdososDoCuidador() {
   const [idosos, setIdosos] = useState([]);
@@ -12,16 +17,36 @@ export function useIdososDoCuidador() {
       setLoading(true);
       setErro(null);
       try {
-        const [meData, relacoes, todosIdosos, todosUsuarios] = await Promise.all([
-          getMeRequest(),
-          getIdosoCuidador(),
-          getIdosos(),
-          getUsuarios(),
-        ]);
+        const [meData, vinculos, todosIdosos, todosUsuarios, todosCuidadores] =
+          await Promise.all([
+            getMeRequest(),
+            getIdosoCuidador(),
+            getIdosos(),
+            getUsuarios(),
+            getCuidadores(),
+          ]);
 
-        // /usuario/me também vem como { result: [...] }
-        const me = meData.result[0];
-        const meuIdCuidador = me.idCuidador;
+        // /usuario/me pode vir direto ou dentro de { result: [...] }
+        const meObj = meData?.result
+          ? Array.isArray(meData.result)
+            ? meData.result[0]
+            : meData.result
+          : meData;
+
+        const idUsuarioLogado = meObj?.id || meObj?.idUsuario || meObj?.id_usuario;
+
+        if (!idUsuarioLogado) {
+          setErro("Não foi possível identificar o usuário logado.");
+          setIdosos([]);
+          return;
+        }
+
+        // Descobre o id_cuidador real na tabela 'cuidador'
+        const registroCuidador = todosCuidadores.find(
+          (c) => String(c.id_usuario ?? c.idUsuario) === String(idUsuarioLogado)
+        );
+
+        const meuIdCuidador = registroCuidador?.id;
 
         if (!meuIdCuidador) {
           setErro("Usuário logado não é um cuidador.");
@@ -29,19 +54,23 @@ export function useIdososDoCuidador() {
           return;
         }
 
-        // 1) vínculos deste cuidador
-        const idsIdososVinculados = relacoes
-          .filter((v) => v.idCuidador === meuIdCuidador)
-          .map((v) => v.idIdoso);
+        // 1) vínculos deste cuidador (comparando id_cuidador com id_cuidador)
+        const idsIdososVinculados = vinculos
+          .filter(
+            (v) => String(v.id_cuidador ?? v.idCuidador) === String(meuIdCuidador)
+          )
+          .map((v) => v.id_idoso ?? v.idIdoso);
 
         // 2) registros de idoso correspondentes
         const idososVinculados = todosIdosos.filter((idoso) =>
-          idsIdososVinculados.includes(idoso.id)
+          idsIdososVinculados.map(String).includes(String(idoso.id))
         );
 
         // 3) nome de cada idoso vem da tabela usuario, via id_usuario
         const idososComNome = idososVinculados.map((idoso) => {
-          const usuario = todosUsuarios.find((u) => u.id === idoso.id_usuario);
+          const usuario = todosUsuarios.find(
+            (u) => String(u.id) === String(idoso.id_usuario)
+          );
           return {
             id: idoso.id,
             nome: usuario ? usuario.nome : "Idoso sem nome cadastrado",
