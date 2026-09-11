@@ -13,6 +13,19 @@ export class IdosoRepository {
     const [rows] = await db.execute<IIdoso[]>(sql, values);
     return rows;
   }
+
+async selecionarPorEmail(email: string): Promise<IIdoso[]> {
+  const sql = `
+    SELECT i.* 
+    FROM idoso i
+    INNER JOIN usuario u ON i.id_usuario = u.id
+    WHERE u.email = ?;
+  `;
+  const values = [email];
+  const [rows] = await db.execute<IIdoso[]>(sql, values);
+  return rows;
+}
+
 async criar(dados: Omit<IIdoso, "id">): Promise<ResultSetHeader> {
   const sql = `INSERT INTO idoso 
           (tipo_sanguineo, telefone, pcd, id_usuario, id_imagem)  
