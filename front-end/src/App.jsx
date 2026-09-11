@@ -13,6 +13,7 @@ import PaginaMedicamentos from './pages/PaginaMedicamentos';
 import PaginaHomeIdoso from './pages/PaginaHomeIdoso';
 import PaginaConsultas from './pages/PaginaConsultas';
 import PaginaMedicamentosIdoso from './pages/PaginaMedicamentosIdoso';
+import PaginaDoencas from './pages/PaginaDoencas';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path='/home-idoso' element={<PaginaHomeIdoso />} />
             <Route path='/consultas' element={<PaginaConsultas />} />
             <Route path='/medicamentos-idoso' element={<PaginaMedicamentosIdoso />} />
+            <Route path='/doencas' element={<PaginaDoencas />} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

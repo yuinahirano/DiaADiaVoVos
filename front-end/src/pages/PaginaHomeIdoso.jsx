@@ -25,12 +25,16 @@ export default function PaginaHomeIdoso() {
           Medicamentos
         </button>
 
+         <button className="home-idoso-link" onClick={() => navigate("/doencas")}>
+          Doenças
+        </button>
+
         <button className="home-idoso-icone-btn" aria-label="Notificações">
           <i className="bi bi-bell"></i>
         </button>
       </header>
 
-      <div className="home-idoso-menu">
+            <div className="home-idoso-menu">
         <button
           className="home-idoso-menu-card home-idoso-menu-card-consultas"
           onClick={() => navigate("/consultas")}
@@ -45,6 +49,14 @@ export default function PaginaHomeIdoso() {
         >
           <i className="bi bi-capsule"></i>
           <span>Medicamentos</span>
+        </button>
+
+        <button
+          className="home-idoso-menu-card home-idoso-menu-card-doencas"
+          onClick={() => navigate("/doencas")}
+        >
+          <i className="bi bi-clipboard2-pulse"></i>
+          <span>Doenças</span>
         </button>
       </div>
     </div>

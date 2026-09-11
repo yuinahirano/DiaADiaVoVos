@@ -34,6 +34,13 @@ export default function PaginaMedicamentosIdoso() {
 
         <button className="home-idoso-btn-ativo">Medicamentos</button>
 
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
+        </button>
+
         <button className="home-idoso-icone-btn" aria-label="Notificações">
           <i className="bi bi-bell"></i>
         </button>
@@ -56,43 +63,43 @@ export default function PaginaMedicamentosIdoso() {
             </p>
           </div>
         )}
-{!loading &&
-  !error &&
-  medicamentos.map((medicamento) => (
-    <div className="consulta-card" key={medicamento.id}>
-      <h2 className="consulta-card-titulo">{medicamento.nome}</h2>
+        {!loading &&
+          !error &&
+          medicamentos.map((medicamento) => (
+            <div className="consulta-card" key={medicamento.id}>
+              <h2 className="consulta-card-titulo">{medicamento.nome}</h2>
 
-      <div className="consulta-card-info">
-        <p className="consulta-card-label">
-          Dosagem:{" "}
-          <span className="consulta-card-valor">
-            {medicamento.dosagem}
-          </span>
-        </p>
+              <div className="consulta-card-info">
+                <p className="consulta-card-label">
+                  Dosagem:{" "}
+                  <span className="consulta-card-valor">
+                    {medicamento.dosagem}
+                  </span>
+                </p>
 
-        <p className="consulta-card-label">
-          Horário:{" "}
-          <span className="consulta-card-valor">
-            {medicamento.horario}
-          </span>
-        </p>
+                <p className="consulta-card-label">
+                  Horário:{" "}
+                  <span className="consulta-card-valor">
+                    {medicamento.horario}
+                  </span>
+                </p>
 
-        <p className="consulta-card-label">
-          Frequência:{" "}
-          <span className="consulta-card-valor">
-            {medicamento.frequencia}
-          </span>
-        </p>
+                <p className="consulta-card-label">
+                  Frequência:{" "}
+                  <span className="consulta-card-valor">
+                    {medicamento.frequencia}
+                  </span>
+                </p>
 
-        <p className="consulta-card-label">
-          Observações:{" "}
-          <span className="consulta-card-valor">
-            {medicamento.observacoes}
-          </span>
-        </p>
-      </div>
-    </div>
-  ))}
+                <p className="consulta-card-label">
+                  Observações:{" "}
+                  <span className="consulta-card-valor">
+                    {medicamento.observacoes}
+                  </span>
+                </p>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );
