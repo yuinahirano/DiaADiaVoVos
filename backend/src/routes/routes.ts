@@ -9,6 +9,7 @@ import medicamentoRoutes from "./medicamento.routes";
 import receitaRoutes from "./receitaMedica.routes";
 import enderecoRoutes from "./endereco.routes";
 import adminRoutes from "./admin.routes";
+import solicitacaoCuidadorRoutes from "./solicitacaoRelacionamento.routes";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/', medicamentoRoutes);
 router.use('/', receitaRoutes);
 router.use('/', enderecoRoutes);
 router.use('/', adminRoutes);
+router.use('/', solicitacaoCuidadorRoutes);
 
 export default router;

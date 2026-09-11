@@ -25,7 +25,11 @@ export default function PaginaHomeIdoso() {
           Medicamentos
         </button>
 
-        <button className="home-idoso-icone-btn" aria-label="Notificações">
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Notificações"
+          onClick={() => navigate("/notificacoes-idoso")}
+        >
           <i className="bi bi-bell"></i>
         </button>
       </header>
@@ -45,6 +49,14 @@ export default function PaginaHomeIdoso() {
         >
           <i className="bi bi-capsule"></i>
           <span>Medicamentos</span>
+        </button>
+
+        <button
+          className="home-idoso-menu-card home-idoso-menu-card-notificacoes"
+          onClick={() => navigate("/notificacoes-idoso")}
+        >
+          <i className="bi bi-bell"></i>
+          <span>Notificações</span>
         </button>
       </div>
     </div>
