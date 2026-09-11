@@ -2,7 +2,7 @@ import { api_diadiavovos } from './api';
 
 export async function login(email, senha) {
   // Alterado de '/login' para '/usuarios/login'
-  const resposta = await api_diadiavovos.post('/usuarios/login', { email, senha });
+  const resposta = await api_diadiavovos.post('/usuario/login', { email, senha });
   if (resposta.data?.token) {
     localStorage.setItem('token', resposta.data.token);
   }

@@ -9,35 +9,21 @@ export function useCadastro() {
     email: '',
     senha: '',
     estadoCivil: 'SOLTEIRO',
-    dataNascimento: ''
+    dataNascimento: '',
+    tipoUsuario: 'IDOSO' // ou 'CUIDADOR' conforme a seleção do seu formulário
   });
   const [loading, setLoading] = useState(false);
-  const [mostrarSenha, setMostrarSenha] = useState(false);
-
-  const padronizarData = (val) => {
-    if (!val) return '';
-    let limpo = val.trim().replace(/\//g, '-');
-    if (/^\d{2}-\d{2}-\d{4}$/.test(limpo)) {
-      const [dia, mes, ano] = limpo.split('-');
-      return `${ano}-${mes}-${dia}`;
-    }
-    return limpo;
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const valorTratado = name === 'dataNascimento' ? padronizarData(value) : value;
-    setFormData((prev) => ({ ...prev, [name]: valorTratado }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
-
-  const toggleMostrarSenha = () => setMostrarSenha((prev) => !prev);
 
   const submitCadastro = async (e, onSuccess) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Limpa dados de sessão antigos que causam o erro 401
       localStorage.removeItem('userToken');
       localStorage.removeItem('usuarioId');
 
@@ -45,53 +31,49 @@ export function useCadastro() {
       const dadosParaEnviar = {
         ...formData,
         cpf: cpfLimpo.length === 11 ? cpfLimpo : formData.cpf,
-        dataNascimento: padronizarData(formData.dataNascimento)
       };
 
-      // Exibe os dados preenchidos no Console (F12)
-      console.log('--- Dados preenchidos para envio ---', dadosParaEnviar);
+      // 1. Cadastra na tabela principal (usuarios)
+      const resCadastro = await cadastrarUsuario(dadosParaEnviar);
+      console.log('1. Usuário principal criado:', resCadastro);
 
-      // 1. Executa a requisição de cadastro do usuário
-      const response = await cadastrarUsuario(dadosParaEnviar);
+      // 2. Faz Login automático para obter o Token JWT obrigatório
+      const resLogin = await api.post(
+        '/usuarios/login',
+        { email: formData.email, senha: formData.senha },
+        { headers: { Authorization: undefined } }
+      );
 
-      // Exibe no console o retorno recebido da API
-      console.log('--- Resposta da API de Cadastro ---', response);
+      const token = resLogin.data?.token || resLogin.data?.login?.token;
 
-      // 2. Realiza o login automático para resgatar o novo token JWT
-      try {
-        const resLogin = await api.post(
-          '/usuarios/login',
-          {
-            email: formData.email,
-            senha: formData.senha
-          },
-          {
-            headers: { Authorization: undefined }
-          }
-        );
-
-        const token = resLogin.data?.token || resLogin.data?.login?.token;
-        if (token) {
-          localStorage.setItem('userToken', token);
-          const payloadBase64 = token.split('.')[1];
-          const payloadDecodificado = JSON.parse(atob(payloadBase64));
-
-          if (payloadDecodificado?.id && payloadDecodificado.id !== 0) {
-            localStorage.setItem('usuarioId', String(payloadDecodificado.id));
-          }
-        }
-      } catch (errLogin) {
-        console.warn('Login automático opcional não concluiu:', errLogin);
+      if (!token) {
+        throw new Error('Não foi possível obter o token de autenticação.');
       }
 
-      if (onSuccess) onSuccess(response);
+      // Salva o token no localStorage
+      localStorage.setItem('userToken', token);
+
+      // 3. Cadastra na tabela específica (idosos ou cuidadores) enviando o Token no cabeçalho
+      const endpointPerfil = formData.tipoUsuario === 'CUIDADOR' ? '/cuidadores' : '/idosos';
+
+      await api.post(
+        endpointPerfil,
+        { ...dadosParaEnviar },
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      console.log(`2. Perfil de ${formData.tipoUsuario} vinculado com sucesso!`);
+
+      if (onSuccess) onSuccess(resCadastro);
     } catch (error) {
-      console.error('Erro na API:', error.response?.data || error);
-      alert(error.response?.data?.errorMessage || 'Erro ao realizar cadastro.');
+      console.error('Erro durante o processo de cadastro:', error.response?.data || error);
+      alert(error.response?.data?.errorMessage || error.response?.data?.message || error.message || 'Erro ao realizar cadastro.');
     } finally {
       setLoading(false);
     }
   };
 
-  return { formData, loading, mostrarSenha, handleChange, toggleMostrarSenha, submitCadastro };
+  return { formData, loading, handleChange, submitCadastro };
 }
