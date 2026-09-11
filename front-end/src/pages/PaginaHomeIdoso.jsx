@@ -65,19 +65,19 @@ export default function PaginaHomeIdoso() {
         </button>
 
         <button
-          className="home-idoso-menu-card home-idoso-menu-card-notificacoes"
-          onClick={() => navigate("/notificacoes-idoso")}
-        >
-          <i className="bi bi-bell"></i>
-          <span>Notificações</span>
-        </button>
-
-        <button
           className="home-idoso-menu-card home-idoso-menu-card-doencas"
           onClick={() => navigate("/doencas")}
         >
           <i className="bi bi-clipboard2-pulse"></i>
           <span>Doenças</span>
+        </button>
+
+        <button
+          className="home-idoso-menu-card home-idoso-menu-card-notificacoes"
+          onClick={() => navigate("/notificacoes-idoso")}
+        >
+          <i className="bi bi-bell"></i>
+          <span>Notificações</span>
         </button>
       </div>
     </div>
