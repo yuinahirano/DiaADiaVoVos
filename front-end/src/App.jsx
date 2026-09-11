@@ -12,6 +12,7 @@ import PaginaVincularCuidador from './pages/PaginaVincularCuidador';
 import PaginaMedicamentos from './pages/PaginaMedicamentos';
 import PaginaHomeIdoso from './pages/PaginaHomeIdoso';
 import PaginaConsultas from './pages/PaginaConsultas';
+import PaginaMedicamentosIdoso from './pages/PaginaMedicamentosIdoso';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route element={<ProtectedRoute allowedRoles={['idoso']} />}>
             <Route path='/home-idoso' element={<PaginaHomeIdoso />} />
             <Route path='/consultas' element={<PaginaConsultas />} />
+            <Route path='/medicamentos-idoso' element={<PaginaMedicamentosIdoso />} />
           </Route>
 
           <Route element={<ProtectedRoute />}>

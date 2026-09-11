@@ -21,7 +21,7 @@ export default function PaginaHomeIdoso() {
           Consultas
         </button>
 
-        <button className="home-idoso-link" onClick={() => navigate("/medicamentos")}>
+        <button className="home-idoso-link" onClick={() => navigate("/medicamentos-idoso")}>
           Medicamentos
         </button>
 
@@ -36,12 +36,12 @@ export default function PaginaHomeIdoso() {
           onClick={() => navigate("/consultas")}
         >
           <i className="bi bi-chat-square-heart"></i>
-          <span>consultas</span>
+          <span>Consultas</span>
         </button>
 
         <button
           className="home-idoso-menu-card home-idoso-menu-card-medicamentos"
-          onClick={() => navigate("/medicamentos")}
+          onClick={() => navigate("/medicamentos-idoso")}
         >
           <i className="bi bi-capsule"></i>
           <span>Medicamentos</span>
