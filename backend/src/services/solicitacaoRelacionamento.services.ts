@@ -1,12 +1,14 @@
 import { SolicitacaoCuidador } from "../models/solicitacaoRelacionamento.model";
 import { SolicitacaoCuidadorRepository } from "../repository/solicitacaoRelacionamento.repository";
 import { IdosoRepository } from "../repository/idoso.repository";
-import { StatusSolicitacao } from "../enums/statusSolicitacao.enums"; 
+import { StatusSolicitacao } from "../enums/statusSolicitacao.enums";
+import { IdosoCuidadorService } from "./idosoCuidador.services";
 
 export class SolicitacaoCuidadorService {
   constructor(
     private _repository = new SolicitacaoCuidadorRepository(),
     private _idosoRepository = new IdosoRepository(),
+    private _idosoCuidadorService = new IdosoCuidadorService(),
   ) {}
 
   async selecionarTodos() {
@@ -28,6 +30,7 @@ export class SolicitacaoCuidadorService {
   async criar(
     emailIdoso: string,
     idCuidador: string,
+    contatoEmergencia: string,
     diasParaExpirar: number = 3,
   ) {
     const idosoExistente = await this._idosoRepository.selecionarPorEmail(emailIdoso);
@@ -39,6 +42,7 @@ export class SolicitacaoCuidadorService {
     const solicitacao = SolicitacaoCuidador.criar(
       idoso.id!,
       idCuidador,
+      contatoEmergencia,
       diasParaExpirar,
     );
 
@@ -47,6 +51,7 @@ export class SolicitacaoCuidadorService {
       idCuidador: solicitacao.IdCuidador,
       status: solicitacao.Status,
       expiraEm: solicitacao.ExpiraEm,
+      contatoEmergencia: solicitacao.ContatoEmergencia,
     });
   }
 
@@ -54,8 +59,9 @@ export class SolicitacaoCuidadorService {
     id: string,
     idIdoso: string,
     idCuidador: string,
-    status: StatusSolicitacao, 
+    status: StatusSolicitacao,
     expiraEm: Date,
+    contatoEmergencia: string,
   ) {
     const solicitacaoExistente = await this._repository.selecionarPorId(id);
     if (solicitacaoExistente.length === 0)
@@ -71,6 +77,7 @@ export class SolicitacaoCuidadorService {
       idCuidador,
       status,
       expiraEm,
+      contatoEmergencia,
     );
 
     return await this._repository.editar(id, {
@@ -78,6 +85,7 @@ export class SolicitacaoCuidadorService {
       idCuidador: solicitacao.IdCuidador,
       status: solicitacao.Status,
       expiraEm: solicitacao.ExpiraEm,
+      contatoEmergencia: solicitacao.ContatoEmergencia,
     });
   }
 
@@ -94,7 +102,22 @@ export class SolicitacaoCuidadorService {
     if (solicitacaoExistente.length === 0)
       throw new Error("Solicitação não encontrada");
 
-    return await this._repository.aceitar(id);
+    const solicitacao = solicitacaoExistente[0] as any;
+
+    const resultado = await this._repository.aceitar(id);
+
+    const idIdoso = solicitacao.idIdoso || solicitacao.id_idoso;
+    const idCuidador = solicitacao.idCuidador || solicitacao.id_cuidador;
+    const contatoEmergencia =
+      solicitacao.contatoEmergencia || solicitacao.contato_emergencia;
+
+    await this._idosoCuidadorService.criar(
+      idIdoso,
+      idCuidador,
+      contatoEmergencia,
+    );
+
+    return resultado;
   }
 
   async recusar(id: string) {

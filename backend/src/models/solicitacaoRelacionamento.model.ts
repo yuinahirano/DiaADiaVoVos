@@ -1,5 +1,6 @@
 import { RowDataPacket } from "mysql2";
 import { StatusSolicitacao } from "../enums/statusSolicitacao.enums";
+import { TelefoneUtils } from "../utils/validarTelefone";
 
 export interface ISolicitacaoCuidador extends RowDataPacket {
   id?: string;
@@ -7,6 +8,7 @@ export interface ISolicitacaoCuidador extends RowDataPacket {
   idCuidador: string;
   status: StatusSolicitacao;
   expiraEm: Date;
+  contatoEmergencia: string;
 }
 
 export class SolicitacaoCuidador {
@@ -15,12 +17,14 @@ export class SolicitacaoCuidador {
   private _idCuidador!: string;
   private _status!: StatusSolicitacao;
   private _expiraEm!: Date;
+  private _contatoEmergencia!: string;
 
   constructor(
     idIdoso: string,
     idCuidador: string,
     status: StatusSolicitacao,
     expiraEm: Date,
+    contatoEmergencia: string,
     id?: string,
   ) {
     this._id = id;
@@ -28,6 +32,7 @@ export class SolicitacaoCuidador {
     this.IdCuidador = idCuidador;
     this.Status = status;
     this.ExpiraEm = expiraEm;
+    this.ContatoEmergencia = contatoEmergencia;
   }
   
   public get Id(): string | undefined {
@@ -49,6 +54,10 @@ export class SolicitacaoCuidador {
   public get ExpiraEm(): Date {
     return this._expiraEm;
   }
+
+  public get ContatoEmergencia(): string {
+    return this._contatoEmergencia;
+  }
   
   public set IdIdoso(value: string) {
     this._validarIdIdoso(value);
@@ -67,6 +76,10 @@ export class SolicitacaoCuidador {
 
   public set ExpiraEm(value: Date) {
     this._expiraEm = value;
+  }
+
+  public set ContatoEmergencia(value: string) {
+    this._contatoEmergencia = value;
   }
 
   private _validarIdIdoso(value: string): void {
@@ -123,9 +136,10 @@ export class SolicitacaoCuidador {
     this.Status = StatusSolicitacao.CANCELADA;
   }
    
-public static criar(
+  public static criar(
     idIdoso: string,
     idCuidador: string,
+    contatoEmergencia: string,
     diasParaExpirar: number = 3,
   ): SolicitacaoCuidador {
     if (diasParaExpirar > 3 || diasParaExpirar <= 0) {
@@ -134,7 +148,7 @@ public static criar(
 
     const expiraEm = new Date();
     expiraEm.setDate(expiraEm.getDate() + diasParaExpirar);
-    return new SolicitacaoCuidador(idIdoso, idCuidador, StatusSolicitacao.PENDENTE, expiraEm);
+    return new SolicitacaoCuidador(idIdoso, idCuidador, StatusSolicitacao.PENDENTE, expiraEm, contatoEmergencia);
   }
   
   public static editar(
@@ -143,7 +157,8 @@ public static criar(
     idCuidador: string,
     status: StatusSolicitacao,
     expiraEm: Date,
+    contatoEmergencia: string,
   ): SolicitacaoCuidador {
-    return new SolicitacaoCuidador(idIdoso, idCuidador, status, expiraEm, id);
+    return new SolicitacaoCuidador(idIdoso, idCuidador, status, expiraEm, contatoEmergencia, id);
   }
 }

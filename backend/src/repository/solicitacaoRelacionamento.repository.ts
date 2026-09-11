@@ -31,13 +31,14 @@ export class SolicitacaoCuidadorRepository {
 
   async criar(dados: Omit<ISolicitacaoCuidador, "id">): Promise<ResultSetHeader> {
     const sql = `INSERT INTO solicitacao_cuidador 
-    (id_idoso, id_cuidador, status, expira_em)  
-      VALUES (?,?,?,?);`;
+    (id_idoso, id_cuidador, status, expira_em, contato_emergencia)  
+      VALUES (?,?,?,?,?);`;
     const values = [
       dados.idIdoso,
       dados.idCuidador,
       dados.status,
       dados.expiraEm,
+      dados.contatoEmergencia,
     ];
     const [rows] = await db.execute<ResultSetHeader>(sql, values);
     return rows;
@@ -45,13 +46,14 @@ export class SolicitacaoCuidadorRepository {
 
   async editar(id: string, dados: Omit<ISolicitacaoCuidador, "id">): Promise<ResultSetHeader> {
     const sql = `UPDATE solicitacao_cuidador SET 
-      id_idoso=?, id_cuidador=?, status=?, expira_em=? 
+      id_idoso=?, id_cuidador=?, status=?, expira_em=?, contato_emergencia=? 
       WHERE id=?;`;
     const values = [
       dados.idIdoso,
       dados.idCuidador,
       dados.status,
       dados.expiraEm,
+      dados.contatoEmergencia,
       id,
     ];
     const [rows] = await db.execute<ResultSetHeader>(sql, values);
@@ -75,7 +77,8 @@ export class SolicitacaoCuidadorRepository {
       row.id_idoso,
       row.id_cuidador,
       row.status,
-      new Date(row.expira_em)
+      new Date(row.expira_em),
+      row.contato_emergencia
     );
 
     solicitacao.aceitar();
@@ -96,7 +99,8 @@ export class SolicitacaoCuidadorRepository {
       row.id_idoso,
       row.id_cuidador,
       row.status,
-      new Date(row.expira_em)
+      new Date(row.expira_em),
+      row.contato_emergencia
     );
 
     solicitacao.recusar();
@@ -117,7 +121,8 @@ export class SolicitacaoCuidadorRepository {
       row.id_idoso,
       row.id_cuidador,
       row.status,
-      new Date(row.expira_em)
+      new Date(row.expira_em),
+      row.contato_emergencia
     );
 
     solicitacao.cancelar();

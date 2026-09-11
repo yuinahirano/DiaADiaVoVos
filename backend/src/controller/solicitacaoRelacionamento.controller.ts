@@ -53,8 +53,8 @@ export class SolicitacaoCuidadorController {
 
   criar = async (req: Request, res: Response) => {
     try {
-      const { emailIdoso, idCuidador, diasParaExpirar } = req.body;
-      const novo = await this._service.criar(emailIdoso, idCuidador, diasParaExpirar);
+      const { emailIdoso, idCuidador, contatoEmergencia, diasParaExpirar } = req.body;
+      const novo = await this._service.criar(emailIdoso, idCuidador, contatoEmergencia, diasParaExpirar);
       return res.status(201).json({ novo });
     } catch (error: unknown) {
       console.error(error);
@@ -66,8 +66,8 @@ export class SolicitacaoCuidadorController {
   editar = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);
-      const { idIdoso, idCuidador, status, expiraEm } = req.body;
-      const editado = await this._service.editar(id, idIdoso, idCuidador, status, expiraEm);
+      const { idIdoso, idCuidador, status, expiraEm, contatoEmergencia } = req.body;
+      const editado = await this._service.editar(id, idIdoso, idCuidador, status, expiraEm, contatoEmergencia);
       return res.status(200).json({ editado });
     } catch (error: unknown) {
       console.error(error);
