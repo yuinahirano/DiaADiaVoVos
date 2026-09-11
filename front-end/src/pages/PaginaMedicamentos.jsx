@@ -1,12 +1,17 @@
 import { useState } from "react";
 import MedicamentosList from "../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from '../hooks/useMedicamentos';
+import { useIdosoSelecionado } from '../hooks/useIdosoSelecionado';
 import CadastrarMedicamento from "./PaginaAddMedicamento";
 
 export default function MedicationPage() {
   const { medicamentos, loading, deletarMedicamento } = useMedicamentos();
+  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [medicamentoEditando, setMedicamentoEditando] = useState(null);
   const [idParaDeletar, setIdParaDeletar] = useState(null);
+
+  const nomeIdoso = loadingIdoso ? "Carregando..." : (idoso?.nome || "Idoso");
 
   const handleAbrirConfirmacao = (id) => {
     setIdParaDeletar(id);
@@ -19,12 +24,22 @@ export default function MedicationPage() {
     }
   };
 
+  const handleAbrirEdicao = (medicamento) => {
+    setMedicamentoEditando(medicamento);
+    setIsModalOpen(true);
+  };
+
+  const handleFecharModal = () => {
+    setIsModalOpen(false);
+    setMedicamentoEditando(null);
+  };
+
   return (
     <div style={styles.container}>
       <header style={styles.header}>
         <div style={styles.titleSection}>
           <span style={styles.backButton}>&lt;</span>
-          <h1 style={styles.title}>Idoso 1</h1>
+          <h1 style={styles.title}>{nomeIdoso}</h1>
         </div>
 
         <nav style={styles.nav}>
@@ -36,7 +51,13 @@ export default function MedicationPage() {
       </header>
 
       <div style={styles.actionRow}>
-        <button style={styles.addButton} onClick={() => setIsModalOpen(true)}>
+        <button
+          style={styles.addButton}
+          onClick={() => {
+            setMedicamentoEditando(null);
+            setIsModalOpen(true);
+          }}
+        >
           <span style={styles.addIcon}>+</span>
           Adicionar medicamento
         </button>
@@ -46,13 +67,18 @@ export default function MedicationPage() {
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p>
         ) : (
-          <MedicamentosList medicamentos={medicamentos} onDelete={handleAbrirConfirmacao} />
+          <MedicamentosList
+            medicamentos={medicamentos}
+            onDelete={handleAbrirConfirmacao}
+            onEdit={handleAbrirEdicao}
+          />
         )}
       </main>
 
       <CadastrarMedicamento
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleFecharModal}
+        medicamentoEditando={medicamentoEditando}
       />
 
       {idParaDeletar && (

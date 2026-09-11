@@ -1,20 +1,40 @@
 import { useState, useEffect } from "react";
-import { addMedicamento } from "../service/medicamentoApi";
+import { addMedicamento, updateMedicamento } from "../service/medicamentoApi";
 
-export function useAddMedicamento() {
-  const [formData, setFormData] = useState({
-    nome: '',
-    dosagem: '',
-    horario: '',
-    frequencia: '',
-    observacoes: '',
-    idIdoso: ''
-  });
+const formVazio = {
+  nome: '',
+  dosagem: '',
+  horario: '',
+  frequencia: '',
+  observacoes: '',
+  idIdoso: ''
+};
+
+export function useAddMedicamento(medicamentoEditando) {
+  const [formData, setFormData] = useState(formVazio);
 
   const [efetuarCadastro, setEfetuarCadastro] = useState(false);
   const [sucesso, setSucesso] = useState(false);
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState(null);
+
+  const emEdicao = Boolean(medicamentoEditando);
+
+  // Preenche o formulário quando abrir em modo edição (ou limpa quando for criar)
+  useEffect(() => {
+    if (medicamentoEditando) {
+      setFormData({
+        nome: medicamentoEditando.nome || '',
+        dosagem: medicamentoEditando.dosagem || '',
+        horario: medicamentoEditando.horario || '',
+        frequencia: medicamentoEditando.frequencia || '',
+        observacoes: medicamentoEditando.observacoes || '',
+        idIdoso: medicamentoEditando.id_idoso ?? medicamentoEditando.idIdoso ?? ''
+      });
+    } else {
+      setFormData(formVazio);
+    }
+  }, [medicamentoEditando]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +44,7 @@ export function useAddMedicamento() {
   useEffect(() => {
     if (!efetuarCadastro) return;
 
-    async function cadastrar() {
+    async function salvar() {
       if (!formData.idIdoso) {
         setErro("Selecione o idoso para o qual o medicamento será cadastrado.");
         setEfetuarCadastro(false);
@@ -35,19 +55,26 @@ export function useAddMedicamento() {
       setErro(false);
 
       try {
-        await addMedicamento(formData);
+        if (emEdicao) {
+          await updateMedicamento(medicamentoEditando.id, formData);
+        } else {
+          await addMedicamento(formData);
+        }
         setSucesso(true);
       } catch (error) {
         console.error("Erro no cadastro:", error);
-        setErro(error.response?.data?.message || "Falha ao cadastrar novo medicamento");
+        setErro(
+          error.response?.data?.message ||
+          (emEdicao ? "Falha ao atualizar medicamento" : "Falha ao cadastrar novo medicamento")
+        );
       } finally {
         setLoading(false);
         setEfetuarCadastro(false);
       }
     }
 
-    cadastrar();
-  }, [efetuarCadastro, formData]);
+    salvar();
+  }, [efetuarCadastro, formData, emEdicao, medicamentoEditando]);
 
   return {
     formData,
@@ -57,6 +84,7 @@ export function useAddMedicamento() {
     setSucesso,
     loading,
     erro,
-    setErro
+    setErro,
+    emEdicao
   };
 }

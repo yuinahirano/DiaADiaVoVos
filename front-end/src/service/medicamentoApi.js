@@ -20,6 +20,17 @@ export async function addMedicamento(dadosMedicamento) {
   }
 }
 
+// NOVO: atualizar um medicamento existente
+export async function updateMedicamento(id, dadosMedicamento) {
+  try {
+    const resposta = await api_diadiavovos.put(`/medicamento/${id}`, dadosMedicamento);
+    return resposta.data;
+  } catch (erro) {
+    console.error("Erro ao atualizar medicamento:", erro);
+    throw erro;
+  }
+}
+
 export async function deleteMedicamentos(id) {
   try {
     const resposta = await api_diadiavovos.delete(`/medicamento/${id}`);

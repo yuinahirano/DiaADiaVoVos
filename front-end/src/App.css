@@ -1,133 +1,132 @@
 /* --- FUNDO DA PÁGINA (Azul claro sutil) --- */
 body {
-    background-color: #EBF3FF; 
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-family: 'Arial', sans-serif;
+  background-color: #EBF3FF; 
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
 }
 
 .d-flex.align-items-center.justify-content-center {
-    background-color: #EBF3FF;
+  background-color: #EBF3FF;
 }
 
 /* --- CARD DE LOGIN --- */
 .login-card {
-    background-color: #FFFFFF;
-    border: 3.5px solid #1A2229; /* Borda escura bem grossa estilo cartoon */
-    border-radius: 35px; /* Cantos bem arredondados do card */
-    padding: 2.5rem 2.2rem;
-    width: 100%;
-    max-width: 390px; /* Mantém o card compacto e centralizado */
-    box-shadow: 0 10px 25px rgba(28, 36, 43, 0.08);
-    margin: 10px;
+  background-color: #FFFFFF;
+  border: 3.5px solid #1A2229; /* Borda escura bem grossa estilo cartoon */
+  border-radius: 35px; /* Cantos bem arredondados do card */
+  padding: 2.5rem 2.2rem;
+  width: 100%;
+  max-width: 390px; /* Mantém o card compacto e centralizado */
+  box-shadow: 0 10px 25px rgba(28, 36, 43, 0.08);
+  margin: 10px;
 }
 
 /* --- CONFIGURAÇÃO DA LOGO (Redonda com Borda Preta) --- */
 .logo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 2rem;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
 .logo-arredondado {
-    width: 160px !important;       /* Tamanho ideal para excelente visibilidade */
-    height: 160px !important;      /* Mantém a proporção idêntica de largura e altura */
-    object-fit: contain;           /* Garante que o desenho da logo apareça por inteiro sem cortes ruins */
-    border-radius: 50% !important; /* Força a imagem a virar um círculo perfeito */
-    background-color: #FFFFFF;     /* Fundo branco puro por trás do desenho */
-    padding: 6px;                  /* Espaço interno para a logo respirar e não colar na borda */
-    box-shadow: 4px 10px 4px rgba(26, 34, 41, 0.1); /* Sombra 3D leve sob o círculo */
-    display: block !important;
+  width: 160px !important;       /* Tamanho ideal para excelente visibilidade */
+  height: 160px !important;      /* Mantém a proporção idêntica de largura e altura */
+  object-fit: contain;           /* Garante que o desenho da logo apareça por inteiro sem cortes ruins */
+  border-radius: 50% !important; /* Força a imagem a virar um círculo perfeito */
+  background-color: #FFFFFF;     /* Fundo branco puro por trás do desenho */
+  padding: 6px;                  /* Espaço interno para a logo respirar e não colar na borda */
+  box-shadow: 4px 10px 4px rgba(26, 34, 41, 0.1); /* Sombra 3D leve sob o círculo */
+  display: block !important;
 }
 
 /* --- AJUSTE DOS INPUTS E ALINHAMENTO DOS ÍCONES --- */
 .form-container {
-    padding-right: 20px;
+  padding-right: 20px;
 }
 
 .input-wrapper {
-    display: flex;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    margin-left: 20px; /* Dá o recuo para o ícone aparecer na lateral */
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-left: 20px; /* Dá o recuo para o ícone aparecer na lateral */
 }
 
 /* Posiciona os bonequinhos do lado esquerdo externo da caixa */
 .input-icon {
-    font-size: 1.5rem;
-    color: #1A2229;
-    position: absolute;
-    left: -32px; 
+  font-size: 1.5rem;
+  color: #1A2229;
+  position: absolute;
+  left: -32px; 
 }
 
 /* Caixas de input em formato pílula cinza */
 .form-input-custom {
-    width: calc(100% - 20px);
-    padding: 0.75rem 1.2rem;
-    font-size: 1rem;
-    color: #5A6A75;
-    background-color: #F0F4F8; /* Cor interna cinza clara */
-    border: 3.5px solid #1A2229; /* Borda grossa escura */
-    border-radius: 20px;
-    outline: none;
-    font-weight: bold;
+  width: calc(100% - 20px);
+  padding: 0.75rem 1.2rem;
+  font-size: 1rem;
+  color: #5A6A75;
+  background-color: #F0F4F8; /* Cor interna cinza clara */
+  border: 3.5px solid #1A2229; /* Borda grossa escura */
+  border-radius: 20px;
+  outline: none;
+  font-weight: bold;
 }
 
 .form-input-custom::placeholder {
-    color: #90A4AE;
+  color: #90A4AE;
 }
 
-/* --- BOTÃO ROXO COM SOMBRA EM BLOCO --- */
+/* --- BOTÃO COM SOMBRA EM BLOCO --- */
 .button-wrapper {
-    padding-left: 15px;
-}
-
-.btn-painel-roxo:hover {
-    background-color: #fceea9;
+  padding-left: 15px;
 }
 
 .btn-painel-roxo {
-    background-color: #FFD600; /* Tom de roxo exato do seu painel */
-    color: #1A2229;
-    font-size: 1.15rem;
-    font-weight: 900;
-    padding: 0.75rem;
-    border: 3.5px solid #1A2229;
-    border-radius: 20px;
-    cursor: pointer;
-    box-shadow: 0 5px 0px #1A2229; /* Sombra sólida marcante embaixo */
-    transition: all 0.05s ease;
-    margin-top: 5px;
+  background-color: #FFD600;
+  color: #1A2229;
+  font-size: 1.15rem;
+  font-weight: 900;
+  padding: 0.75rem;
+  border: 3.5px solid #1A2229;
+  border-radius: 20px;
+  cursor: pointer;
+  box-shadow: 0 5px 0px #1A2229; /* Sombra sólida marcante embaixo */
+  transition: all 0.05s ease;
+  margin-top: 5px;
+}
+
+.btn-painel-roxo:hover {
+  background-color: #fceea9;
 }
 
 /* Efeito mecânico ao clicar no botão */
 .btn-painel-roxo:active {
-    transform: translateY(3px);
-    box-shadow: 0 2px 0px #1A2229;
+  transform: translateY(3px);
+  box-shadow: 0 2px 0px #1A2229;
 }
 
 /* --- LINK INFERIOR EM NEGRITO --- */
 .link-wrapper {
-    padding-left: 15px;
+  padding-left: 15px;
 }
 
 .link-rodape {
-    color: #1A2229;
-    font-size: 1.05rem;
-    font-weight: 900;
-    text-decoration: none;
-    letter-spacing: -0.3px;
-    transition: color 0.2s ease; /* Faz a mudança de cor ser suave ao passar o mouse */
+  color: #1A2229;
+  font-size: 1.05rem;
+  font-weight: 900;
+  text-decoration: none;
+  letter-spacing: -0.3px;
+  transition: color 0.2s ease;
 }
 
-/* EFEITO MODIFICADO: Muda para roxo forte e adiciona o sublinhado ao passar o mouse */
 .link-rodape:hover {
-    color: #FFD600; /* Cor roxa bem forte e destacada */
-    text-decoration: underline;
+  color: #FFD600;
+  text-decoration: underline;
 }
 
 .card-usuario {
@@ -138,4 +137,111 @@ body {
   transform: translateY(-8px) scale(1.03);
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+}
+
+/* ===================================================
+   HOME CUIDADOR - GRID RETANGULAR (LARGOS E ARREDONDADOS)
+   =================================================== */
+
+/* Botão Amarelo de Adicionar no Cabeçalho */
+.home-cuidador-btn-add-novo {
+  background-color: #FFDF6D;
+  color: #1A2229;
+  border: none;
+  border-radius: 25px;
+  padding: 8px 18px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.home-cuidador-btn-add-novo:hover {
+  transform: scale(1.03);
+}
+
+/* Card Vazio Centralizado (Sem Idosos) */
+.home-cuidador-vazio-card {
+  background-color: #FFFFFF;
+  border-radius: 32px;
+  width: 100%;
+  max-width: 500px;
+  height: 280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.home-cuidador-vazio-card span {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1A2229;
+}
+
+.home-cuidador-vazio-logo-circle {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.home-cuidador-vazio-logo-circle img {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+}
+
+/* Container Grid de 2 colunas para os retângulos */
+.home-cuidador-grid-retangulos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 400px));
+  justify-content: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Card Retangular Achatado no Estilo da Imagem */
+.home-cuidador-card-retangulo {
+  border: none;
+  border-radius: 30px;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 20px;
+  width: 100%;
+}
+
+.home-cuidador-card-retangulo span {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1A2229;
+  text-align: center;
+  word-break: break-word;
+}
+
+.home-cuidador-card-retangulo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Ajuste Responsivo para Dispositivos Móveis */
+@media (max-width: 600px) {
+  .home-cuidador-grid-retangulos {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,10 +1,15 @@
 import MedicationCard from "./MedicamentosCard";
 
-export default function MedicamentosList({ medicamentos, onDelete }) {
+export default function MedicamentosList({ medicamentos, onDelete, onEdit }) {
   return (
     <div style={styles.listGrid}>
       {medicamentos?.map((medicamento) => (
-        <MedicationCard key={medicamento.id} medicamento={medicamento} onDelete={onDelete}/>
+        <MedicationCard
+          key={medicamento.id}
+          medicamento={medicamento}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
       ))}
     </div>
   );
