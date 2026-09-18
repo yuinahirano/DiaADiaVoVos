@@ -3,6 +3,11 @@ import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import { useRegistroSaude } from "../../hooks/useRegistroSaude";  
 import logoImg from "../../assets/logo_DiaADia.png";  
 
+//estilizações
+import "../../components/styles/HomeIdoso.css";
+import "../../components/styles/Doencas.css";
+import "../../components/styles/Consultas.css";
+
 function formatarData(dataIso) {  
   if (!dataIso) return "dd/MM/AAAA";  
   
@@ -42,37 +47,59 @@ export default function PaginaRegistroSaude() {
   const loading = loadingIdoso || loadingRegistro;  
   
   return (  
-    <div style={styles.container}>  
-      <header style={styles.header}>  
-        <div style={styles.titleSection}>  
-          <button  
-            style={styles.backButton}  
-            onClick={() => navigate(-1)}  
-            aria-label="Voltar"  
-          >  
-            &lt;  
-          </button>  
-          <h1 style={styles.title}>{nomeIdoso}</h1>  
-        </div>  
-  
-        <nav style={styles.nav}>  
-          <button style={styles.inactiveNav} onClick={() => navigate("/doencas")}>  
-            Doenças  
-          </button>  
-          <button style={styles.inactiveNav} onClick={() => navigate("/consultas")}>  
-            Consultas  
-          </button>  
-          <button  
-            style={styles.inactiveNav}  
-            onClick={() => navigate("/medicamentos")}  
-          >  
-            Medicamentos  
-          </button>  
-          <button style={styles.activeTab}>Registro Saúde</button>  
-        </nav>  
+    <div  className="home-idoso-container">  
+
+    {/* barra de navegação */}
+      <header className="home-idoso-header"> 
+          {/* botão de voltar */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Voltar"
+          onClick={() => navigate(-1)}
+          style={styles.backButton}
+          >
+          <i className="bi bi-chevron-left"></i>
+        </button>
+
+        {/* saudacao */}
+        <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
+
+
+        {/* barra de navegação e seus botoões */}
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/consultas")}
+        >
+          Consultas
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/medicamentos")}
+        >
+          Medicamentos
+        </button>
+
+        <button className="home-idoso-btn-ativo">Registro Saúde</button>
+
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Notificações"
+          onClick={() => navigate("/notificacoes-idoso")}
+          style={styles.notifyButton}
+        >
+          <i className="bi bi-bell"></i>
+        </button>
       </header>  
   
-      <main style={styles.mainContent}>  
+      <main className="home-idoso-doencas">  
         {loading && (  
           <p style={styles.loadingText}>Carregando registro de saúde...</p>  
         )}  
@@ -151,21 +178,14 @@ const styles = {
     alignItems: 'center',  
     gap: '15px'  
   },  
-  backButton: {  
-    backgroundColor: '#FFE866',  
-    color: '#FFFFFF',  
-    width: '35px',  
-    height: '35px',  
-    borderRadius: '50%',  
-    border: 'none',  
-    display: 'flex',  
-    alignItems: 'center',  
-    justifyContent: 'center',  
-    fontSize: '18px',  
-    fontWeight: 'bold',  
-    cursor: 'pointer',  
-    outline: 'none'  
-  },  
+  backButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+  },
+  notifyButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+  },
   title: {  
     fontSize: '32px',  
     fontWeight: 'bold',  
