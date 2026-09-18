@@ -1,17 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MedicamentosList from "../../components/medicamentos/MedicamentosList";
-import { useMedicamentos } from '../../hooks/useMedicamentos';
-import { useIdosoSelecionado } from '../../hooks/useIdosoSelecionado';
+import { useMedicamentos } from "../../hooks/useMedicamentos";
+import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
 
+
 export default function MedicationPage() {
+  const navigate = useNavigate();
   const { medicamentos, loading, deletarMedicamento } = useMedicamentos();
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicamentoEditando, setMedicamentoEditando] = useState(null);
   const [idParaDeletar, setIdParaDeletar] = useState(null);
 
-  const nomeIdoso = loadingIdoso ? "Carregando..." : (idoso?.nome || "Idoso");
+  const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
   const handleAbrirConfirmacao = (id) => {
     setIdParaDeletar(id);
@@ -38,15 +41,36 @@ export default function MedicationPage() {
     <div style={styles.container}>
       <header style={styles.header}>
         <div style={styles.titleSection}>
-          <span style={styles.backButton}>&lt;</span>
+          <button
+            style={styles.backButton}
+            onClick={() => navigate(-1)}
+            aria-label="Voltar"
+          >
+            &lt;
+          </button>
           <h1 style={styles.title}>{nomeIdoso}</h1>
         </div>
 
         <nav style={styles.nav}>
-          <button style={styles.inactiveNav}>Doenças</button>
-          <button style={styles.inactiveNav}>Consultas</button>
+          <button
+            style={styles.inactiveNav}
+            onClick={() => navigate("/doencas")}
+          >
+            Doenças
+          </button>
+          <button
+            style={styles.inactiveNav}
+            onClick={() => navigate("/consultas")}
+          >
+            Consultas
+          </button>
           <button style={styles.activeTab}>Medicamentos</button>
-          <button style={styles.inactiveNav}>Registro Saúde</button>
+          <button
+            style={styles.inactiveNav}
+            onClick={() => navigate("/registro-saude")}
+          >
+            Registro Saúde
+          </button>
         </nav>
       </header>
 
@@ -109,140 +133,142 @@ export default function MedicationPage() {
 
 const styles = {
   container: {
-    backgroundColor: '#EBF3FF',
-    minHeight: '100vh',
-    padding: '40px 60px',
-    fontFamily: 'Arial, sans-serif'
+    backgroundColor: "#EBF3FF",
+    minHeight: "100vh",
+    padding: "40px 60px",
+    fontFamily: "Arial, sans-serif",
   },
   header: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: '50px',
-    padding: '10px 30px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: '40px'
+    backgroundColor: "#FFFFFF",
+    borderRadius: "50px",
+    padding: "10px 30px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "40px",
   },
   titleSection: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '15px'
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
   },
   backButton: {
-    backgroundColor: '#FFE866',
-    color: '#FFFFFF',
-    width: '35px',
-    height: '35px',
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '18px',
-    fontWeight: 'bold'
+    backgroundColor: "#FFE866",
+    color: "#000000",
+    border: "none",
+    width: "35px",
+    height: "35px",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "18px",
+    fontWeight: "bold",
+    cursor: "pointer",
   },
   title: {
-    fontSize: '32px',
-    fontWeight: 'bold',
-    margin: 0
+    fontSize: "32px",
+    fontWeight: "bold",
+    margin: 0,
   },
   nav: {
-    display: 'flex',
-    gap: '20px',
-    alignItems: 'center'
+    display: "flex",
+    gap: "20px",
+    alignItems: "center",
   },
   activeTab: {
-    backgroundColor: '#FFE866',
-    border: 'none',
-    borderRadius: '25px',
-    padding: '8px 25px',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    outline: 'none'
+    backgroundColor: "#FFE866",
+    border: "none",
+    borderRadius: "25px",
+    padding: "8px 25px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    outline: "none",
   },
   inactiveNav: {
-    backgroundColor: 'transparent',
-    border: 'none',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    color: '#000000',
-    outline: 'none'
+    backgroundColor: "transparent",
+    border: "none",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    color: "#000000",
+    outline: "none",
   },
   actionRow: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginBottom: '25px'
+    display: "flex",
+    justifyContent: "flex-end",
+    marginBottom: "25px",
   },
   addButton: {
-    backgroundColor: '#FFE866',
-    color: '#000000',
-    border: 'none',
-    borderRadius: '25px',
-    padding: '10px 24px',
-    fontSize: '16px',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-    outline: 'none'
+    backgroundColor: "#FFE866",
+    color: "#000000",
+    border: "none",
+    borderRadius: "25px",
+    padding: "10px 24px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+    outline: "none",
   },
   addIcon: {
-    fontSize: '20px',
-    fontWeight: 'bold',
-    lineHeight: '1'
+    fontSize: "20px",
+    fontWeight: "bold",
+    lineHeight: "1",
   },
   grid: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))',
-    gap: '50px'
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+    gap: "50px",
   },
   loadingText: {
-    fontSize: '18px',
-    fontWeight: 'bold',
-    color: '#333'
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#333",
   },
   modalOverlay: {
-    position: 'fixed',
+    position: "fixed",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    zIndex: 1000
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
   },
   modalBox: {
-    backgroundColor: '#ffffff',
-    padding: '30px',
-    borderRadius: '20px',
-    textAlign: 'center',
-    maxWidth: '400px',
-    width: '90%'
+    backgroundColor: "#ffffff",
+    padding: "30px",
+    borderRadius: "20px",
+    textAlign: "center",
+    maxWidth: "400px",
+    width: "90%",
   },
   modalButtons: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    marginTop: '20px'
+    display: "flex",
+    justifyContent: "space-around",
+    marginTop: "20px",
   },
   cancelBtn: {
-    padding: '10px 20px',
-    borderRadius: '10px',
-    border: '1px solid #ccc',
-    backgroundColor: '#fff',
-    cursor: 'pointer'
+    padding: "10px 20px",
+    borderRadius: "10px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    cursor: "pointer",
   },
   confirmBtn: {
-    padding: '10px 20px',
-    borderRadius: '10px',
-    border: 'none',
-    backgroundColor: '#ff4d4d',
-    color: '#fff',
-    fontWeight: 'bold',
-    cursor: 'pointer'
-  }
+    padding: "10px 20px",
+    borderRadius: "10px",
+    border: "none",
+    backgroundColor: "#ff4d4d",
+    color: "#fff",
+    fontWeight: "bold",
+    cursor: "pointer",
+  },
 };
