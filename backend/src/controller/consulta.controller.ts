@@ -68,6 +68,23 @@ export class ConsultaController {
     }
   };
 
+Compareceu = async (req: Request, res: Response) => {
+  try {
+    const id = String(req.params.id);
+
+    const atualizado = await this._service.Compareceu(id);
+    res.status(200).json({ atualizado });
+  } catch (error: unknown) {
+    console.error(error);
+    const message =
+      error instanceof Error ? error.message : "Erro desconhecido";
+    return res.status(500).json({
+      message: "Ocorreu um erro no servidor",
+      errorMessage: message,
+    });
+  }
+};
+
   deletar = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);

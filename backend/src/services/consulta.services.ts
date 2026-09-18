@@ -30,6 +30,7 @@ export class ConsultaService {
 
     });
   }
+
   async editar(
   nomeMedico:string,
   horario:string,
@@ -53,7 +54,16 @@ export class ConsultaService {
       idIdoso: consulta.IdIdoso
     });
     
+  }
+
+async Compareceu(id: string) {
+  const consultaExistente = await this._repository.selecionarPorId(id);
+  if (consultaExistente.length === 0)
+    throw new Error("Consulta não encontrada");
+
+  return await this._repository.Compareceu(id);
 }
+
   async deletar(id: string) {
     const consultaExistente = await this._repository.selecionarPorId(id);
     if (consultaExistente.length === 0)
