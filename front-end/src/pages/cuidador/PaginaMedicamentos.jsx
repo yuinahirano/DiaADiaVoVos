@@ -5,6 +5,10 @@ import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
 
+import "../../components/styles/HomeIdoso.css";
+import "../../components/styles/Doencas.css";
+import "../../components/styles/Consultas.css";
+
 
 export default function MedicationPage() {
   const navigate = useNavigate();
@@ -38,43 +42,54 @@ export default function MedicationPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <div style={styles.titleSection}>
-          <button
-            style={styles.backButton}
-            onClick={() => navigate(-1)}
-            //onClick={() => navigate("/home-cuidador")}
-            aria-label="Voltar"
+    <div className="home-idoso-container">
+      <header className="home-idoso-header">
+        {/* botão de voltar */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Voltar"
+          onClick={() => navigate(-1)}
+          style={styles.backButton}
           >
-            &lt;
-          </button>
-          <h1 style={styles.title}>{nomeIdoso}</h1>
-        </div>
+          <i className="bi bi-chevron-left"></i>
+        </button>
 
-        {/* barra de navegação */}
-        <nav style={styles.nav}>
-          <button
-            style={styles.inactiveNav}
-            onClick={() => navigate("/doencas")}
-          >
-            Doenças
-          </button>
-          <button
-            style={styles.inactiveNav}
-            onClick={() => navigate("/consultas")}
-          >
-            Consultas
-          </button>
-          <button style={styles.activeTab}>Medicamentos</button>
-          <button
-            style={styles.inactiveNav}
-            onClick={() => navigate("/registro-saude")}
-          >
-            Registro Saúde
-          </button>
+        {/* saudacao */}
+        <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
 
-        </nav>
+
+        {/* barra de navegação e seus botoões */}
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/consultas")}
+        >
+          Consultas
+        </button>
+
+        <button className="home-idoso-btn-ativo">Medicamentos</button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/registro-saude")}
+        >
+          Registro Saúde
+        </button>
+
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Notificações"
+          onClick={() => navigate("/notificacoes-idoso")}
+          style={styles.notifyButton}
+        >
+          <i className="bi bi-bell"></i>
+        </button>
       </header>
 
       {/* adicionar medicamento */}
@@ -92,7 +107,7 @@ export default function MedicationPage() {
       </div>
 
       {/* lista de medicamentos da página */}
-      <main style={styles.grid}>
+      <main className="home-idoso-doencas">
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p>
         ) : (
@@ -162,29 +177,10 @@ const styles = {
   backButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
-    border: "none",
-    width: "35px",
-    height: "35px",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "18px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    backgroundColor: '#FFE866',
-    color: '#FFFFFF',
-    width: '35px',
-    height: '35px',
-    borderRadius: '50%',
-    border: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontSize: '18px',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    outline: 'none'
+  },
+  notifyButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
   },
   title: {
     fontSize: "32px",
@@ -218,7 +214,7 @@ const styles = {
   actionRow: {
     display: "flex",
     justifyContent: "flex-end",
-    marginBottom: "25px",
+    marginTop: "25px",
   },
   addButton: {
     backgroundColor: "#FFE866",
