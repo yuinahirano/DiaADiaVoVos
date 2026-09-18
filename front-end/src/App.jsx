@@ -5,16 +5,16 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PaginaLogin from './pages/PaginaLogin';
 import PaginaCadastro from './pages/PaginaCadastro';
 import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
-import PaginaDadosCuidador from './pages/PaginaDadosCuidador';
-import PaginaDadosIdoso from './pages/PaginaDadosIdoso';
-import PaginaVincularCuidador from './pages/PaginaVincularCuidador';
-import PaginaMedicamentos from './pages/PaginaMedicamentos';
-import PaginaHomeIdoso from './pages/PaginaHomeIdoso';
-import PaginaHomeCuidador from './pages/PaginaHomeCuidador';
-import PaginaConsultas from './pages/PaginaConsultas';
-import PaginaMedicamentosIdoso from './pages/PaginaMedicamentosIdoso';
-import PaginaNotificacoesIdoso from './pages/PaginaNotificacoesIdoso';
-import PaginaDoencas from './pages/PaginaDoencas';
+import PaginaDadosCuidador from './pages/cuidador/PaginaDadosCuidador';
+import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
+import PaginaVincularCuidador from './pages/cuidador/PaginaVincularCuidador';
+import PaginaMedicamentos from './pages/cuidador/PaginaMedicamentos';
+import PaginaHomeIdoso from './pages/idoso/PaginaHomeIdoso';
+import PaginaHomeCuidador from './pages/cuidador/PaginaHomeCuidador';
+import PaginaConsultas from './pages/cuidador/PaginaConsultas';
+import PaginaMedicamentosIdoso from './pages/idoso/PaginaMedicamentosIdoso';
+import PaginaNotificacoesIdoso from './pages/idoso/PaginaNotificacoesIdoso';
+import PaginaDoencas from './pages/cuidador/PaginaDoencas';
 
 function App() {
   return (
