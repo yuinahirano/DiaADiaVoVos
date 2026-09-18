@@ -19,10 +19,17 @@ export default function PaginaConsultas() {
 
         <button
           className="home-idoso-icone-btn"
-          aria-label="Início"
-          onClick={() => navigate("/home-idoso")}
+          aria-label="Voltar"
+          onClick={() => navigate(-1)}
         >
-          <i className="bi bi-house-door-fill"></i>
+          <i className="bi bi-chevron-left"></i>
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
         </button>
 
         <button className="home-idoso-btn-ativo">Consultas</button>
@@ -36,9 +43,9 @@ export default function PaginaConsultas() {
 
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/doencas")}
+          onClick={() => navigate("/registro-saude")}
         >
-          Doenças
+          Registro Saúde
         </button>
 
         <button

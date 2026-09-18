@@ -10,6 +10,7 @@ import {
 } from "../../service/userApi";
 import logoImg from "../../assets/logo_DiaADia.png";
 import "../../App.jsx";
+import "../../App.css";
 
 // Decodifica o payload do JWT salvo no localStorage (fallback quando /usuario/me falha)
 function obterUsuarioDoToken() {

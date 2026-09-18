@@ -2,6 +2,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 //import { vincularIdosoCuidador } from '../../service/userApi';
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { vincularIdosoCuidador } from "../../service/userApi";
 import { criarSolicitacaoCuidador } from "../../service/solicitacaoApi";
 import { AuthContext } from "../../contexts/AuthContext";
 import "../../components/styles/HomeIdoso.css";

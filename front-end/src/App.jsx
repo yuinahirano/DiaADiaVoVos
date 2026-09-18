@@ -31,10 +31,8 @@ function App() {
           {/* Rotas protegidas exclusivas do IDOSO */}
           <Route element={<ProtectedRoute allowedRoles={['idoso']} />}>
             <Route path='/home-idoso' element={<PaginaHomeIdoso />} />
-            <Route path='/consultas' element={<PaginaConsultas />} />
             <Route path='/medicamentos-idoso' element={<PaginaMedicamentosIdoso />} />
             <Route path="/notificacoes-idoso" element={<PaginaNotificacoesIdoso />} />
-            <Route path='/doencas' element={<PaginaDoencas />} />
           </Route>
 
           {/* Rotas protegidas exclusivas do CUIDADOR */}
@@ -42,12 +40,14 @@ function App() {
             <Route path='/home-cuidador' element={<PaginaHomeCuidador />} />
           </Route>
 
-          {/* Outras rotas protegidas gerais */}
-          <Route element={<ProtectedRoute />}>
+          {/* Rotas acessíveis por IDOSO e CUIDADOR */}
+          <Route element={<ProtectedRoute allowedRoles={['idoso', 'cuidador']} />}>
+            <Route path='/consultas' element={<PaginaConsultas />} />
+            <Route path='/doencas' element={<PaginaDoencas />} />
             <Route path='/medicamentos' element={<PaginaMedicamentos />} />
           </Route>
 
-          {/* Redireciona qualquer rota desconhecida de volta para a tela de Login */}
+          {/* Redireciona qualquer rota desconhecida de volta para o Login */}
           <Route path='*' element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
