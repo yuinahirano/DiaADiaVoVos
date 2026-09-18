@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
-import logoImg from "../assets/logo_DiaADia.png";
-import "../components/styles/HomeIdoso.css";
-import "../components/styles/Consultas.css";
+import logoImg from "../../assets/logo_DiaADia.png";
+import "../../components/styles/HomeIdoso.css";
+import "../../components/styles/Consultas.css";
 
 export default function PaginaConsultas() {
   const { user } = useContext(AuthContext);

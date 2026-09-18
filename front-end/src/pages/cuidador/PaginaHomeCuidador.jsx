@@ -8,8 +8,8 @@ import {
   getMeRequest,
   getCuidadores,
 } from "../../service/userApi";
-import logoImg from "../assets/logo_DiaADia.png";
-import "../App.css";
+import logoImg from "../../assets/logo_DiaADia.png";
+import "../../App.jsx";
 
 // Decodifica o payload do JWT salvo no localStorage (fallback quando /usuario/me falha)
 function obterUsuarioDoToken() {
