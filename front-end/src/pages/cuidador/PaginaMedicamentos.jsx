@@ -1,20 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import MedicamentosList from "../../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
+import { AuthContext } from "../../contexts/AuthContext";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
+import logoImg from "../../assets/logo_DiaADia.png";
 
+// Estilos padronizados
+import "../../components/styles/HomeIdoso.css";
+import "../../components/styles/Consultas.css";
 
 export default function MedicationPage() {
   const navigate = useNavigate();
+  const { user, isCuidador } = useContext(AuthContext);
   const { medicamentos, loading, deletarMedicamento } = useMedicamentos();
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicamentoEditando, setMedicamentoEditando] = useState(null);
   const [idParaDeletar, setIdParaDeletar] = useState(null);
 
-  const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
+  useEffect(() => {
+    if (idoso) {
+      localStorage.setItem("@DiaADia:idosoSelecionado", JSON.stringify(idoso));
+    }
+  }, [idoso]);
+
+  const primeiroNomeUsuario = user?.nome ? user.nome.split(" ")[0] : "";
+  const tituloHeader = isCuidador
+    ? loadingIdoso
+      ? "Carregando..."
+      : idoso?.nome || "Idoso"
+    : `Olá ${primeiroNomeUsuario}`;
 
   const handleAbrirConfirmacao = (id) => {
     setIdParaDeletar(id);
@@ -38,58 +55,88 @@ export default function MedicationPage() {
   };
 
   return (
-    <div style={styles.container}>
-      <header style={styles.header}>
-        <div style={styles.titleSection}>
-          <button
-            style={styles.backButton}
-            onClick={() => navigate(-1)}
-            aria-label="Voltar"
-          >
-            &lt;
-          </button>
-          <h1 style={styles.title}>{nomeIdoso}</h1>
-        </div>
+    <div className="home-idoso-container">
+      {/* NAVEGAÇÃO IDÊNTICA ÀS OUTRAS TELAS */}
+      <header className="home-idoso-header">
+        <h1 className="home-idoso-titulo">{tituloHeader}</h1>
 
-        <nav style={styles.nav}>
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Voltar"
+          onClick={() => navigate(isCuidador ? "/home-cuidador" : "/home-idoso")}
+        >
+          <i className="bi bi-chevron-left"></i>
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/consultas")}
+        >
+          Consultas
+        </button>
+
+        <button className="home-idoso-btn-ativo">Medicamentos</button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/registro-saude")}
+        >
+          Registro Saúde
+        </button>
+
+        {!isCuidador && (
           <button
-            style={styles.inactiveNav}
-            onClick={() => navigate("/doencas")}
+            className="home-idoso-icone-btn"
+            aria-label="Notificações"
+            onClick={() => navigate("/notificacoes-idoso")}
           >
-            Doenças
+            <i className="bi bi-bell"></i>
           </button>
-          <button
-            style={styles.inactiveNav}
-            onClick={() => navigate("/consultas")}
-          >
-            Consultas
-          </button>
-          <button style={styles.activeTab}>Medicamentos</button>
-          <button
-            style={styles.inactiveNav}
-            onClick={() => navigate("/registro-saude")}
-          >
-            Registro Saúde
-          </button>
-        </nav>
+        )}
       </header>
 
-      <div style={styles.actionRow}>
-        <button
-          style={styles.addButton}
-          onClick={() => {
-            setMedicamentoEditando(null);
-            setIsModalOpen(true);
-          }}
-        >
-          <span style={styles.addIcon}>+</span>
-          Adicionar medicamento
-        </button>
-      </div>
+      {/* ÁREA DE CONTEÚDO PRINCIPAL */}
+      <div className="home-idoso-doencas">
+        {isCuidador && (
+          <div style={{ display: "flex", justifyContent: "flex-end", width: "100%", marginBottom: "15px" }}>
+            <button
+              style={{
+                backgroundColor: "#FFE866",
+                color: "#000",
+                border: "none",
+                borderRadius: "20px",
+                padding: "8px 20px",
+                fontWeight: "bold",
+                cursor: "pointer"
+              }}
+              onClick={() => {
+                setMedicamentoEditando(null);
+                setIsModalOpen(true);
+              }}
+            >
+              + Adicionar medicamento
+            </button>
+          </div>
+        )}
 
-      <main style={styles.grid}>
         {loading ? (
-          <p style={styles.loadingText}>Carregando medicamentos...</p>
+          <p style={{ textAlign: "center", fontWeight: "bold" }}>Carregando medicamentos...</p>
+        ) : !medicamentos || medicamentos.length === 0 ? (
+          <div className="home-idoso-vazio">
+            <img
+              src={logoImg}
+              alt="Dia a Dia Vovôs"
+              className="home-idoso-vazio-logo"
+            />
+            <p className="home-idoso-vazio-texto">Nenhum medicamento cadastrado</p>
+          </div>
         ) : (
           <MedicamentosList
             medicamentos={medicamentos}
@@ -97,8 +144,9 @@ export default function MedicationPage() {
             onEdit={handleAbrirEdicao}
           />
         )}
-      </main>
+      </div>
 
+      {/* MODAIS */}
       <CadastrarMedicamento
         isOpen={isModalOpen}
         onClose={handleFecharModal}
@@ -106,19 +154,19 @@ export default function MedicationPage() {
       />
 
       {idParaDeletar && (
-        <div style={styles.modalOverlay}>
-          <div style={styles.modalBox}>
+        <div style={modalStyles.modalOverlay}>
+          <div style={modalStyles.modalBox}>
             <h3>Tem certeza que deseja excluir?</h3>
             <p>Esta ação não poderá ser desfeita.</p>
-            <div style={styles.modalButtons}>
+            <div style={modalStyles.modalButtons}>
               <button
-                style={styles.cancelBtn}
+                style={modalStyles.cancelBtn}
                 onClick={() => setIdParaDeletar(null)}
               >
                 Cancelar
               </button>
               <button
-                style={styles.confirmBtn}
+                style={modalStyles.confirmBtn}
                 onClick={handleConfirmarDeletar}
               >
                 Sim, excluir
@@ -131,105 +179,7 @@ export default function MedicationPage() {
   );
 }
 
-const styles = {
-  container: {
-    backgroundColor: "#EBF3FF",
-    minHeight: "100vh",
-    padding: "40px 60px",
-    fontFamily: "Arial, sans-serif",
-  },
-  header: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: "50px",
-    padding: "10px 30px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "40px",
-  },
-  titleSection: {
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
-  },
-  backButton: {
-    backgroundColor: "#FFE866",
-    color: "#000000",
-    border: "none",
-    width: "35px",
-    height: "35px",
-    borderRadius: "50%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "18px",
-    fontWeight: "bold",
-    cursor: "pointer",
-  },
-  title: {
-    fontSize: "32px",
-    fontWeight: "bold",
-    margin: 0,
-  },
-  nav: {
-    display: "flex",
-    gap: "20px",
-    alignItems: "center",
-  },
-  activeTab: {
-    backgroundColor: "#FFE866",
-    border: "none",
-    borderRadius: "25px",
-    padding: "8px 25px",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    outline: "none",
-  },
-  inactiveNav: {
-    backgroundColor: "transparent",
-    border: "none",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    color: "#000000",
-    outline: "none",
-  },
-  actionRow: {
-    display: "flex",
-    justifyContent: "flex-end",
-    marginBottom: "25px",
-  },
-  addButton: {
-    backgroundColor: "#FFE866",
-    color: "#000000",
-    border: "none",
-    borderRadius: "25px",
-    padding: "10px 24px",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    display: "flex",
-    alignItems: "center",
-    gap: "8px",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
-    outline: "none",
-  },
-  addIcon: {
-    fontSize: "20px",
-    fontWeight: "bold",
-    lineHeight: "1",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-    gap: "50px",
-  },
-  loadingText: {
-    fontSize: "18px",
-    fontWeight: "bold",
-    color: "#333",
-  },
+const modalStyles = {
   modalOverlay: {
     position: "fixed",
     top: 0,

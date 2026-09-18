@@ -1,17 +1,25 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useMedicamentosIdoso } from "../../hooks/useMedicamentosIdoso";
 import { useDoencas } from "../../hooks/useDoencas";
 import logoImg from "../../assets/logo_DiaADia.png";
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Consultas.css";
 
 export default function PaginaDoencas() {
-  const { user } = useContext(AuthContext);
+  const { user, isCuidador } = useContext(AuthContext);
   const { doencas, loading, error } = useDoencas();
   const navigate = useNavigate();
   const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
+
+  // Redireciona para a rota adequada conforme o perfil do usuário logado
+  const handleNavegarMedicamentos = () => {
+    if (isCuidador) {
+      navigate("/medicamentos");
+    } else {
+      navigate("/medicamentos-idoso");
+    }
+  };
 
   return (
     <div className="home-idoso-container">
@@ -37,7 +45,7 @@ export default function PaginaDoencas() {
 
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/medicamentos-idoso")}
+          onClick={handleNavegarMedicamentos}
         >
           Medicamentos
         </button>
@@ -49,13 +57,15 @@ export default function PaginaDoencas() {
           Registro Saúde
         </button>
 
-        <button
-          className="home-idoso-icone-btn"
-          aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
-        >
-          <i className="bi bi-bell"></i>
-        </button>
+        {!isCuidador && (
+          <button
+            className="home-idoso-icone-btn"
+            aria-label="Notificações"
+            onClick={() => navigate("/notificacoes-idoso")}
+          >
+            <i className="bi bi-bell"></i>
+          </button>
+        )}
       </header>
 
       <div className="home-idoso-doencas">
