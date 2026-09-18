@@ -49,7 +49,7 @@ export default function PaginaConsultas() {
 
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/medicamentos-idoso")}
+          onClick={() => navigate("/medicamentos")}
         >
           Medicamentos
         </button>
