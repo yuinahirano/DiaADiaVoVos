@@ -44,7 +44,7 @@ export default function MedicationPage() {
           <button
             style={styles.backButton}
             onClick={() => navigate(-1)}
-            onClick={() => navigate("/home-cuidador")}
+            //onClick={() => navigate("/home-cuidador")}
             aria-label="Voltar"
           >
             &lt;
