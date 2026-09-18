@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import MedicamentosList from "../../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from '../../hooks/useMedicamentos';
 import { useIdosoSelecionado } from '../../hooks/useIdosoSelecionado';
 import CadastrarMedicamento from "./PaginaAddMedicamento";
 
 export default function MedicationPage() {
+  const navigate = useNavigate();
   const { medicamentos, loading, deletarMedicamento } = useMedicamentos();
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,15 +40,21 @@ export default function MedicationPage() {
     <div style={styles.container}>
       <header style={styles.header}>
         <div style={styles.titleSection}>
-          <span style={styles.backButton}>&lt;</span>
+          <button
+            style={styles.backButton}
+            onClick={() => navigate("/home-cuidador")}
+            aria-label="Voltar"
+          >
+            &lt;
+          </button>
           <h1 style={styles.title}>{nomeIdoso}</h1>
         </div>
 
         <nav style={styles.nav}>
-          <button style={styles.inactiveNav}>Doenças</button>
-          <button style={styles.inactiveNav}>Consultas</button>
+          <button style={styles.inactiveNav} onClick={() => navigate("/doencas")}>Doenças</button>
+          <button style={styles.inactiveNav} onClick={() => navigate("/consultas")}>Consultas</button>
           <button style={styles.activeTab}>Medicamentos</button>
-          <button style={styles.inactiveNav}>Registro Saúde</button>
+          <button style={styles.inactiveNav} onClick={() => navigate("/registro-saude")}>Registro Saúde</button>
         </nav>
       </header>
 
@@ -134,11 +142,14 @@ const styles = {
     width: '35px',
     height: '35px',
     borderRadius: '50%',
+    border: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     fontSize: '18px',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    outline: 'none'
   },
   title: {
     fontSize: '32px',

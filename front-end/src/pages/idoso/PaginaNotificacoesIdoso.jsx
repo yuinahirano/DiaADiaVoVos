@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNotificacoesIdoso } from "../../hooks/useNotificacoesIdoso";
-import logoImg from "../assets/logo_DiaADia.png";
-import "../components/styles/HomeIdoso.css";
-import "../components/styles/Consultas.css";
+import logoImg from "../../assets/logo_DiaADia.png";
+import "../../components/styles/HomeIdoso.css";
+import "../../components/styles/Consultas.css";
 
 function formatarData(dataIso) {
   const data = new Date(dataIso);
