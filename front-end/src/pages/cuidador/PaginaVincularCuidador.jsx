@@ -1,87 +1,152 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { vincularIdosoCuidador } from '../../service/userApi';
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { criarSolicitacaoCuidador } from "../service/solicitacaoApi";
+import { AuthContext } from "../contexts/AuthContext";
+import "../components/styles/HomeIdoso.css";
+import "../components/styles/VincularCuidador.css";
+
+const formVazio = {
+  emailIdoso: '',
+  contatoEmergencia: ''
+};
+
+export function useAdicionarIdoso() {
+  const { user } = useContext(AuthContext);
+  const [formData, setFormData] = useState(formVazio);
+
+  const [efetuarCadastro, setEfetuarCadastro] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [erro, setErro] = useState(null);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  useEffect(() => {
+    if (!efetuarCadastro) return;
+
+    async function salvar() {
+      if (!user?.idCuidador) {
+        setErro("Você precisa estar logado como cuidador para adicionar um idoso.");
+        setEfetuarCadastro(false);
+        return;
+      }
+
+      setLoading(true);
+      setErro(null);
+
+      try {
+        await criarSolicitacaoCuidador({
+          emailIdoso: formData.emailIdoso,
+          idCuidador: user.idCuidador,
+          contatoEmergencia: formData.contatoEmergencia,
+          diasParaExpirar: 3
+        });
+        setSucesso(true);
+        setFormData(formVazio);
+      } catch (error) {
+        console.error("Erro ao adicionar idoso:", error);
+        setErro("Não foi possível enviar a solicitação. Tente novamente mais tarde.");
+      } finally {
+        setLoading(false);
+        setEfetuarCadastro(false);
+      }
+    }
+
+    salvar();
+  }, [efetuarCadastro, formData, user]);
+
+  return {
+    formData,
+    handleChange,
+    setEfetuarCadastro,
+    sucesso,
+    setSucesso,
+    loading,
+    erro,
+    setErro
+  };
+}
 
 export default function PaginaVincularCuidador() {
-  const [idCuidador, setIdCuidador] = useState('');
-  const [telefoneEmergencia, setTelefoneEmergencia] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
 
-  const handleVincular = async (e) => {
+  const {
+    formData,
+    handleChange,
+    setEfetuarCadastro,
+    sucesso,
+    loading,
+    erro
+  } = useAdicionarIdoso();
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-
-    const idIdoso = localStorage.getItem('idosoId');
-
-    try {
-      await vincularIdosoCuidador({
-        idIdoso,
-        idCuidador,
-        telefoneEmergencia
-      });
-
-      navigate('/adicionar-foto');
-    } catch (error) {
-      const msg = error.response?.data?.errorMessage || error.response?.data?.message || 'Erro ao vincular cuidador.';
-      alert(msg);
-    } finally {
-      setLoading(false);
-    }
+    setEfetuarCadastro(true);
   };
 
   return (
-    <div
-      className="min-vh-100 d-flex align-items-center justify-content-center p-3"
-      style={{ backgroundColor: '#EBF3FF', fontFamily: 'Arial, sans-serif' }}
-    >
-      <div
-        className="bg-white p-4 p-md-5 w-100 shadow-sm text-center"
-        style={{ maxWidth: '460px', borderRadius: '35px' }}
-      >
-        <h3 className="fw-bold mb-4" style={{ color: '#000' }}>
-          Vincular Cuidador & Emergência
-        </h3>
+    <div className="home-idoso-container">
+      <header className="home-idoso-header">
+        <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
-        <form onSubmit={handleVincular}>
-          <div className="mb-3 text-start">
-            <label className="fw-bold mb-1">Código do Cuidador:</label>
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Início"
+          onClick={() => navigate("/home-cuidador")}
+        >
+          <i className="bi bi-house-door-fill"></i>
+        </button>
+      </header>
+
+      <div className="vincular-cuidador-wrapper">
+        <div className="vincular-cuidador-card">
+          <h2 className="vincular-cuidador-titulo">Adicionar idoso</h2>
+
+          <form onSubmit={handleSubmit}>
+            <label className="vincular-cuidador-label">Email do Idoso:</label>
             <input
-              type="text"
-              placeholder="Digite o ID do cuidador"
-              className="form-control px-3 py-2 fw-bold"
-              style={{ backgroundColor: '#E5ECF0', border: '2px solid #1A2229', borderRadius: '16px' }}
-              value={idCuidador}
-              onChange={(e) => setIdCuidador(e.target.value)}
+              className="vincular-cuidador-input"
+              type="email"
+              name="emailIdoso"
+              value={formData.emailIdoso}
+              onChange={handleChange}
               required
             />
-          </div>
 
-          <div className="mb-4 text-start">
-            <label className="fw-bold mb-1">Telefone de Emergência:</label>
-            <div className="d-flex align-items-center gap-2">
-              <i className="bi bi-telephone-fill text-warning fs-4"></i>
-              <input
-                type="tel"
-                placeholder="(11) 99999-9999"
-                className="form-control px-3 py-2 fw-bold"
-                style={{ backgroundColor: '#E5ECF0', border: '2px solid #1A2229', borderRadius: '16px' }}
-                value={telefoneEmergencia}
-                onChange={(e) => setTelefoneEmergencia(e.target.value)}
-                required
-              />
-            </div>
-          </div>
+            <label className="vincular-cuidador-label">Contato de emergência</label>
+            <input
+              className="vincular-cuidador-input"
+              type="text"
+              name="contatoEmergencia"
+              value={formData.contatoEmergencia}
+              onChange={handleChange}
+              required
+            />
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="btn fw-bold px-4 py-2 border-0 w-100"
-            style={{ backgroundColor: '#FFEB60', color: '#000', fontSize: '1.2rem', borderRadius: '20px' }}
-          >
-            {loading ? 'Salvando...' : 'Próximo'}
-          </button>
-        </form>
+            <button
+              type="submit"
+              className="vincular-cuidador-btn"
+              disabled={loading}
+            >
+              {loading ? "Enviando..." : "Adicionar"}
+            </button>
+          </form>
+
+          {erro && <p className="vincular-cuidador-erro">{erro}</p>}
+          {sucesso && (
+            <p className="vincular-cuidador-sucesso">
+              Solicitação enviada com sucesso!
+            </p>
+          )}
+        </div>
       </div>
     </div>
   );
