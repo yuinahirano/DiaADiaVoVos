@@ -45,6 +45,14 @@ export default function PaginaHomeIdoso() {
         >
           <i className="bi bi-bell"></i>
         </button>
+
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
       </header>
 
       <div className="home-idoso-menu">
