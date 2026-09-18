@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import { useMedicamentosIdoso } from "../hooks/useMedicamentosIdoso";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useConsultas } from "../../hooks/useConsultas";
 import logoImg from "../assets/logo_DiaADia.png";
 import "../components/styles/HomeIdoso.css";
 import "../components/styles/Consultas.css";
 
-export default function PaginaMedicamentosIdoso() {
+export default function PaginaConsultas() {
   const { user } = useContext(AuthContext);
-  const { medicamentos, loading, error } = useMedicamentosIdoso();
+  const { consultas, loading, error } = useConsultas();
   const navigate = useNavigate();
   const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
 
@@ -25,14 +25,14 @@ export default function PaginaMedicamentosIdoso() {
           <i className="bi bi-house-door-fill"></i>
         </button>
 
+        <button className="home-idoso-btn-ativo">Consultas</button>
+
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/consultas")}
+          onClick={() => navigate("/medicamentos-idoso")}
         >
-          Consultas
+          Medicamentos
         </button>
-
-        <button className="home-idoso-btn-ativo">Medicamentos</button>
 
         <button
           className="home-idoso-link"
@@ -51,54 +51,39 @@ export default function PaginaMedicamentosIdoso() {
       </header>
 
       <div className="home-idoso-consultas">
-        {loading && <p>Carregando medicamentos...</p>}
+        {loading && <p>Carregando consultas...</p>}
 
-        {error && <p>Não foi possível carregar os medicamentos.</p>}
+        {error && <p>Não foi possível carregar as consultas.</p>}
 
-        {!loading && !error && medicamentos.length === 0 && (
+        {!loading && !error && consultas.length === 0 && (
           <div className="home-idoso-vazio">
             <img
               src={logoImg}
               alt="Dia a Dia Vovôs"
               className="home-idoso-vazio-logo"
             />
-            <p className="home-idoso-vazio-texto">
-              Nenhum medicamento cadastrado
-            </p>
+            <p className="home-idoso-vazio-texto">Nenhuma consulta marcada</p>
           </div>
         )}
+
         {!loading &&
           !error &&
-          medicamentos.map((medicamento) => (
-            <div className="consulta-card" key={medicamento.id}>
-              <h2 className="consulta-card-titulo">{medicamento.nome}</h2>
+          consultas.map((consulta) => (
+            <div className="consulta-card" key={consulta.id}>
+              <h2 className="consulta-card-titulo">{consulta.nome_medico}</h2>
 
               <div className="consulta-card-info">
                 <p className="consulta-card-label">
-                  Dosagem:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.dosagem}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
                   Horário:{" "}
                   <span className="consulta-card-valor">
-                    {medicamento.horario}
+                    {consulta.horario}
                   </span>
                 </p>
 
                 <p className="consulta-card-label">
-                  Frequência:{" "}
+                  Local:{" "}
                   <span className="consulta-card-valor">
-                    {medicamento.frequencia}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Observações:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.observacoes}
+                    {consulta.local_consulta}
                   </span>
                 </p>
               </div>

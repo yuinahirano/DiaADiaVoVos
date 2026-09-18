@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { vincularIdosoCuidador } from '../service/userApi';
+import { vincularIdosoCuidador } from '../../service/userApi';
 
 export default function PaginaVincularCuidador() {
   const [idCuidador, setIdCuidador] = useState('');

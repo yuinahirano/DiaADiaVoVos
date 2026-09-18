@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api_auth } from '../service/api';
+import { api_auth } from '../../service/api';
 
 export default function PaginaDadosCuidador() {
   const [telefone, setTelefone] = useState('');

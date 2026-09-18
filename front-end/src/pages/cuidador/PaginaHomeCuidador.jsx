@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   getIdosoCuidador,
   getUsuarios,
   getIdosos,
   getMeRequest,
   getCuidadores,
-} from "../service/userApi";
+} from "../../service/userApi";
 import logoImg from "../assets/logo_DiaADia.png";
 import "../App.css";
 

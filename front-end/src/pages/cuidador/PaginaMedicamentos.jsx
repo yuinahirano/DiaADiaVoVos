@@ -1,7 +1,7 @@
 import { useState } from "react";
-import MedicamentosList from "../components/medicamentos/MedicamentosList";
-import { useMedicamentos } from '../hooks/useMedicamentos';
-import { useIdosoSelecionado } from '../hooks/useIdosoSelecionado';
+import MedicamentosList from "../../components/medicamentos/MedicamentosList";
+import { useMedicamentos } from '../../hooks/useMedicamentos';
+import { useIdosoSelecionado } from '../../hooks/useIdosoSelecionado';
 import CadastrarMedicamento from "./PaginaAddMedicamento";
 
 export default function MedicationPage() {
