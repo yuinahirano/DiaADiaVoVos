@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { useAddMedicamento } from '../hooks/useAddMed';
+import { useAddMedicamento } from '../../hooks/useAddMed';
+import { useIdososDoCuidador } from '../../hooks/useIdososDoCuidador';
 
-export default function CadastrarMedicamento({isOpen, onClose}) {
+export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEditando = null }) {
     const {
         formData,
         handleChange,
@@ -10,40 +10,61 @@ export default function CadastrarMedicamento({isOpen, onClose}) {
         setSucesso,
         loading,
         erro,
-        setErro
-    } = useAddMedicamento();
+        setErro,
+        emEdicao
+    } = useAddMedicamento(medicamentoEditando);
 
-    //nulo se o modal tiver fechado
+    const { idosos, loading: loadingIdosos, erro: erroIdosos } = useIdososDoCuidador();
+
     if (!isOpen) return null;
 
-    //no clique do cadastro altera o estado gatilho no hook para iniciar a requisição
     const handleSubmit = (e) => {
-        e.preventDefault(); //impede recarregamento da imagem
+        e.preventDefault();
         setEfetuarCadastro(true);
     };
 
-    //modal de confirmação de sucesso
     const handleConfirmModal = () => {
         setSucesso(false);
-        onClose(); //fecha o modal após a confirmação
+        onClose();
     };
 
-    //modal de confirmação quando da erro
     const handleErrorModal = () => {
-        setErro(null); //fecha apenas o modal de erro
-    };
-
-    //cancelar
-    const handleCancel = () => {
-        navigate(-1);
+        setErro(null);
     };
 
     return (
         <div style={styles.modalOverlay}>
             <div style={styles.card}>
-                <h1 style={styles.title}>Cadastrar Medicamento</h1>
+                <h1 style={styles.title}>
+                    {emEdicao ? 'Editar Medicamento' : 'Cadastrar Medicamento'}
+                </h1>
 
                 <form onSubmit={handleSubmit} style={styles.form}>
+                    <div style={styles.inputGroup}>
+                        <label style={styles.label} htmlFor="idIdoso">Idoso:</label>
+                        <select
+                            id="idIdoso"
+                            name="idIdoso"
+                            value={formData.idIdoso}
+                            onChange={handleChange}
+                            style={styles.input}
+                            required
+                            disabled={loadingIdosos || emEdicao}
+                        >
+                            <option value="" disabled>
+                                {loadingIdosos ? 'Carregando idosos...' : 'Selecione o idoso'}
+                            </option>
+                            {idosos.map((idoso) => (
+                                <option key={idoso.id} value={idoso.id}>
+                                    {idoso.nome}
+                                </option>
+                            ))}
+                        </select>
+                        {erroIdosos && (
+                            <span style={styles.fieldError}>{erroIdosos}</span>
+                        )}
+                    </div>
+
                     <div style={styles.inputGroup}>
                         <label style={styles.label} htmlFor="nome">Nome:</label>
                         <input
@@ -123,19 +144,22 @@ export default function CadastrarMedicamento({isOpen, onClose}) {
                             style={styles.submitButton}
                             disabled={loading}
                         >
-                            {loading ? 'Salvando...' : 'Cadastrar'}
+                            {loading
+                                ? 'Salvando...'
+                                : (emEdicao ? 'Salvar alterações' : 'Cadastrar')}
                         </button>
                     </div>
                 </form>
             </div>
 
-            {/* submodal de confirmação */}
             {sucesso && (
                 <div style={styles.innerModalOverlay}>
                     <div style={styles.modalContent}>
                         <h2 style={styles.modalTitle}>Sucesso!</h2>
                         <p style={styles.modalText}>
-                            O medicamento foi salvo com sucesso.
+                            {emEdicao
+                                ? 'O medicamento foi atualizado com sucesso.'
+                                : 'O medicamento foi salvo com sucesso.'}
                         </p>
                         <button
                             onClick={handleConfirmModal}
@@ -152,7 +176,7 @@ export default function CadastrarMedicamento({isOpen, onClose}) {
                     <div style={styles.modalContent}>
                         <h2 style={styles.modalTitle}>Erro</h2>
                         <p style={styles.modalText}>
-                            Falha ao cadastrar o medicamento.
+                            {erro}
                         </p>
                         <button
                             onClick={handleErrorModal}
@@ -175,7 +199,7 @@ const styles = {
         left: 0,
         right: 0,
         bottom: 0,
-        width: '100vw',  // Garante a largura total da viewport
+        width: '100vw',
         height: '100vh',
         backgroundColor: 'rgba(0, 0, 0, 0.4)',
         display: 'flex',
@@ -185,7 +209,6 @@ const styles = {
         padding: '20px',
     },
 
-    //card do modal
     card: {
         backgroundColor: '#FFFFFF',
         borderRadius: '28px',
@@ -193,7 +216,7 @@ const styles = {
         width: '100%',
         maxHeight: '500px',
         maxWidth: '500px',
-        overflowY: 'auto', //permite rolar o card pelo eixo y (cima e baixo)
+        overflowY: 'auto',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
         boxSizing: 'border-box'
     },
@@ -230,6 +253,10 @@ const styles = {
         outline: 'none',
         width: '100%',
         boxSizing: 'border-box'
+    },
+    fieldError: {
+        color: '#B00020',
+        fontSize: '13px'
     },
     buttonRow: {
         display: 'flex',

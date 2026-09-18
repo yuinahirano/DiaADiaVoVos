@@ -1,74 +1,61 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import imgCuidador from '../assets/cuidador.png';
-import imgIdoso from '../assets/idoso.png';
+import cuidadorImg from '../assets/cuidador.png';
+import idosoImg from '../assets/idoso.png';
+import '../index.css'; // ou o caminho do seu arquivo de estilos
 
 export default function PaginaTipoUsuario() {
   const navigate = useNavigate();
 
-  const handleAvancar = (tipo) => {
-    if (tipo === 'CUIDADOR') {
-      navigate('/completar-cuidador');
-    } else if (tipo === 'IDOSO') {
-      navigate('/completar-idoso');
-    }
-  };
-
   return (
-    <div 
-      className="min-vh-100 d-flex flex-column align-items-center justify-content-center p-3" 
+    <div
+      className="min-vh-100 d-flex align-items-center justify-content-center p-3"
       style={{ backgroundColor: '#EBF3FF', fontFamily: 'Arial, sans-serif' }}
     >
-      <h2 className="fw-bold mb-4 text-center" style={{ color: '#000', fontSize: '2rem' }}>
-        Qual o tipo de Usuário?
-      </h2>
+      <div className="text-center" style={{ maxWidth: '700px', width: '100%' }}>
+        <h3 className="fw-bold mb-5" style={{ color: '#1A2229', fontSize: '2rem' }}>
+          Qual o tipo de Usuário?
+        </h3>
 
-      <div className="d-flex flex-row justify-content-center gap-4 flex-wrap">
-        {/* Card Cuidador */}
-        <button
-          onClick={() => handleAvancar('CUIDADOR')}
-          className="btn p-0 border-0 bg-transparent"
-          style={{
-            cursor: 'pointer',
-            transition: 'transform 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          <img 
-            src={imgCuidador} 
-            alt="Cuidador" 
-            style={{ 
-              width: '200px', 
-              height: '200px', 
-              borderRadius: '28px',
-              objectFit: 'cover' 
-            }} 
-          />
-        </button>
+        <div className="d-flex gap-4 justify-content-center">
+          {/* CUIDADOR */}
+          <button
+            onClick={() => navigate('/dados-cuidador')}
+            className="btn border-0 d-flex align-items-center justify-content-center card-usuario"
+            style={{
+              backgroundColor: '#FFEB60',
+              borderRadius: '30px',
+              width: '270px',
+              height: '270px',
+            }}
+          >
+            <img
+              src={cuidadorImg}
+              alt="Cuidador"
+              style={{ width: '75%', height: '75%', objectFit: 'contain' }}
+            />
+          </button>
 
-        {/* Card Idoso */}
-        <button
-          onClick={() => handleAvancar('IDOSO')}
-          className="btn p-0 border-0 bg-transparent"
-          style={{
-            cursor: 'pointer',
-            transition: 'transform 0.2s'
-          }}
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-        >
-          <img 
-            src={imgIdoso} 
-            alt="Idoso" 
-            style={{ 
-              width: '200px', 
-              height: '200px', 
-              borderRadius: '28px',
-              objectFit: 'cover' 
-            }} 
-          />
-        </button>
+          {/* IDOSO */}
+          <button
+            onClick={() => navigate('/dados-idoso')}
+            className="btn d-flex align-items-center justify-content-center card-usuario"
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: 'none',
+              borderRadius: '30px',
+              width: '270px',
+              height: '270px',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.06)',
+            }}
+          >
+            <img
+              src={idosoImg}
+              alt="Idoso"
+              style={{ width: '75%', height: '75%', objectFit: 'contain' }}
+            />
+          </button>
+        </div>
       </div>
     </div>
   );

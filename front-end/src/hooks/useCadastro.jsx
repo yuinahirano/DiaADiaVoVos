@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { cadastrarUsuario } from '../service/userApi';
-import api from '../service/api';
+import { api_auth } from '../service/api';
 
 export function useCadastro() {
   const [formData, setFormData] = useState({
@@ -37,6 +37,9 @@ export function useCadastro() {
     setLoading(true);
 
     try {
+      localStorage.removeItem('userToken');
+      localStorage.removeItem('usuarioId');
+
       const cpfLimpo = formData.cpf.replace(/\D/g, '');
       const dadosParaEnviar = {
         ...formData,
@@ -44,12 +47,13 @@ export function useCadastro() {
         dataNascimento: padronizarData(formData.dataNascimento)
       };
 
-      // 1. Cadastra o usuário
-      const response = await cadastrarUsuario(dadosParaEnviar);
+      console.log('--- Dados preenchidos para envio ---', dadosParaEnviar);
 
-      // 2. Tenta obter o ID fazendo login na rota correta (/usuarios/login)
+      const response = await cadastrarUsuario(dadosParaEnviar);
+      console.log('--- Resposta da API de Cadastro ---', response);
+
       try {
-        const resLogin = await api.post('/usuarios/login', {
+        const resLogin = await api_auth.post('/usuario/login', {
           email: formData.email,
           senha: formData.senha
         });
@@ -60,7 +64,7 @@ export function useCadastro() {
           const payloadBase64 = token.split('.')[1];
           const payloadDecodificado = JSON.parse(atob(payloadBase64));
 
-          if (payloadDecodificado?.id && payloadDecodificado.id !== 0) {
+          if (payloadDecodificado?.id) {
             localStorage.setItem('usuarioId', String(payloadDecodificado.id));
           }
         }

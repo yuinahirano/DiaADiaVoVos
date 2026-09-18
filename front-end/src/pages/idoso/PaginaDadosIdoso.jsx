@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../service/api';
+import { api_auth } from '../../service/api';
 
 export default function PaginaDadosIdoso() {
   const [tipoSanguineo, setTipoSanguineo] = useState('A+');
@@ -13,33 +13,28 @@ export default function PaginaDadosIdoso() {
     e.preventDefault();
     setLoading(true);
 
-    const token = localStorage.getItem('userToken');
     const usuarioId = localStorage.getItem('usuarioId');
 
     try {
-      if (usuarioId && usuarioId !== '0') {
+      if (usuarioId) {
         const payload = {
-          idUsuario: Number(usuarioId),
+          idUsuario: usuarioId,
           tipoSanguineo,
           telefone: telefone.replace(/\D/g, ''),
           pcd: isPcd ? 'sim' : 'nao',
           idImagem: null
         };
 
-        await api.post('/idosos', payload, {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
-        });
+        await api_auth.post('/idosos', payload);
       }
     } catch (err) {
-      console.warn('Ignorando erro de vínculo no backend, prosseguindo...');
+      console.warn('Ignorando erro de vínculo no backend, prosseguindo...', err);
     } finally {
       setLoading(false);
       localStorage.removeItem('userToken');
       localStorage.removeItem('usuarioId');
-      
+
       alert('Cadastro finalizado com sucesso! Faça login para continuar.');
-      
-      // Redireciona para a raiz '/' (tela de login)
       navigate('/');
     }
   };

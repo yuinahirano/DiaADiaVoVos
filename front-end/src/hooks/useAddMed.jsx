@@ -1,65 +1,90 @@
 import { useState, useEffect } from "react";
-import { addMedicamento } from "../service/medicamentoApi"; // Ajuste o caminho do seu arquivo de API
+import { addMedicamento, updateMedicamento } from "../service/medicamentoApi";
 
-export function useAddMedicamento() {
+const formVazio = {
+  nome: '',
+  dosagem: '',
+  horario: '',
+  frequencia: '',
+  observacoes: '',
+  idIdoso: ''
+};
 
-    //para armazenar os dados que vao ser inseridos
-    const [formData, setFormData] = useState({
-        nome: '',
-        dosagem: '',
-        horario: '',
-        frequencia: '',
-        observacoes: '',
-        idIdoso: ''
-    });
+export function useAddMedicamento(medicamentoEditando) {
+  const [formData, setFormData] = useState(formVazio);
 
-    const [efetuarCadastro, setEfetuarCadastro] = useState(false);
-    const [sucesso, setSucesso] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [erro, setErro] = useState(null);
+  const [efetuarCadastro, setEfetuarCadastro] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [erro, setErro] = useState(null);
 
-    //pega o valor que foi inserido e ja insere também no formulário que vai ser enviado
-    const handleChange = (e) => {
-        const { name, value } = e.target;
+  const emEdicao = Boolean(medicamentoEditando);
 
-        setFormData((prev) => ({
-            ...prev, //pega o objeto como tava antes
-            [name]: value//soberscreve apenas o campo que mudou
-        }));
-    };
+  // Preenche o formulário quando abrir em modo edição (ou limpa quando for criar)
+  useEffect(() => {
+    if (medicamentoEditando) {
+      setFormData({
+        nome: medicamentoEditando.nome || '',
+        dosagem: medicamentoEditando.dosagem || '',
+        horario: medicamentoEditando.horario || '',
+        frequencia: medicamentoEditando.frequencia || '',
+        observacoes: medicamentoEditando.observacoes || '',
+        idIdoso: medicamentoEditando.id_idoso ?? medicamentoEditando.idIdoso ?? ''
+      });
+    } else {
+      setFormData(formVazio);
+    }
+  }, [medicamentoEditando]);
 
-    useEffect(() => {
-        if (!efetuarCadastro) return;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-        async function cadastrar() {
-            setLoading(true);
-            setErro(false); //limpa erros anteriores
+  useEffect(() => {
+    if (!efetuarCadastro) return;
 
-            try {
-                
-                await addMedicamento(formData);
-                setSucesso(true);
+    async function salvar() {
+      if (!formData.idIdoso) {
+        setErro("Selecione o idoso para o qual o medicamento será cadastrado.");
+        setEfetuarCadastro(false);
+        return;
+      }
 
-            } catch (error) {
-                console.error("Erro no cadastro:", error);
-                setErro(error.respose?.data?.message || "Falha ao cadastrar novo medicamento");//salva a mensagem de erro e passa para o modal
-            } finally {
-                setLoading(false);
-                setEfetuarCadastro(false);
-            }
+      setLoading(true);
+      setErro(false);
+
+      try {
+        if (emEdicao) {
+          await updateMedicamento(medicamentoEditando.id, formData);
+        } else {
+          await addMedicamento(formData);
         }
+        setSucesso(true);
+      } catch (error) {
+        console.error("Erro no cadastro:", error);
+        setErro(
+          error.response?.data?.message ||
+          (emEdicao ? "Falha ao atualizar medicamento" : "Falha ao cadastrar novo medicamento")
+        );
+      } finally {
+        setLoading(false);
+        setEfetuarCadastro(false);
+      }
+    }
 
-        cadastrar();
-    }, [efetuarCadastro, formData]);
+    salvar();
+  }, [efetuarCadastro, formData, emEdicao, medicamentoEditando]);
 
-    return {
-        formData,
-        handleChange,
-        setEfetuarCadastro,
-        sucesso,
-        setSucesso,
-        loading,
-        erro,
-        setErro
-    };
+  return {
+    formData,
+    handleChange,
+    setEfetuarCadastro,
+    sucesso,
+    setSucesso,
+    loading,
+    erro,
+    setErro,
+    emEdicao
+  };
 }

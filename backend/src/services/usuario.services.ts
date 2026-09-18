@@ -20,6 +20,11 @@ export class UsuarioService {
     return await this._repository.selecionarPorEmail(email);
   }
 
+  selecionarPorToken = async (token: string) => {
+  const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
+  return this.selecionarPorId(decoded.id);
+};
+
   async criar(
     nome: string,
     cpf: string,
