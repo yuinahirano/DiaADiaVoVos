@@ -24,3 +24,13 @@ export async function limparSolicitacoesIdoso(idIdoso) {
   const resposta = await api_auth.delete(`/solicitacaoCuidador/idoso/limpar/${idIdoso}`);
   return resposta.data;
 }
+
+export async function criarSolicitacaoCuidador({ emailIdoso, idCuidador, contatoEmergencia, diasParaExpirar = 3 }) {
+  const resposta = await api_auth.post("/solicitacaoCuidador", {
+    emailIdoso,
+    idCuidador,
+    contatoEmergencia,
+    diasParaExpirar,
+  });
+  return resposta.data.result ?? resposta.data;
+}
