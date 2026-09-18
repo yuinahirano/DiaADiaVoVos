@@ -3,21 +3,6 @@ import './App.css';
 
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
-<<<<<<< HEAD
-import PaginaLogin from './pages/PaginaLogin'
-import PaginaCadastro from './pages/PaginaCadastro';
-import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
-import PaginaDadosCuidador from './pages/cuidador/PaginaDadosCuidador';
-import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
-import PaginaVincularCuidador from './pages/cuidador/PaginaVincularCuidador';
-import PaginaMedicamentos from './pages/cuidador/PaginaMedicamentos';
-import PaginaHomeIdoso from './pages/idoso/PaginaHomeIdoso';
-import PaginaHomeCuidador from './pages/cuidador/PaginaHomeCuidador';
-import PaginaConsultas from './pages/cuidador/PaginaConsultas';
-import PaginaMedicamentosIdoso from './pages/idoso/PaginaMedicamentosIdoso';
-import PaginaNotificacoesIdoso from './pages/idoso/PaginaNotificacoesIdoso';
-import PaginaDoencas from './pages/cuidador/PaginaDoencas';
-=======
 
 // Páginas públicas
 import PaginaLogin from './pages/PaginaLogin';
@@ -38,7 +23,6 @@ import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
 import PaginaHomeIdoso from './pages/idoso/PaginaHomeIdoso';
 import PaginaMedicamentosIdoso from './pages/idoso/PaginaMedicamentosIdoso';
 import PaginaNotificacoesIdoso from './pages/idoso/PaginaNotificacoesIdoso';
->>>>>>> feature/registroSaude
 
 function App() {
   return (
@@ -89,11 +73,6 @@ function App() {
           ========================== */}
 
           <Route element={<ProtectedRoute allowedRoles={['idoso']} />}>
-<<<<<<< HEAD
-            <Route path='/home-idoso' element={<PaginaHomeIdoso />} />
-            <Route path='/medicamentos-idoso' element={<PaginaMedicamentosIdoso />} />
-            <Route path="/notificacoes-idoso" element={<PaginaNotificacoesIdoso />} />
-=======
 
             <Route
               path="/home-idoso"
@@ -110,7 +89,6 @@ function App() {
               element={<PaginaNotificacoesIdoso />}
             />
 
->>>>>>> feature/registroSaude
           </Route>
 
           {/* =========================
@@ -146,7 +124,6 @@ function App() {
 
           </Route>
 
-<<<<<<< HEAD
           {/* Rotas acessíveis por IDOSO e CUIDADOR */}
           <Route element={<ProtectedRoute allowedRoles={['idoso', 'cuidador']} />}>
             <Route path='/consultas' element={<PaginaConsultas />} />
@@ -156,7 +133,6 @@ function App() {
 
           {/* Redireciona qualquer rota desconhecida de volta para o Login */}
           <Route path='*' element={<Navigate to="/" replace />} />
-=======
           {/* =========================
               ROTA DESCONHECIDA
           ========================== */}
@@ -166,7 +142,6 @@ function App() {
             element={<Navigate to="/" replace />}
           />
 
->>>>>>> feature/registroSaude
         </Routes>
       </BrowserRouter>
     </AuthProvider>
