@@ -1,7 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
+
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+<<<<<<< HEAD
 import PaginaLogin from './pages/PaginaLogin'
 import PaginaCadastro from './pages/PaginaCadastro';
 import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
@@ -15,31 +17,136 @@ import PaginaConsultas from './pages/cuidador/PaginaConsultas';
 import PaginaMedicamentosIdoso from './pages/idoso/PaginaMedicamentosIdoso';
 import PaginaNotificacoesIdoso from './pages/idoso/PaginaNotificacoesIdoso';
 import PaginaDoencas from './pages/cuidador/PaginaDoencas';
+=======
+
+// Páginas públicas
+import PaginaLogin from './pages/PaginaLogin';
+import PaginaCadastro from './pages/PaginaCadastro';
+import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
+
+// Páginas do cuidador
+import PaginaDadosCuidador from './pages/cuidador/PaginaDadosCuidador';
+import PaginaHomeCuidador from './pages/cuidador/PaginaHomeCuidador';
+import PaginaVincularCuidador from './pages/cuidador/PaginaVincularCuidador';
+import PaginaMedicamentos from './pages/cuidador/PaginaMedicamentos';
+import PaginaRegistroSaude from './pages/cuidador/PaginaRegistroSaude';
+import PaginaConsultas from './pages/cuidador/PaginaConsultas';
+import PaginaDoencas from './pages/cuidador/PaginaDoencas';
+
+// Páginas do idoso
+import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
+import PaginaHomeIdoso from './pages/idoso/PaginaHomeIdoso';
+import PaginaMedicamentosIdoso from './pages/idoso/PaginaMedicamentosIdoso';
+import PaginaNotificacoesIdoso from './pages/idoso/PaginaNotificacoesIdoso';
+>>>>>>> feature/registroSaude
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<PaginaLogin />} />
-          <Route path='/cadastro' element={<PaginaCadastro />} />
-          <Route path='/tipo-usuario' element={<PaginaTipoUsuario />} />
-          <Route path='/dados-cuidador' element={<PaginaDadosCuidador />} />
-          <Route path='/dados-idoso' element={<PaginaDadosIdoso />} />
-          <Route path='/vincular-cuidador' element={<PaginaVincularCuidador />} />
 
-          {/* Rotas protegidas exclusivas do IDOSO */}
+          {/* =========================
+              ROTAS PÚBLICAS
+          ========================== */}
+
+          <Route
+            path="/"
+            element={<PaginaLogin />}
+          />
+
+          <Route
+            path="/cadastro"
+            element={<PaginaCadastro />}
+          />
+
+          <Route
+            path="/tipo-usuario"
+            element={<PaginaTipoUsuario />}
+          />
+
+          {/* =========================
+              ROTAS DE CADASTRO
+          ========================== */}
+
+          <Route
+            path="/dados-cuidador"
+            element={<PaginaDadosCuidador />}
+          />
+
+          <Route
+            path="/dados-idoso"
+            element={<PaginaDadosIdoso />}
+          />
+
+          <Route
+            path="/vincular-cuidador"
+            element={<PaginaVincularCuidador />}
+          />
+
+          {/* =========================
+              ROTAS PROTEGIDAS - IDOSO
+          ========================== */}
+
           <Route element={<ProtectedRoute allowedRoles={['idoso']} />}>
+<<<<<<< HEAD
             <Route path='/home-idoso' element={<PaginaHomeIdoso />} />
             <Route path='/medicamentos-idoso' element={<PaginaMedicamentosIdoso />} />
             <Route path="/notificacoes-idoso" element={<PaginaNotificacoesIdoso />} />
+=======
+
+            <Route
+              path="/home-idoso"
+              element={<PaginaHomeIdoso />}
+            />
+
+            <Route
+              path="/medicamentos-idoso"
+              element={<PaginaMedicamentosIdoso />}
+            />
+
+            <Route
+              path="/notificacoes-idoso"
+              element={<PaginaNotificacoesIdoso />}
+            />
+
+>>>>>>> feature/registroSaude
           </Route>
 
-          {/* Rotas protegidas exclusivas do CUIDADOR */}
+          {/* =========================
+              ROTAS PROTEGIDAS - CUIDADOR
+          ========================== */}
+
           <Route element={<ProtectedRoute allowedRoles={['cuidador']} />}>
-            <Route path='/home-cuidador' element={<PaginaHomeCuidador />} />
+
+            <Route
+              path="/home-cuidador"
+              element={<PaginaHomeCuidador />}
+            />
+
+            <Route
+              path="/consultas"
+              element={<PaginaConsultas />}
+            />
+
+            <Route
+              path="/medicamentos"
+              element={<PaginaMedicamentos />}
+            />
+
+            <Route
+              path="/registro-saude"
+              element={<PaginaRegistroSaude />}
+            />
+
+            <Route
+              path="/doencas"
+              element={<PaginaDoencas />}
+            />
+
           </Route>
 
+<<<<<<< HEAD
           {/* Rotas acessíveis por IDOSO e CUIDADOR */}
           <Route element={<ProtectedRoute allowedRoles={['idoso', 'cuidador']} />}>
             <Route path='/consultas' element={<PaginaConsultas />} />
@@ -49,6 +156,17 @@ function App() {
 
           {/* Redireciona qualquer rota desconhecida de volta para o Login */}
           <Route path='*' element={<Navigate to="/" replace />} />
+=======
+          {/* =========================
+              ROTA DESCONHECIDA
+          ========================== */}
+
+          <Route
+            path="*"
+            element={<Navigate to="/" replace />}
+          />
+
+>>>>>>> feature/registroSaude
         </Routes>
       </BrowserRouter>
     </AuthProvider>

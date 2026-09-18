@@ -44,6 +44,7 @@ export default function MedicationPage() {
           <button
             style={styles.backButton}
             onClick={() => navigate(-1)}
+            onClick={() => navigate("/home-cuidador")}
             aria-label="Voltar"
           >
             &lt;
@@ -71,6 +72,10 @@ export default function MedicationPage() {
           >
             Registro Saúde
           </button>
+          <button style={styles.inactiveNav} onClick={() => navigate("/doencas")}>Doenças</button>
+          <button style={styles.inactiveNav} onClick={() => navigate("/consultas")}>Consultas</button>
+          <button style={styles.activeTab}>Medicamentos</button>
+          <button style={styles.inactiveNav} onClick={() => navigate("/registro-saude")}>Registro Saúde</button>
         </nav>
       </header>
 
@@ -165,6 +170,19 @@ const styles = {
     fontSize: "18px",
     fontWeight: "bold",
     cursor: "pointer",
+    backgroundColor: '#FFE866',
+    color: '#FFFFFF',
+    width: '35px',
+    height: '35px',
+    borderRadius: '50%',
+    border: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '18px',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    outline: 'none'
   },
   title: {
     fontSize: "32px",
