@@ -40,7 +40,8 @@ export default function PaginaDoencas() {
           className="home-idoso-icone-btn"
           aria-label="Voltar"
           onClick={() => navigate(-1)}
-        >
+          style={styles.backButton}
+          >
           <i className="bi bi-chevron-left"></i>
         </button>
 
@@ -76,6 +77,7 @@ export default function PaginaDoencas() {
           className="home-idoso-icone-btn"
           aria-label="Notificações"
           onClick={() => navigate("/notificacoes-idoso")}
+          style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
         </button>
@@ -111,3 +113,14 @@ export default function PaginaDoencas() {
     </div>
   );
 }
+
+const styles = {
+  backButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+  },
+  notifyButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+  },
+};
