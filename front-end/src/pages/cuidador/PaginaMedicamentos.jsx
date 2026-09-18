@@ -52,6 +52,7 @@ export default function MedicationPage() {
           <h1 style={styles.title}>{nomeIdoso}</h1>
         </div>
 
+        {/* barra de navegação */}
         <nav style={styles.nav}>
           <button
             style={styles.inactiveNav}
@@ -72,13 +73,11 @@ export default function MedicationPage() {
           >
             Registro Saúde
           </button>
-          <button style={styles.inactiveNav} onClick={() => navigate("/doencas")}>Doenças</button>
-          <button style={styles.inactiveNav} onClick={() => navigate("/consultas")}>Consultas</button>
-          <button style={styles.activeTab}>Medicamentos</button>
-          <button style={styles.inactiveNav} onClick={() => navigate("/registro-saude")}>Registro Saúde</button>
+
         </nav>
       </header>
 
+      {/* adicionar medicamento */}
       <div style={styles.actionRow}>
         <button
           style={styles.addButton}
@@ -92,6 +91,7 @@ export default function MedicationPage() {
         </button>
       </div>
 
+      {/* lista de medicamentos da página */}
       <main style={styles.grid}>
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p>
@@ -104,12 +104,14 @@ export default function MedicationPage() {
         )}
       </main>
 
+      {/* modal para cadastro */}
       <CadastrarMedicamento
         isOpen={isModalOpen}
         onClose={handleFecharModal}
         medicamentoEditando={medicamentoEditando}
       />
 
+      {/* deletar medicamento */}
       {idParaDeletar && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalBox}>
