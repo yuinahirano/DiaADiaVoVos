@@ -17,44 +17,6 @@ export default function PaginaHomeIdoso() {
 {/* saudação */}
         <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
-{/* botão da home */}
-        <button className="home-idoso-icone-btn" aria-label="Início">
-          <i className="bi bi-house-door-fill"></i>
-        </button>
-
-{/* botão de consultas */}
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/consultas-idoso")}
-        >
-          Consultas
-        </button>
-
-{/* botão de medicamentos */}
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/medicamentos-idoso")}
-        >
-          Medicamentos
-        </button>
-
-{/* botão de doenças */}
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/doencas-idoso")}
-        >
-          Doenças
-        </button>
-
-{/* botão de notificação */}
-        <button
-          className="home-idoso-icone-btn"
-          aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
-        >
-          <i className="bi bi-bell"></i>
-        </button>
-
 {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
@@ -68,7 +30,7 @@ export default function PaginaHomeIdoso() {
       <div className="home-idoso-menu">
         <button
           className="home-idoso-menu-card home-idoso-menu-card-consultas"
-          onClick={() => navigate("/consultas")}
+          onClick={() => navigate("/consultas-idoso")}
         >
           <i className="bi bi-chat-square-heart"></i>
           <span>Consultas</span>

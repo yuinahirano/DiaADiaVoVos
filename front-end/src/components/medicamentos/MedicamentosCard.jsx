@@ -47,7 +47,7 @@ const styles = {
   },
   cardTitle: {
     color: '#000000',
-    fontSize: '30px',
+    fontSize: '28px',
     fontWeight: 'bold',
     margin: '10px 0 10px 10px',
   },
