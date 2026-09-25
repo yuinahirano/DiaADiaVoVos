@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api_auth } from '../../service/api';
+import { cadastrarCuidador } from '../../service/userApi';
 
 export default function PaginaDadosCuidador() {
   const [telefone, setTelefone] = useState('');
@@ -12,12 +12,10 @@ export default function PaginaDadosCuidador() {
     setLoading(true);
 
     try {
-      const payload = {
+      await cadastrarCuidador({
         idUsuario: localStorage.getItem('usuarioId') || '',
-        telefone: telefone.replace(/\D/g, '')
-      };
-
-      await api_auth.post('/cuidadores', payload);
+        telefone,
+      });
     } catch (err) {
       console.warn('Backend não vinculou o cuidador, prosseguindo para o login...', err);
     } finally {

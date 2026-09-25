@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api_auth } from '../../service/api';
+import { cadastrarIdoso } from '../../service/idosoApi';
 
 export default function PaginaDadosIdoso() {
   const [tipoSanguineo, setTipoSanguineo] = useState('A+');
@@ -17,15 +17,12 @@ export default function PaginaDadosIdoso() {
 
     try {
       if (usuarioId) {
-        const payload = {
+        await cadastrarIdoso({
           idUsuario: usuarioId,
           tipoSanguineo,
-          telefone: telefone.replace(/\D/g, ''),
-          pcd: isPcd ? 'sim' : 'nao',
-          idImagem: null
-        };
-
-        await api_auth.post('/idosos', payload);
+          telefone,
+          pcd: isPcd,
+        });
       }
     } catch (err) {
       console.warn('Ignorando erro de vínculo no backend, prosseguindo...', err);

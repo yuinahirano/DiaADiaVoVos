@@ -51,3 +51,14 @@ export async function getCuidadores() {
   const resposta = await api_auth.get("/cuidadores"); // <-- era "/cuidador"
   return resposta.data.result || resposta.data;
 }
+
+// 9. CADASTRAR DADOS DO CUIDADOR (etapa final do cadastro, vincula telefone ao usuário)
+export async function cadastrarCuidador({ idUsuario, telefone }) {
+  const payload = {
+    idUsuario,
+    telefone: (telefone || "").replace(/\D/g, ""),
+  };
+
+  const resposta = await api_auth.post("/cuidadores", payload);
+  return resposta.data;
+}

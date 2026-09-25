@@ -24,3 +24,17 @@ export async function getDoencas() {
   const resposta = await api_auth.get(`/doenca`);
   return resposta.data.result;
 }
+
+// CADASTRAR DADOS DO IDOSO (etapa final do cadastro)
+export async function cadastrarIdoso({ idUsuario, tipoSanguineo, telefone, pcd, idImagem = null }) {
+  const payload = {
+    idUsuario,
+    tipoSanguineo,
+    telefone: (telefone || "").replace(/\D/g, ""),
+    pcd: pcd ? "sim" : "nao",
+    idImagem,
+  };
+
+  const resposta = await api_auth.post("/idosos", payload);
+  return resposta.data;
+}
