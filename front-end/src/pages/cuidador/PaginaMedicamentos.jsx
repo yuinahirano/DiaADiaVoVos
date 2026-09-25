@@ -5,6 +5,7 @@ import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
 
+import logoImg from "../../assets/logo_DiaADia.png";
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
@@ -109,7 +110,17 @@ export default function MedicationPage() {
       {/* lista de medicamentos da página */}
       <main className="home-idoso-doencas">
         {loading ? (
-          <p style={styles.loadingText}>Carregando medicamentos...</p>
+          // <p style={styles.loadingText}>Carregando medicamentos...</p>
+
+          <div className="home-idoso-vazio">
+            <img
+              src={logoImg}
+              alt="Dia a Dia Vovôs"
+              className="home-idoso-vazio-logo"
+            />
+            <p className="home-idoso-vazio-texto">Nenhuma doença cadastrada</p>
+          </div>
+
         ) : (
           <MedicamentosList
             medicamentos={medicamentos}
