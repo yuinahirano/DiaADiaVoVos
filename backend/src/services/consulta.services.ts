@@ -20,13 +20,15 @@ export class ConsultaService {
     horario: string,
     localConsulta: string,
     idIdoso: string,
+    data: string,
   ) {
-    const doenca = Consulta.criar(nomeMedico, horario, localConsulta, idIdoso);
+    const doenca = Consulta.criar(nomeMedico, horario, localConsulta, idIdoso, data);
     return await this._repository.criar({
       nomeMedico: doenca.NomeMedico,
       horario: doenca.Horario,
       localConsulta: doenca.LocalConsulta,
       idIdoso: doenca.IdIdoso,
+      data: doenca.Data,
 
     });
   }
@@ -36,6 +38,7 @@ export class ConsultaService {
   horario:string,
   localConsulta:string,
   idIdoso:string,
+  data:string,
   id:string,
   ) {
     const cuiadorExistente = await this._idosoRepository.selecionarPorId(idIdoso);
@@ -45,13 +48,14 @@ export class ConsultaService {
     if (consultaExistente.length === 0)
       throw new Error("consulta não encontrada");
 
-    const consulta = Consulta.editar(nomeMedico, horario, localConsulta, idIdoso, id);
+    const consulta = Consulta.editar(nomeMedico, horario, localConsulta, idIdoso, data, id);
 
     return await this._repository.editar(id, {
       nomeMedico: consulta.NomeMedico,
       horario: consulta.Horario,
       localConsulta: consulta.LocalConsulta,
-      idIdoso: consulta.IdIdoso
+      idIdoso: consulta.IdIdoso,
+      data: consulta.Data,
     });
     
   }

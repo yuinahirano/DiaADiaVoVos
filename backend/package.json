@@ -1,7 +1,7 @@
 {
-"scripts": {
-  "dev": "nodemon --exec ts-node server.ts",
-  "seed:admin": "ts-node src/database/seeds/adminSeed.ts"
+  "scripts": {
+    "dev": "nodemon --exec ts-node server.ts",
+    "seed:admin": "ts-node src/database/seeds/adminSeed.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -17,7 +17,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "axios": "^1.19.0",
+    "axios": "^1.20.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
@@ -26,6 +26,8 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.2.0",
     "mysql2": "^3.18.0",
+    "react": "^19.3.0",
+    "react-native": "^0.86.3",
     "uuid": "^14.0.0"
   }
 }

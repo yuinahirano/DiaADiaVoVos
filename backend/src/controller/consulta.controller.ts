@@ -26,12 +26,13 @@ export class ConsultaController {
 
   criar = async (req: Request, res: Response) => {
     try {
-      const { nomeMedico, horario, localConsulta, idIdoso } = req.body;
+      const { nomeMedico, horario, localConsulta, idIdoso, data } = req.body;
       const novo = await this._service.criar(
         nomeMedico,
         horario,
         localConsulta,
         idIdoso,
+        data,
       );
       res.status(201).json({ novo });
     } catch (error: unknown) {
@@ -48,12 +49,13 @@ export class ConsultaController {
   editar = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);
-      const { nomeMedico, horario, localConsulta, idIdoso } = req.body;
+      const { nomeMedico, horario, localConsulta, idIdoso, data } = req.body;
       const editado = await this._service.editar(
         nomeMedico,
         horario,
         localConsulta,
         idIdoso,
+        data,
         id,
       );
       res.status(200).json({ editado });

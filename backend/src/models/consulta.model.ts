@@ -5,6 +5,7 @@ export interface IConsulta extends RowDataPacket {
     horario: string,
     localConsulta: string,
     idIdoso: string,
+    data: string,
     compareceu?: boolean,
     id?: string,
 }
@@ -15,6 +16,7 @@ export class Consulta {
   private _horario: string;
   private _localconsulta!: string;
   private _idIdoso!: string;
+  private _data!: string;
   private _compareceu: boolean;
 
   constructor(
@@ -22,6 +24,7 @@ export class Consulta {
     horario: string,
     localConsulta: string,
     idIdoso: string,
+    data: string,
     id?: string,
     compareceu: boolean = false,
   ) {
@@ -30,6 +33,7 @@ export class Consulta {
     this._horario = horario;
     this._localconsulta = localConsulta;
     this._idIdoso = idIdoso;
+    this._data = data;
     this._compareceu = compareceu;
   }
 
@@ -49,6 +53,9 @@ export class Consulta {
   }
   public get IdIdoso(): string {
     return this._idIdoso;
+  }
+  public get Data(): string {
+    return this._data;
   }
   public get Compareceu(): boolean {
     return this._compareceu;
@@ -73,6 +80,10 @@ export class Consulta {
   public set Horario(value: string) {
     this._validarHorario(value);
     this._horario = value;
+  }
+  public set Data(value: string) {
+    this._validarData(value);
+    this._data = value;
   }
   public set Compareceu(value: boolean) {
     this._validarCompareceu(value);
@@ -104,6 +115,14 @@ export class Consulta {
           throw new Error("O campo idIdoso está incompleto");
       this._idIdoso = value;
   }
+  private _validarData(value: string): void {
+      if (!value || value.trim().length < 8)
+          throw new Error("O campo data está incompleto");
+      const dataConvertida = new Date(value);
+      if (isNaN(dataConvertida.getTime()))
+          throw new Error("O campo data possui um formato inválido");
+      this._data = value;
+  }
   private _validarCompareceu(value: boolean): void {
       if (typeof value !== "boolean")
           throw new Error("O campo compareceu deve ser um valor booleano");
@@ -115,8 +134,9 @@ export class Consulta {
     horario: string,
     localConsulta: string,
     idIdoso: string,
+    data: string,
   ): Consulta {
-    return new Consulta( nomeMedico, horario, localConsulta, idIdoso);
+    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data);
   }
   
   public static editar(
@@ -124,8 +144,9 @@ export class Consulta {
       horario: string,
       localConsulta: string,
       idIdoso: string,
+      data: string,
       id: string,
     ): Consulta {
-    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, id);
+    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data, id);
   }
 }
