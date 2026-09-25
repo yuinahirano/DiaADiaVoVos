@@ -90,15 +90,6 @@ export default function PaginaRegistroSaude() {
 
         <button className="home-idoso-btn-ativo">Registro Saúde</button>
 
-        <button
-          className="home-idoso-icone-btn"
-          aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
-          style={styles.notifyButton}
-        >
-          <i className="bi bi-bell"></i>
-        </button>
-
         {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
