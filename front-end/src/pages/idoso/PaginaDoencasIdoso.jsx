@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useDoencas } from "../../hooks/useDoencas";
 import logoImg from "../../assets/logo_DiaADia.png";
-import DoencasList from "../../components/doencas/DoencaList";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
+import DoencasListIdoso from "../../components/doencas/DoencaListIdoso";
 
+// estilizações
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
+import "../../App.css";
 
-export default function PaginaDoencas() {
+export default function PaginaDoencasIdoso() {
   //const { user } = useContext(AuthContext);
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
   const { doencas, loading, error, deleteDoenca } = useDoencas(idoso?.id);
@@ -33,53 +35,54 @@ export default function PaginaDoencas() {
 
   return (
     <div className="home-idoso-container">
+      {/* barra de navegação */}
       <header className="home-idoso-header">
 
-        {/* botão de voltar */}
-        <button
-          className="home-idoso-icone-btn"
-          aria-label="Voltar"
-          onClick={() => navigate(-1)}
-          style={styles.backButton}
-          >
-          <i className="bi bi-chevron-left"></i>
+{/* saudação */}
+        <h1 className="home-idoso-titulo">Olá {nomeIdoso}</h1>
+
+{/* botão da home */}
+        <button className="home-idoso-icone-btn" 
+        aria-label="Início"
+        onClick={() => navigate("/home-idoso")}>
+          <i className="bi bi-house-door-fill"></i>
         </button>
 
-        {/* saudacao */}
-        <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
-
-
-        {/* barra de navegação e seus botoões */}
-        <button className="home-idoso-btn-ativo">Doenças</button>
-
+{/* botão de consultas */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/consultas")}
+          onClick={() => navigate("/consultas-idoso")}
         >
           Consultas
         </button>
 
+{/* botão de medicamentos */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/medicamentos")}
+          onClick={() => navigate("/medicamentos-idoso")}
         >
           Medicamentos
         </button>
 
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/registro-saude")}
-        >
-          Registro Saúde
-        </button>
+{/* botão de doenças */}
+        <button className="home-idoso-btn-ativo">Doenças</button>
 
+{/* botão de notificação */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
           onClick={() => navigate("/notificacoes-idoso")}
-          style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
+        </button>
+
+{/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
         </button>
       </header>
 
@@ -102,7 +105,7 @@ export default function PaginaDoencas() {
 
         {/* chamando os componentes com a listagem */}
         {!loading && !error && doencas.length > 0 && (
-          <DoencasList
+          <DoencasListIdoso
             doencas={doencas}
             onDelete={handleDelete}
             onEdit={handleEdit}

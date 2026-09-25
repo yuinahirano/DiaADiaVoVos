@@ -10,20 +10,27 @@ export default function PaginaHomeIdoso() {
 
   return (
     <div className="home-idoso-container">
+
+      {/* barra de navegação */}
       <header className="home-idoso-header">
+
+{/* saudação */}
         <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
+{/* botão da home */}
         <button className="home-idoso-icone-btn" aria-label="Início">
           <i className="bi bi-house-door-fill"></i>
         </button>
 
+{/* botão de consultas */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/consultas")}
+          onClick={() => navigate("/consultas-idoso")}
         >
           Consultas
         </button>
 
+{/* botão de medicamentos */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos-idoso")}
@@ -31,13 +38,15 @@ export default function PaginaHomeIdoso() {
           Medicamentos
         </button>
 
+{/* botão de doenças */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/doencas")}
+          onClick={() => navigate("/doencas-idoso")}
         >
           Doenças
         </button>
 
+{/* botão de notificação */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
@@ -46,6 +55,7 @@ export default function PaginaHomeIdoso() {
           <i className="bi bi-bell"></i>
         </button>
 
+{/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Sair"
@@ -74,7 +84,7 @@ export default function PaginaHomeIdoso() {
 
         <button
           className="home-idoso-menu-card home-idoso-menu-card-doencas"
-          onClick={() => navigate("/doencas")}
+          onClick={() => navigate("/doencas-idoso")}
         >
           <i className="bi bi-clipboard2-pulse"></i>
           <span>Doenças</span>

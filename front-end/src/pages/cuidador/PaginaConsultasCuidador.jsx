@@ -4,6 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import logoImg from "../../assets/logo_DiaADia.png";
+import PaginaHomeCuidador from '../../pages/cuidador/PaginaHomeCuidador';
 
 //estilizações
 import "../../components/styles/HomeIdoso.css";
@@ -33,7 +34,7 @@ export default function PaginaConsultas() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
           >
           <i className="bi bi-chevron-left"></i>
@@ -75,6 +76,15 @@ export default function PaginaConsultas() {
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
+        </button>
+
+        {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
         </button>
 
       </header>

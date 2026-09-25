@@ -65,7 +65,7 @@ export default function PaginaNotificacoesIdoso() {
         </button>
 
         <button
-          className="home-idoso-icone-btn home-idoso-icone-btn-ativo"
+          className="home-idoso-icone-btn"
           aria-label="Notificações"
         >
           <i className="bi bi-bell-fill"></i>

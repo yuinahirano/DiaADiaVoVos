@@ -4,6 +4,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import logoImg from "../../assets/logo_DiaADia.png";
+import "../../App.css";
 
 //estilizações
 import "../../components/styles/HomeIdoso.css";
@@ -17,7 +18,7 @@ function formatarData(data) {
   return dataConvertida.toLocaleDateString("pt-BR", { timeZone: "UTC" });
 }
 
-export default function PaginaConsultas() {
+export default function PaginaConsultasIdoso() {
   const { user } = useContext(AuthContext);
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
   const { consultas, loading, error } = useConsultas(idoso?.id);
@@ -26,57 +27,57 @@ export default function PaginaConsultas() {
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
   return (
-    <div className="consultas-container">
+    <div className="home-idoso-container">
+      
+      {/* barra de navegação */}
       <header className="home-idoso-header">
 
-        {/* botão de voltar */}
-        <button
-          className="home-idoso-icone-btn"
-          aria-label="Voltar"
-          onClick={() => navigate(-1)}
-          style={styles.backButton}
-          >
-          <i className="bi bi-chevron-left"></i>
+        {/* saudação */}
+        <h1 className="home-idoso-titulo">Olá {nomeIdoso}</h1>
+
+{/* botão de home */}
+        <button className="home-idoso-icone-btn" 
+        aria-label="Início"
+        onClick={() => navigate("/home-idoso")}>
+          <i className="bi bi-house-door-fill"></i>
         </button>
 
-        {/* saudacao */}
-        <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
+{/* botão de consultas - ATIVO */}
+        <button className="home-idoso-btn-ativo">Consultas</button>
 
-
-        {/* barra de navegação e seus botoões */}
-
+{/* botão de medicamentos */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/doencas")}
-        >
-          Doenças
-        </button>
-
-        <button className="home-idoso-btn-ativo">Consulta</button>
-
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/medicamentos")}
+          onClick={() => navigate("/medicamentos-idoso")}
         >
           Medicamentos
         </button>
 
+{/* botão de página de doenças */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/registro-saude")}
+          onClick={() => navigate("/doencas-idoso")}
         >
-          Registro Saúde
+          Doenças
         </button>
 
+{/* botão de notificações */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
           onClick={() => navigate("/notificacoes-idoso")}
-          style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
         </button>
 
+{/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
       </header>
 
       <div className="home-idoso-consultas">
@@ -146,7 +147,7 @@ export default function PaginaConsultas() {
 }
 
 const styles = {
-  backButton: {
+  corBotoes: {
     backgroundColor: "#FFE866",
     color: "#000000",
   },
