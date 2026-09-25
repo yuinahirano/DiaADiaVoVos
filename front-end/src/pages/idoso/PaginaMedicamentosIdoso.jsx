@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
-import { useMedicamentosIdoso } from "../hooks/useMedicamentosIdoso";
-import logoImg from "../assets/logo_DiaADia.png";
-import "../components/styles/HomeIdoso.css";
-import "../components/styles/Consultas.css";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useMedicamentosIdoso } from "../../hooks/useMedicamentosIdoso";
+import logoImg from "../../assets/logo_DiaADia.png";
+import "../../components/styles/HomeIdoso.css";
+import "../../components/styles/Consultas.css";
 
 export default function PaginaMedicamentosIdoso() {
   const { user } = useContext(AuthContext);

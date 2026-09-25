@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import { getDoencas, getIdosos } from "../service/idosoApi";
 
-export function useDoencas() {
+export function useDoencas(idosoId) {
   const { user } = useContext(AuthContext);
   const [doencas, setDoencas] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,7 +10,9 @@ export function useDoencas() {
 
   useEffect(() => {
     async function carregarDoencas() {
-      if (!user?.id) {
+      // Se não houver ID do idoso passado ainda, interrompe a busca
+      if (!idosoId) {
+        setDoencas([]);
         setLoading(false);
         return;
       }
@@ -19,21 +21,16 @@ export function useDoencas() {
         setLoading(true);
         setError(null);
 
-        const idosos = await getIdosos();
-        const idosoAtual = idosos.find((idoso) => idoso.id_usuario === user.id);
-
-        if (!idosoAtual) {
-          setDoencas([]);
-          return;
-        }
-
         const todasDoencas = await getDoencas();
+
+        // Filtra as doenças associadas ao ID do idoso ativo
         const doencasDoIdoso = todasDoencas.filter(
-          (doenca) => doenca.id_idoso === idosoAtual.id
+          (doenca) => String(doenca.id_idoso) === String(idosoId)
         );
 
         setDoencas(doencasDoIdoso);
       } catch (err) {
+        console.error("Erro ao carregar doenças:", err);
         setError(err);
       } finally {
         setLoading(false);
@@ -41,7 +38,7 @@ export function useDoencas() {
     }
 
     carregarDoencas();
-  }, [user]);
+  }, [idosoId]); // Executa novamente sempre que o idoso selecionado mudar
 
   return { doencas, loading, error };
 }

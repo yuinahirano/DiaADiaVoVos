@@ -1,5 +1,5 @@
-import { useAddMedicamento } from '../hooks/useAddMed';
-import { useIdososDoCuidador } from '../hooks/useIdososDoCuidador';
+import { useAddMedicamento } from '../../hooks/useAddMed';
+import { useIdososDoCuidador } from '../../hooks/useIdososDoCuidador';
 
 export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEditando = null }) {
     const {

@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import {
   getIdosoCuidador,
   getUsuarios,
   getIdosos,
   getMeRequest,
   getCuidadores,
-} from "../service/userApi";
-import logoImg from "../assets/logo_DiaADia.png";
-import "../App.css";
+} from "../../service/userApi";
+import logoImg from "../../assets/logo_DiaADia.png";
+import "../../App.jsx";
+import "../../App.css";
 
 // Decodifica o payload do JWT salvo no localStorage (fallback quando /usuario/me falha)
 function obterUsuarioDoToken() {
