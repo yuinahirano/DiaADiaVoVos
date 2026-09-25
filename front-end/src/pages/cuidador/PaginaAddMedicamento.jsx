@@ -49,11 +49,12 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
                             onChange={handleChange}
                             style={styles.input}
                             required
-                            disabled={loadingIdosos || emEdicao}
+                            // disabled={loadingIdosos || emEdicao}
+                            disabled={true}
                         >
-                            <option value="" disabled>
+                            {/* <option value="" disabled>
                                 {loadingIdosos ? 'Carregando idosos...' : 'Selecione o idoso'}
-                            </option>
+                            </option> */}
                             {idosos.map((idoso) => (
                                 <option key={idoso.id} value={idoso.id}>
                                     {idoso.nome}
