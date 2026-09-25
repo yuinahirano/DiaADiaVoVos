@@ -16,14 +16,15 @@ export class ConsultaRepository {
 
   async criar(dados: Omit<IConsulta, "id">): Promise<ResultSetHeader> {
     const sql = `INSERT INTO consulta 
-            (nome_medico, horario, local_consulta, id_idoso, data)  
-              VALUES (?,?,?,?,?);`;
+            (nome_medico, horario, local_consulta, id_idoso, data, descricao)  
+              VALUES (?,?,?,?,?,?);`;
     const values = [
       dados.nomeMedico,
       dados.horario,
       dados.localConsulta,
       dados.idIdoso,
       dados.data,
+      dados.descricao,
     ];
     const [rows] = await db.execute<ResultSetHeader>(sql, values);
     return rows;
@@ -39,11 +40,12 @@ export class ConsultaRepository {
       dados.localConsulta,
       dados.idIdoso,
       dados.data,
+      dados.descricao,
       id,
     );
 
     const sql = `UPDATE consulta SET 
-               nome_medico=?, horario=?, local_consulta=?, id_idoso=?, data=? 
+               nome_medico=?, horario=?, local_consulta=?, id_idoso=?, data=?, descricao=? 
                 WHERE id=?;`;
     const values = [
       dados.nomeMedico,
@@ -51,6 +53,7 @@ export class ConsultaRepository {
       dados.localConsulta,
       dados.idIdoso,
       dados.data,
+      dados.descricao,
       id,
     ];
     const [rows] = await db.execute<ResultSetHeader>(sql, values);

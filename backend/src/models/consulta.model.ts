@@ -6,6 +6,7 @@ export interface IConsulta extends RowDataPacket {
     localConsulta: string,
     idIdoso: string,
     data: string,
+    descricao: string,
     compareceu?: boolean,
     id?: string,
 }
@@ -17,6 +18,7 @@ export class Consulta {
   private _localconsulta!: string;
   private _idIdoso!: string;
   private _data!: string;
+  private _descricao!: string;
   private _compareceu: boolean;
 
   constructor(
@@ -25,6 +27,7 @@ export class Consulta {
     localConsulta: string,
     idIdoso: string,
     data: string,
+    descricao: string,
     id?: string,
     compareceu: boolean = false,
   ) {
@@ -34,6 +37,7 @@ export class Consulta {
     this._localconsulta = localConsulta;
     this._idIdoso = idIdoso;
     this._data = data;
+    this._descricao = descricao;
     this._compareceu = compareceu;
   }
 
@@ -56,6 +60,9 @@ export class Consulta {
   }
   public get Data(): string {
     return this._data;
+  }
+  public get Descricao(): string {
+    return this._descricao;
   }
   public get Compareceu(): boolean {
     return this._compareceu;
@@ -84,6 +91,10 @@ export class Consulta {
   public set Data(value: string) {
     this._validarData(value);
     this._data = value;
+  }
+  public set Descricao(value: string) {
+    this._validarDescricao(value);
+    this._descricao = value;
   }
   public set Compareceu(value: boolean) {
     this._validarCompareceu(value);
@@ -123,6 +134,13 @@ export class Consulta {
           throw new Error("O campo data possui um formato inválido");
       this._data = value;
   }
+  private _validarDescricao(value: string): void {
+      if (!value || value.trim().length === 0)
+          throw new Error("O campo descrição está incompleto");
+      if (value.trim().length > 150)
+          throw new Error("O campo descrição deve ter no máximo 150 caracteres");
+      this._descricao = value;
+  }
   private _validarCompareceu(value: boolean): void {
       if (typeof value !== "boolean")
           throw new Error("O campo compareceu deve ser um valor booleano");
@@ -135,8 +153,9 @@ export class Consulta {
     localConsulta: string,
     idIdoso: string,
     data: string,
+    descricao: string,
   ): Consulta {
-    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data);
+    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data, descricao);
   }
   
   public static editar(
@@ -145,8 +164,9 @@ export class Consulta {
       localConsulta: string,
       idIdoso: string,
       data: string,
+      descricao: string,
       id: string,
     ): Consulta {
-    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data, id);
+    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data, descricao, id);
   }
 }

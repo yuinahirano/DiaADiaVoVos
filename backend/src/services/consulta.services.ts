@@ -3,9 +3,10 @@ import { ConsultaRepository } from "../repository/consulta.repository";
 import { IdosoRepository } from "../repository/idoso.repository";
 
 export class ConsultaService {
-  constructor(private _repository = new ConsultaRepository(),
-    private _idosoRepository = new IdosoRepository()
-) {}
+  constructor(
+    private _repository = new ConsultaRepository(),
+    private _idosoRepository = new IdosoRepository(),
+  ) {}
 
   async selecionarTodos() {
     return await this._repository.selecionarTodos();
@@ -21,34 +22,51 @@ export class ConsultaService {
     localConsulta: string,
     idIdoso: string,
     data: string,
+    descricao: string,
   ) {
-    const doenca = Consulta.criar(nomeMedico, horario, localConsulta, idIdoso, data);
+    const doenca = Consulta.criar(
+      nomeMedico,
+      horario,
+      localConsulta,
+      idIdoso,
+      data,
+      descricao,
+    );
     return await this._repository.criar({
       nomeMedico: doenca.NomeMedico,
       horario: doenca.Horario,
       localConsulta: doenca.LocalConsulta,
       idIdoso: doenca.IdIdoso,
       data: doenca.Data,
-
+      descricao: doenca.Descricao,
     });
   }
 
   async editar(
-  nomeMedico:string,
-  horario:string,
-  localConsulta:string,
-  idIdoso:string,
-  data:string,
-  id:string,
+    nomeMedico: string,
+    horario: string,
+    localConsulta: string,
+    idIdoso: string,
+    data: string,
+    descricao: string,
+    id: string,
   ) {
-    const cuiadorExistente = await this._idosoRepository.selecionarPorId(idIdoso);
-    if (cuiadorExistente.length === 0)
-      throw new Error("Idoso não encontrado");
+    const cuiadorExistente =
+      await this._idosoRepository.selecionarPorId(idIdoso);
+    if (cuiadorExistente.length === 0) throw new Error("Idoso não encontrado");
     const consultaExistente = await this._repository.selecionarPorId(id);
     if (consultaExistente.length === 0)
       throw new Error("consulta não encontrada");
 
-    const consulta = Consulta.editar(nomeMedico, horario, localConsulta, idIdoso, data, id);
+    const consulta = Consulta.editar(
+      nomeMedico,
+      horario,
+      localConsulta,
+      idIdoso,
+      data,
+      descricao,
+      id,
+    );
 
     return await this._repository.editar(id, {
       nomeMedico: consulta.NomeMedico,
@@ -56,17 +74,17 @@ export class ConsultaService {
       localConsulta: consulta.LocalConsulta,
       idIdoso: consulta.IdIdoso,
       data: consulta.Data,
+      descricao: consulta.Descricao,
     });
-    
   }
 
-async Compareceu(id: string) {
-  const consultaExistente = await this._repository.selecionarPorId(id);
-  if (consultaExistente.length === 0)
-    throw new Error("Consulta não encontrada");
+  async Compareceu(id: string) {
+    const consultaExistente = await this._repository.selecionarPorId(id);
+    if (consultaExistente.length === 0)
+      throw new Error("Consulta não encontrada");
 
-  return await this._repository.Compareceu(id);
-}
+    return await this._repository.Compareceu(id);
+  }
 
   async deletar(id: string) {
     const consultaExistente = await this._repository.selecionarPorId(id);
