@@ -188,16 +188,20 @@ export default function PaginaHomeCuidador() {
   const handleSelecionarIdoso = (idoso) => {
     const idosoId = idoso.idIdosoReal || idoso.id_idoso || idoso.id;
     localStorage.setItem("idosoSelecionadoId", idosoId);
-    navigate("/medicamentos");
+    navigate("/doencas");
   };
 
   const coresCards = ["#FFDF6D", "#C8B6E2", "#A8DADC", "#FFB7B2"];
 
   return (
     <div className="home-idoso-container d-flex flex-column min-vh-100">
+      {/* barra de navegação */}
       <header className="home-idoso-header w-100">
+
+        {/* saudação */}
         <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
+        {/* botão de vinculação */}
         <div className="d-flex align-items-center gap-3">
           <button
             type="button"
@@ -207,6 +211,7 @@ export default function PaginaHomeCuidador() {
             + Adicionar idoso
           </button>
 
+          {/* botão de configurações */}
           <button
             type="button"
             className="home-idoso-icone-btn"

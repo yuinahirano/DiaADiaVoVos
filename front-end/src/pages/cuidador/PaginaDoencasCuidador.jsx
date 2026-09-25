@@ -5,6 +5,7 @@ import { useDoencas } from "../../hooks/useDoencas";
 import logoImg from "../../assets/logo_DiaADia.png";
 import DoencasList from "../../components/doencas/DoencaList";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
+import PaginaHomeCuidador from '../../pages/cuidador/PaginaHomeCuidador';
 
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
@@ -39,7 +40,7 @@ export default function PaginaDoencas() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
           >
           <i className="bi bi-chevron-left"></i>
@@ -80,6 +81,15 @@ export default function PaginaDoencas() {
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
+        </button>
+
+        {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
         </button>
       </header>
 

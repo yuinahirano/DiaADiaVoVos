@@ -4,6 +4,7 @@ import MedicamentosList from "../../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
+import PaginaHomeCuidador from '../../pages/cuidador/PaginaHomeCuidador';
 
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
@@ -48,7 +49,7 @@ export default function MedicationPage() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
           >
           <i className="bi bi-chevron-left"></i>
@@ -89,6 +90,15 @@ export default function MedicationPage() {
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
+        </button>
+
+        {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
         </button>
       </header>
 
