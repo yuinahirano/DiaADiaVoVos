@@ -118,7 +118,7 @@ export default function MedicationPage() {
               alt="Dia a Dia Vovôs"
               className="home-idoso-vazio-logo"
             />
-            <p className="home-idoso-vazio-texto">Nenhuma doença cadastrada</p>
+            <p className="home-idoso-vazio-texto">Nenhum medicamento encontrado</p>
           </div>
 
         ) : (
