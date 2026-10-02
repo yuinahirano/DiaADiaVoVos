@@ -1,125 +1,85 @@
 # 👴 Dia a Dia Vovôs – Monitoramento de Idosos
 
-> Sistema para acompanhamento e gestão da rotina de idosos, focado em segurança, organização de saúde e bem-estar.
-> 
-> 
-
----
+Bem-vindo ao **Dia a Dia Vovôs**.
+Sistema para acompanhamento e gestão da rotina de idosos, focado em segurança, organização de saúde e bem-estar.
 
 ## 💻 Sobre o Projeto
 
 O **Dia a Dia Vovôs** é uma plataforma digital voltada para o acompanhamento da rotina de idosos, oferecendo recursos que promovem segurança e organização. O sistema permite que idosos registrem dados de saúde, enquanto familiares e cuidadores autorizados acompanham tudo em tempo real através de notificações e relatórios.
 
-___
+## 🛠️ Tecnologias Utilizadas
 
-## 🛠️ Tecnologias Utilizadas 
+### 🌐 Front-end
 
-**🌐Front-end**
-*  HTML
-*   CSS   
-*  JavaScript   
-*   React   
-   
-   **⚙️ Back-end**
-   
-*    Node.js
-*    Express   
-    
-    
- **🗄️ Banco de Dados**
+* HTML
+* CSS
+* JavaScript
+* React
 
+### ⚙️ Back-end
 
-*    MySQL   
- ___   
+* Node.js
+* Express
+
+### 🗄️ Banco de Dados
+
+* MySQL
+
 ## 📂 Documentação
 
-    
-A documentação do projeto está organizada de acordo com os Requisitos do Sistema:
+A documentação do projeto está organizada por público e finalidade:
 
-**👨‍💻 Para Programadores**
-    
-* 📄 Requisitos Funcionais: Detalhamento das funções como Cadastro (RF-001) e Medicamentos (RF-002).
-* 📄 Requisitos Não Funcionais: Definições de compatibilidade, performance e segurança.  
-    
-* 🗄️ Banco de Dados: Estrutura para armazenamento de informações médicas e contatos. 
+### 👨‍💻 Para Programadores
 
+Contém informações técnicas para desenvolvimento e manutenção do sistema:
 
+* 📄 [Guia do Programador](./programadores.md)
+* 🧩 [Diagrama de Classes](./classes.md)
+* 🗄️ [Banco de Dados (DER)](./database.md)
 
+### 👤 Para Clientes e Idosos
 
-**👤 Para Clientes e Idosos**
-* 📄 Guia de Uso: Instruções para registro de consultas, exames e uso do botão de emergência.  
-* 🎨 Interface: Design priorizando a simplicidade e acessibilidade para a terceira idade.  
+Documentação voltada à visão do sistema e sua utilização:
 
-**🛠️ Para Administradores e Cuidadores**
-* 📄 Regras de Negócio: Permissões exclusivas para cuidadores agendarem exames e controlarem medicamentos.  
-* 📄 Gestão de Usuários: Controle de cadastramento realizado apenas por administradores.  
+* 📄 [Guia do Cliente](./clientes.md)
+* 🎨 [Design System](./design-system.md)
 
-___
+### 🛠️ Para Administradores e Cuidadores
 
-### Principais Funcionalidades (Requisitos Funcionais)
+Informações sobre gerenciamento e operação do sistema:
 
-**Gestão de Saúde (RF-002, RF-005):** Registro de medicamentos e visualização de informações médicas como histórico de doenças e alergias.
+* 📄 [Guia do Administrador](./administradores.md)
 
+## ⭐ Principais Funcionalidades (Requisitos Funcionais)
 
-**Agendamentos (RF-003):** Marcação de consultas e exames médicos com controle de data e local.
+* **Gestão de Saúde (RF-002, RF-005):** registro de medicamentos e visualização de informações médicas, como histórico de doenças e alergias.
+* **Agendamentos (RF-003):** marcação de consultas e exames médicos com controle de data e local.
+* **Segurança (RF-004, RF-006):** salvamento de contatos de emergência e botão de acionamento rápido para alertas.
+* **Interface (RF-007):** visualização de compromissos em calendário integrado.
 
+## 📏 Regras de Negócio (RN)
 
-**Segurança (RF-004, RF-006):** Salvamento de contatos de emergência e botão de acionamento rápido para alertas.
-
-
-**Interface (RF-007):** Visualização de compromissos em calendário integrado.
-
-
-
-## 🛠️ Regras de Negócio (RN)
-
-O sistema opera sob regras estritas para garantir a segurança dos dados:
-
-**Acesso:** Apenas administradores cadastram novos usuários (RN-001).
-
-
-**Cuidado:** Somente perfis do tipo "Cuidador" podem gerenciar medicamentos e agendamentos (RN-002, RN-003).
-
-
-**Segurança:** Todo perfil de idoso deve estar vinculado a pelo menos um cuidador (RN-004).
-
-
-**Saúde:** No primeiro acesso, é obrigatório preencher tipo sanguíneo, alergias e contato de emergência (RN-005).
-
-
+* **Acesso:** apenas administradores cadastram novos usuários (RN-001).
+* **Cuidado:** somente perfis do tipo "Cuidador" podem gerenciar medicamentos e agendamentos (RN-002, RN-003).
+* **Segurança:** todo perfil de idoso deve estar vinculado a pelo menos um cuidador (RN-004).
+* **Saúde:** no primeiro acesso, é obrigatório preencher tipo sanguíneo, alergias e contato de emergência (RN-005).
 
 ## ⚙️ Requisitos Não Funcionais (RNF)
 
-**Conformidade:** O sistema cumpre integralmente as exigências da **LGPD** (RNF-003/005).
-
-
-**Compatibilidade:** Acessível em celulares, tablets e computadores (RNF-001).
-
-
-**Performance e Disponibilidade:** Garantia de funcionamento rápido e acesso contínuo (RNF-002, RNF-004).
-
-
+* **Conformidade:** o sistema cumpre as exigências da **LGPD** (RNF-003/005).
+* **Compatibilidade:** acessível em celulares, tablets e computadores (RNF-001).
+* **Performance e Disponibilidade:** funcionamento rápido e acesso contínuo (RNF-002, RNF-004).
 
 ## 👥 Equipe (FHAMN)
 
-Projeto desenvolvido em Sumaré (2026) para o **SENAI**  por:
+Projeto desenvolvido em Sumaré (2026) para o **SENAI** por:
 
-* Ana Carolina Mota Diniz 
+* Ana Carolina Mota Diniz
+* Beatriz Vasconcelos Alvez
+* Bruno Davi Navarro
+* Danielly Rodrigues Figuereido
+* Fernanda Yuina Hirano da Silva
 
-
-* Beatriz Vasconcelos Alvez 
-
-
-* Bruno Davi Navarro 
-
-
-* Danielly Rodrigues Figuereido 
-
-
-* Fernanda Yuina Hirano da Silva 
-
-
-
-## 📝 Licença
+## 📌 Observações
 
 Este projeto segue as diretrizes de documentação aprovadas entre as partes FHAMN e SENAI.
