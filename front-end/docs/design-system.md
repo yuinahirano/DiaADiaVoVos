@@ -35,9 +35,7 @@ A paleta de cores prioriza uma interface clara, com contraste entre fundos, text
   Cor de Texto e Contornos - #1A2229
 </div>
 
-<div style="background-color:#F44336; padding:10px; color:#FFFFFF; border-radius:10px; margin:2px;">
-  Cor de Perigo e Emergência - #F44336
-</div>
+
 
 ## 📌 Aplicação das cores
 

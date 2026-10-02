@@ -1,6 +1,8 @@
 # API Reference
 
-## 📄Receita Médica
+## 📄 Receita Médica
+
+Armazena as receitas emitidas em uma consulta.
 
 > ⚠️ Todas as rotas exigem autenticação via JWT (`authMiddleware`). As rotas de criar, editar e deletar são restritas a usuários com papel de **cuidador**.
 
@@ -9,214 +11,205 @@
 ```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```
-<br>
 
-### ➕Criar receita
+---
+
+### ➕ Criar receita
 
 - Método: POST
 - Caminho: http://localhost:8000/receita
 - 🔒 Restrito a cuidador
 
-#### Corpo de requisição:
+#### Corpo da requisição
 ```json
 {
-	"idConsulta": "string",
-	"descricao": "Uso contínuo de Losartana 50mg, 1 comprimido pela manhã",
-	"dataEmissao": "2026-08-14",
-	"dataVencimento": "2026-11-14"
+  "idConsulta": "string",
+  "descricao": "Uso contínuo de Losartana 50mg, 1 comprimido pela manhã",
+  "dataEmissao": "2026-08-14",
+  "dataVencimento": "2026-11-14"
 }
 ```
-<br>
 
 #### Regras de Validação
 
-| idConsulta |
-|---------|
-| Obrigatório |
-| Mínimo de 3 caracteres |
-<br>
+| Campo | Regras |
+|---|---|
+| `idConsulta` | Obrigatório. Mínimo de 3 caracteres |
+| `descricao` | Obrigatório. Mínimo de 3 caracteres |
+| `dataEmissao` | Obrigatório. Formato `AAAA-MM-DD` |
+| `dataVencimento` | Opcional. Formato `AAAA-MM-DD` |
 
-| Descrição |
-|---------|
-| Obrigatório |
-| Mínimo de 3 caracteres |
-<br>
-
-| Data de Emissão |
-|---------|
-| Obrigatório |
-<br>
-
-| Data de Vencimento |
-|---------|
-| Opcional |
-<br>
-
----
-
-#### Resposta de Sucesso:
+#### Resposta de Sucesso
 ```json
 {
-	"novo": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 0
-	}
+  "novo": {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 0,
+    "info": "",
+    "serverStatus": 2,
+    "warningStatus": 0,
+    "changedRows": 0
+  }
 }
 ```
-<br>
 
 #### Possíveis erros
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "O campo descricao está incompleto"
+  "message": "Ocorreu um erro no servidor",
+  "errorMessage": "O campo descricao está incompleto"
 }
 ```
 <br>
 
 ```json
 {
-	"message": "Acesso restrito a cuidadores"
+  "message": "Acesso restrito a cuidadores"
 }
 ```
-<br>
 
 ---
 
-### ✅Buscar receitas
+### ✅ Buscar receitas
 
 - Método: GET
 - Caminho: http://localhost:8000/receita
+- 🔒 Requer autenticação
 
-#### Resposta de Sucesso:
+#### Resposta de Sucesso
 ```json
 {
-	"result": [
-		{
-			"id": "id",
-			"idConsulta": "id",
-			"descricao": "string",
-			"dataEmissao": "2026-08-14",
-			"dataVencimento": "2026-11-14"
-		}
-	]
+  "result": [
+    {
+      "id": "id",
+      "idConsulta": "id",
+      "descricao": "string",
+      "dataEmissao": "2026-08-14",
+      "dataVencimento": "2026-11-14"
+    }
+  ]
 }
 ```
-<br>
 
 ---
 
-### 🆔Buscar por ID
+### 🆔 Buscar por ID
+
 - Método: GET
 - Caminho: http://localhost:8000/receita/:id
-<br>
+- 🔒 Requer autenticação
 
 #### Parâmetros da rota
 
 | Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
+|---|---|---|
 | id | UUID | Identificador único da receita |
 
-<br>
-
-#### Resposta de Sucesso:
+#### Resposta de Sucesso
 ```json
 {
-	"result": [
-		{
-			"id": "id",
-			"idConsulta": "id",
-			"descricao": "string",
-			"dataEmissao": "2026-08-14",
-			"dataVencimento": "2026-11-14"
-		}
-	]
+  "result": [
+    {
+      "id": "id",
+      "idConsulta": "id",
+      "descricao": "string",
+      "dataEmissao": "2026-08-14",
+      "dataVencimento": "2026-11-14"
+    }
+  ]
 }
 ```
-<br>
 
 ---
 
-### ✏️Editar receita
+### ✏️ Editar receita
+
 - Método: PUT
 - Caminho: http://localhost:8000/receita/:id
 - 🔒 Restrito a cuidador
-<br>
 
 #### Parâmetros da rota
 
 | Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
+|---|---|---|
 | id | UUID | Identificador único da receita |
-
-<br>
 
 #### Corpo da requisição
 ```json
 {
-	"idConsulta": "string",
-	"descricao": "Uso de Losartana 50mg, 1 comprimido pela manhã",
-	"dataEmissao": "2026-08-14",
-	"dataVencimento": "2026-11-14"
+  "idConsulta": "string",
+  "descricao": "Uso contínuo de Losartana 50mg, 1 comprimido pela manhã",
+  "dataEmissao": "2026-08-14",
+  "dataVencimento": "2026-11-14"
 }
 ```
-<br>
 
 #### Regras de Validação
 
 Mesmas regras da criação.
-<br>
 
 #### Resposta de Sucesso
 ```json
 {
-	"editado": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 1
-	}
+  "editado": {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 0,
+    "info": "Rows matched: 1  Changed: 1  Warnings: 0",
+    "serverStatus": 2,
+    "warningStatus": 0,
+    "changedRows": 1
+  }
 }
 ```
-<br>
+
 
 ---
 
-### ❌Deletar receita
-- Método: DEL
+### ❌ Deletar receita
+
+- Método: DELETE
 - Caminho: http://localhost:8000/receita/:id
 - 🔒 Restrito a cuidador
-<br>
 
 #### Parâmetros da rota
 
 | Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
+|---|---|---|
 | id | UUID | Identificador único da receita |
-
-<br>
 
 #### Resposta de Sucesso
 ```json
 {
-	"deletado": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 0
-	}
+  "deletado": {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 0,
+    "info": "",
+    "serverStatus": 2,
+    "warningStatus": 0,
+    "changedRows": 0
+  }
+}
+```
+
+
+
+---
+
+### 🔐 Erros de autenticação (comuns a todas as rotas protegidas)
+
+```json
+{
+  "message": "Token não fornecido"
 }
 ```
 <br>
+
+```json
+{
+  "message": "Token inválido ou expirado"
+}
+```
