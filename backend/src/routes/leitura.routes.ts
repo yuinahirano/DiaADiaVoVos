@@ -1,0 +1,23 @@
+import { Router } from "express";
+import { LeituraController } from "../controller/leitura.controller";
+import { authMiddleware } from "../middlewares/auth.middlewares";
+import { requireCuidador } from "../middlewares/role.middlewares";
+
+const LeituraRoutes = Router();
+const leituraController = new LeituraController();
+
+// Autenticação obrigatória em todas as rotas
+LeituraRoutes.use(authMiddleware);
+
+// Usa arrow function em vez de passar o método direto (ex: leituraController.selecionar)
+// porque o Express chama a função sem o objeto original, perdendo o "this";
+// a arrow function garante que o método sempre execute com o "this" correto
+LeituraRoutes.get('/leitura', (req, res) => leituraController.selecionar(req, res));
+LeituraRoutes.get('/leitura/:id', (req, res) => leituraController.selecionar(req, res));
+
+// Restrito a cuidador
+LeituraRoutes.post('/leitura', requireCuidador, (req, res) => leituraController.criar(req, res));
+LeituraRoutes.put('/leitura/:id', requireCuidador, (req, res) => leituraController.editar(req, res));
+LeituraRoutes.delete('/leitura/:id', requireCuidador, (req, res) => leituraController.deletar(req, res));
+
+export default LeituraRoutes;

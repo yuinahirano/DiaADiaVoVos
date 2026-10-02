@@ -11,6 +11,7 @@ import enderecoRoutes from "./endereco.routes";
 import adminRoutes from "./admin.routes";
 import solicitacaoCuidadorRoutes from "./solicitacaoRelacionamento.routes";
 import PulseiraRoutes from "./pulseira.routes";
+import LeituraRoutes from "./leitura.routes";
 
 const router = Router();
 
@@ -26,5 +27,6 @@ router.use('/', enderecoRoutes);
 router.use('/', adminRoutes);
 router.use('/', solicitacaoCuidadorRoutes);
 router.use('/', PulseiraRoutes)
+router.use('/', LeituraRoutes)
 
 export default router;
