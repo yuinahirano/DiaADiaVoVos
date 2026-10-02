@@ -52,10 +52,10 @@ const styles = {
     flexDirection: "column",
   },
   cardTitle: {
-    fontSize: "1.3rem",
-    fontWeight: "700",
-    margin: "0 0 20px 0",
-    color: "#000000",
+    color: '#000000',
+    fontSize: '28px',
+    fontWeight: 'bold',
+    margin: 0,
   },
   cardInfo: {
     display: "flex",
