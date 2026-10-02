@@ -5,6 +5,7 @@ import { useMedicamentosIdoso } from "../../hooks/useMedicamentosIdoso";
 import logoImg from "../../assets/logo_DiaADia.png";
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Consultas.css";
+import MedicamentosListIdoso from "../../components/medicamentos/MedicamentosListIdoso";
 
 export default function PaginaMedicamentosIdoso() {
   const { user } = useContext(AuthContext);
@@ -85,43 +86,9 @@ export default function PaginaMedicamentosIdoso() {
             </p>
           </div>
         )}
-        {!loading &&
-          !error &&
-          medicamentos.map((medicamento) => (
-            <div className="consulta-card" key={medicamento.id}>
-              <h2 className="consulta-card-titulo">{medicamento.nome}</h2>
-
-              <div className="consulta-card-info">
-                <p className="consulta-card-label">
-                  Dosagem:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.dosagem}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Horário:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.horario}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Frequência:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.frequencia}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Observações:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.observacoes}
-                  </span>
-                </p>
-              </div>
-            </div>
-          ))}
+        {!loading && !error && medicamentos.length > 0 && (
+    <MedicamentosListIdoso medicamentos={medicamentos} />
+  )}
       </div>
     </div>
   );
