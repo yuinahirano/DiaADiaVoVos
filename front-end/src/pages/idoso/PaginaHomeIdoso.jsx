@@ -17,6 +17,15 @@ export default function PaginaHomeIdoso() {
 {/* saudação */}
         <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
+        {/* botão de notificação */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Notificações"
+          onClick={() => navigate("/notificacoes-idoso")}
+        >
+          <i className="bi bi-bell"></i>
+        </button>
+
 {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
