@@ -24,3 +24,33 @@ export async function getDoencas() {
   const resposta = await api_auth.get(`/doenca`);
   return resposta.data.result;
 }
+
+export async function addConsulta(dadosConsulta) {
+  try {
+    const resposta = await api_auth.post(`/consulta`, dadosConsulta);
+    return resposta.data.result;
+  } catch (erro) {
+    console.error("Erro ao adicionar consulta:", erro);
+    throw erro;
+  }
+}
+
+export async function updateConsulta(id, dadosConsulta) {
+  try {
+    const resposta = await api_auth.put(`/consulta/${id}`, dadosConsulta);
+    return resposta.data.result;
+  } catch (erro) {
+    console.error("Erro ao atualizar consulta:", erro);
+    throw erro;
+  }
+}
+
+export async function deleteConsulta(id) {
+  try {
+    const resposta = await api_auth.delete(`/consulta/${id}`);
+    return resposta.data.result;
+  } catch (erro) {
+    console.error("Erro ao deletar consulta:", erro);
+    throw erro;
+  }
+}
