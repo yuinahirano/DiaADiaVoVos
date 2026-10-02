@@ -5,6 +5,8 @@ export interface IPulseira extends RowDataPacket {
   idCuidador: string;
   idIdoso: string;
   nome: string;
+  deviceToken?: string | null;
+  vinculadaEm?: Date | null;
 }
 
 export class Pulseira {

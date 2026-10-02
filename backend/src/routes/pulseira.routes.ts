@@ -14,6 +14,10 @@ PulseiraRoutes.use(authMiddleware);
 // a arrow function garante que o método sempre execute com o "this" correto
 PulseiraRoutes.get('/pulseira', (req, res) => pulseiraController.selecionar(req, res));
 PulseiraRoutes.get('/pulseira/:id', (req, res) => pulseiraController.selecionar(req, res));
+PulseiraRoutes.get('/pulseira/:id/status', (req, res) => pulseiraController.status(req, res));
+
+// Vincular: qualquer usuário autenticado (app mobile). Adicione requireCuidador se quiser restringir
+PulseiraRoutes.post('/pulseira/:id/vincular', (req, res) => pulseiraController.vincular(req, res));
 
 // Restrito a cuidador
 PulseiraRoutes.post('/pulseira', requireCuidador, (req, res) => pulseiraController.criar(req, res));

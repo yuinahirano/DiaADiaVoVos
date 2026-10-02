@@ -2,11 +2,16 @@ import { Router } from "express";
 import { LeituraController } from "../controller/leitura.controller";
 import { authMiddleware } from "../middlewares/auth.middlewares";
 import { requireCuidador } from "../middlewares/role.middlewares";
+import { deviceAuthMiddleware } from "../middlewares/device.middlewares";
 
 const LeituraRoutes = Router();
 const leituraController = new LeituraController();
 
-// Autenticação obrigatória em todas as rotas
+// Rota do ESP32: autenticada pelo token do dispositivo.
+// Precisa vir ANTES do authMiddleware abaixo, senão seria bloqueada.
+LeituraRoutes.post('/leitura/dispositivo', deviceAuthMiddleware, (req, res) => leituraController.criarDoDispositivo(req, res));
+
+// Autenticação obrigatória nas demais rotas
 LeituraRoutes.use(authMiddleware);
 
 // Usa arrow function em vez de passar o método direto (ex: leituraController.selecionar)

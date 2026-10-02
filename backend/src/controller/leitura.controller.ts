@@ -41,6 +41,24 @@ export class LeituraController {
     }
   };
 
+  // Chamado pelo ESP32: o idPulseira vem do token (middleware), não do body
+  criarDoDispositivo = async (req: Request, res: Response) => {
+    try {
+      const idPulseira = (req as any).pulseiraId as string;
+      const { bpm, spo2 } = req.body;
+      const novo = await this._service.criar(idPulseira, bpm, spo2);
+      res.status(201).json({ novo });
+    } catch (error: unknown) {
+      console.error(error);
+      const message =
+        error instanceof Error ? error.message : "Erro desconhecido";
+      return res.status(500).json({
+        message: "Ocorreu um erro no servidor",
+        errorMessage: message,
+      });
+    }
+  };
+
   editar = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);

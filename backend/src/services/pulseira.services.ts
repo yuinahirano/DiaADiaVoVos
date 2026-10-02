@@ -1,7 +1,10 @@
+import { randomBytes } from "crypto";
 import { Pulseira } from "../models/pulseira.model";
 import { PulseiraRepository } from "../repository/pulseira.repository";
 import { IdosoRepository } from "../repository/idoso.repository";
 import { CuidadorRepository } from "../repository/cuidador.repository";
+
+const LIMITE_SEGUNDOS = 30;
 
 export class PulseiraService {
   constructor(
@@ -51,6 +54,27 @@ export class PulseiraService {
       idIdoso: pulseira.IdIdoso,
       idCuidador: pulseira.IdCuidador,
     });
+  }
+
+  async vincular(id: string) {
+    const existente = await this._repository.selecionarPorId(id);
+    if (existente.length === 0) throw new Error("Pulseira não encontrada");
+
+    const token = randomBytes(32).toString("hex"); // 64 caracteres
+    await this._repository.vincular(id, token);
+    return { token };
+  }
+
+  async status(id: string) {
+    const [row] = await this._repository.selecionarStatus(id);
+    if (!row) throw new Error("Pulseira não encontrada");
+
+    const segundos = row.segundos_desde_ultima;
+    return {
+      vinculada: !!row.vinculada_em,
+      conectada: segundos !== null && segundos <= LIMITE_SEGUNDOS,
+      ultimaLeitura: row.ultima_leitura,
+    };
   }
 
   async deletar(id: string) {

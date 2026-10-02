@@ -63,6 +63,38 @@ export class PulseiraController {
     }
   };
 
+  vincular = async (req: Request, res: Response) => {
+    try {
+      const id = String(req.params.id);
+      const result = await this._service.vincular(id);
+      return res.status(200).json(result);
+    } catch (error: unknown) {
+      console.error(error);
+      const message =
+        error instanceof Error ? error.message : "Erro desconhecido";
+      return res.status(500).json({
+        message: "Ocorreu um erro no servidor",
+        errorMessage: message,
+      });
+    }
+  };
+
+  status = async (req: Request, res: Response) => {
+    try {
+      const id = String(req.params.id);
+      const result = await this._service.status(id);
+      return res.status(200).json(result);
+    } catch (error: unknown) {
+      console.error(error);
+      const message =
+        error instanceof Error ? error.message : "Erro desconhecido";
+      return res.status(500).json({
+        message: "Ocorreu um erro no servidor",
+        errorMessage: message,
+      });
+    }
+  };
+
   deletar = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);
