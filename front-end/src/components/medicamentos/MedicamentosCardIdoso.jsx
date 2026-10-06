@@ -12,23 +12,29 @@ export default function MedicamentoCardIdoso({ medicamento }) {
     <div style={styles.card}>
       <h2 style={styles.cardTitle}>{medicamento.nome}</h2>
 
-      <div style={styles.cardInfo}>
+      <div style={styles.cardInfoDosagem}>
         <div style={styles.borderDosagem}>
-        <strong>Dosagem:</strong> {medicamento.dosagem}
+          <strong>Dosagem:</strong> {medicamento.dosagem}
+        </div>
       </div>
 
+      <div style={styles.cardInfo}>
         <div style={styles.cardField}>
-        <strong>Horário:</strong>
-        <span style={styles.horarioValue}>{medicamento.horario.slice(0, 5)}</span> {/* slice(0, 5) é para mostrar só hora e minuto. o 0 é onde o corte começa e o 5 é onde termina */}
+          <strong>Horário:</strong>
+          <span style={styles.horarioValue}>{medicamento.horario.slice(0, 5)}</span> {/* slice(0, 5) é para mostrar só hora e minuto. o 0 é onde o corte começa e o 5 é onde termina */}
+        </div>
       </div>
 
-      <div style={styles.cardField}>
-        <strong>Frequência:</strong> {medicamento.frequencia}
+      <div style={styles.cardInfo}>
+        <div style={styles.cardField}>
+          <strong>Frequência:</strong> {medicamento.frequencia}
+        </div>
       </div>
 
-      <div style={styles.cardField}>
-        <strong>Observações:</strong> {medicamento.observacoes}
-      </div>
+      <div style={styles.cardInfo}>
+        <div style={styles.cardField}>
+          <strong>Observações:</strong> {medicamento.observacoes}
+        </div>
       </div>
     </div>
   );
@@ -45,6 +51,7 @@ const styles = {
     boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)",
     display: "flex",
     flexDirection: "column",
+    gap: '20px'
   },
   cardTitle: {
     color: '#000000',
@@ -57,6 +64,18 @@ const styles = {
     flexDirection: "column",
     gap: "12px",
     marginTop: "auto",
+  },
+  cardInfoDosagem: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "12px",
+    marginTop: "auto",
+
+    textAlign: 'center',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '6px',
   },
   cardLabel: {
     fontWeight: "700",

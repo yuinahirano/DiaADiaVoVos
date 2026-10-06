@@ -1,0 +1,8 @@
+.btn-cadastro-hover {
+  color: #000 !important; /* Cor normal (preto) */
+  transition: color 0.2s ease; /* Efeito suave na transição */
+}
+
+.btn-cadastro-hover:hover {
+  color: #ffeb60 !important; /* Cor amarela ao passar o mouse */
+}
