@@ -8,6 +8,13 @@ export interface ILeitura extends RowDataPacket {
   medidoEm?: Date;
 }
 
+// Item de um lote enviado pelo app (já validado e convertido pelo service)
+export interface ILeituraLote {
+  medidoEmSegundos: number; // epoch em segundos
+  bpm: number;
+  spo2: number;
+}
+
 export class Leitura {
   private _id?: string;
   private _idPulseira!: string;

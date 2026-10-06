@@ -12,6 +12,7 @@ import adminRoutes from "./admin.routes";
 import solicitacaoCuidadorRoutes from "./solicitacaoRelacionamento.routes";
 import PulseiraRoutes from "./pulseira.routes";
 import LeituraRoutes from "./leitura.routes";
+import solicitacaoPulseiraRoutes from "./solicitacaoPulseira.routes";
 
 const router = Router();
 
@@ -28,5 +29,6 @@ router.use('/', adminRoutes);
 router.use('/', solicitacaoCuidadorRoutes);
 router.use('/', PulseiraRoutes)
 router.use('/', LeituraRoutes)
+router.use('/', solicitacaoPulseiraRoutes)
 
 export default router;

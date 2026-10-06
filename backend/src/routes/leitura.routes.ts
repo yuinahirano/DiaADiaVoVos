@@ -7,7 +7,7 @@ import { deviceAuthMiddleware } from "../middlewares/device.middlewares";
 const LeituraRoutes = Router();
 const leituraController = new LeituraController();
 
-// Rota do ESP32: autenticada pelo token do dispositivo.
+// Rota do ESP32 (Wi-Fi): autenticada pelo token do dispositivo.
 // Precisa vir ANTES do authMiddleware abaixo, senão seria bloqueada.
 LeituraRoutes.post('/leitura/dispositivo', deviceAuthMiddleware, (req, res) => leituraController.criarDoDispositivo(req, res));
 
@@ -19,6 +19,10 @@ LeituraRoutes.use(authMiddleware);
 // a arrow function garante que o método sempre execute com o "this" correto
 LeituraRoutes.get('/leitura', (req, res) => leituraController.selecionar(req, res));
 LeituraRoutes.get('/leitura/:id', (req, res) => leituraController.selecionar(req, res));
+
+// authMiddleware (acima) valida o JWT do usuário; o deviceAuthMiddleware
+// descobre a pulseira pelo header x-device-token.
+LeituraRoutes.post('/leitura/lote', deviceAuthMiddleware, (req, res) => leituraController.criarLote(req, res));
 
 // Restrito a cuidador
 LeituraRoutes.post('/leitura', requireCuidador, (req, res) => leituraController.criar(req, res));
