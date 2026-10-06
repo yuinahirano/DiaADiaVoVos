@@ -18,6 +18,7 @@ O **Dia a Dia Vovôs** é uma plataforma digital voltada para o acompanhamento d
 
 ### ⚙️ Back-end
 
+* TypeScript
 * Node.js
 * Express
 
