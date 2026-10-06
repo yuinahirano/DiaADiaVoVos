@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
+import ConsultasListIdoso from "../../components/consultas/ConsultasListIdoso";
 import logoImg from "../../assets/logo_DiaADia.png";
 import "../../App.css";
 
@@ -96,51 +97,9 @@ export default function PaginaConsultasIdoso() {
           </div>
         )}
 
-        {!loading &&
-          !error &&
-          consultas.map((consulta) => {
-            const dataFormatada = formatarData(consulta.data);
-
-            return (
-              <div className="consulta-card" key={consulta.id}>
-                <h2 className="consulta-card-titulo">{consulta.nome_medico}</h2>
-
-                <div className="consulta-card-info">
-                  {dataFormatada && (
-                    <p className="consulta-card-label">
-                      Data:{" "}
-                      <span className="consulta-card-valor">
-                        {dataFormatada}
-                      </span>
-                    </p>
-                  )}
-
-                  <p className="consulta-card-label">
-                    Horário:{" "}
-                    <span className="consulta-card-valor">
-                      {consulta.horario}
-                    </span>
-                  </p>
-
-                  <p className="consulta-card-label">
-                    Local:{" "}
-                    <span className="consulta-card-valor">
-                      {consulta.local_consulta}
-                    </span>
-                  </p>
-
-                  {consulta.descricao && (
-                    <p className="consulta-card-label consulta-card-descricao">
-                      Descrição:{" "}
-                      <span className="consulta-card-valor">
-                        {consulta.descricao}
-                      </span>
-                    </p>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+        {!loading && !error && consultas.length > 0 && (
+    <ConsultasListIdoso consultas={consultas} formatarData={formatarData} />
+  )}
       </div>
     </div>
   );

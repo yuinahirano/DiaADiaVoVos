@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import logoImg from "../assets/logo_DiaADia.png";
+import '../components/styles/Login.css';
 
 export default function PaginaLogin() {
   const [email, setEmail] = useState("");
@@ -108,7 +109,7 @@ export default function PaginaLogin() {
           <button
             type="button"
             onClick={() => navigate("/cadastro")}
-            className="btn btn-link text-decoration-none text-dark fw-bold"
+            className="btn btn-link text-decoration-none fw-bold btn-cadastro-hover"
           >
             Não tem uma conta? Cadastre-se
           </button>

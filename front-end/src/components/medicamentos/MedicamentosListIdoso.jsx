@@ -1,0 +1,25 @@
+import MedicamentoCardIdoso from "./MedicamentosCardIdoso";
+
+export default function MedicamentosListIdoso({ medicamentos, onDelete, onEdit }) {
+  return (
+    <div style={styles.listGrid}>
+      {medicamentos?.map((medicamento) => (
+        <MedicamentoCardIdoso
+          key={medicamento.id}
+          medicamento={medicamento}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
+      ))}
+    </div>
+  );
+}
+
+const styles = {
+  listGrid: {
+    display: 'grid',
+    gridTemplateColumns: '1fr 1fr 1fr', // Força 2 colunas iguais lado a lado
+    gap: '15px', // Espaçamento grande entre os dois cards
+    width: '100%'
+  }
+};
