@@ -13,25 +13,22 @@ export default function MedicamentoCardIdoso({ medicamento }) {
       <h2 style={styles.cardTitle}>{medicamento.nome}</h2>
 
       <div style={styles.cardInfo}>
-        <p style={styles.cardLabel}>
-          Dosagem:{" "}
-          <span style={styles.cardValor}>{medicamento.dosagem}</span>
-        </p>
+        <div style={styles.borderDosagem}>
+        <strong>Dosagem:</strong> {medicamento.dosagem}
+      </div>
 
-        <p style={styles.cardLabel}>
-          Horário:{" "}
-          <span style={styles.cardValor}>{horarioFormatado}</span>
-        </p>
+        <div style={styles.cardField}>
+        <strong>Horário:</strong>
+        <span style={styles.horarioValue}>{medicamento.horario.slice(0, 5)}</span> {/* slice(0, 5) é para mostrar só hora e minuto. o 0 é onde o corte começa e o 5 é onde termina */}
+      </div>
 
-        <p style={styles.cardLabel}>
-          Frequência:{" "}
-          <span style={styles.cardValor}>{medicamento.frequencia}</span>
-        </p>
+      <div style={styles.cardField}>
+        <strong>Frequência:</strong> {medicamento.frequencia}
+      </div>
 
-        <p style={styles.cardLabel}>
-          Observações:{" "}
-          <span style={styles.cardValor}>{medicamento.observacoes}</span>
-        </p>
+      <div style={styles.cardField}>
+        <strong>Observações:</strong> {medicamento.observacoes}
+      </div>
       </div>
     </div>
   );
@@ -69,5 +66,12 @@ const styles = {
   },
   cardValor: {
     fontWeight: "400",
+  },
+  borderDosagem: {
+    fontSize: '18px',
+    color: '#000000',
+    backgroundColor: '#FFE866',
+    padding: '10px',
+    borderRadius: '20px'
   },
 };
