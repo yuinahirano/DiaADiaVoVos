@@ -1,0 +1,59 @@
+.sair-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 64px;
+}
+
+.sair-card {
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 48px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.sair-card-logo {
+  width: 100px;
+  margin-bottom: 24px;
+}
+
+.sair-card-titulo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+}
+
+.sair-card-subtitulo {
+  font-size: 1rem;
+  color: #555;
+  margin: 0 0 32px 0;
+}
+
+.sair-card-acoes {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.sair-btn-permanecer {
+  background-color: #eaf1fd;
+  border: 2px solid #1a1a1a;
+  border-radius: 24px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.sair-btn-sair {
+  background-color: #f28b82;
+  border: none;
+  border-radius: 24px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+}

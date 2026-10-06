@@ -1,98 +1,165 @@
-# 🗄️ Banco de Dados - Dia a Dia Vovôs
+# 🗄️ Modelo de Dados — Dia a Dia Vovôs
 
-Este documento detalha a modelagem de dados utilizada para garantir a persistência segura das informações de saúde, rotina e usuários do sistema.
+Este documento apresenta o modelo de dados do sistema Dia a Dia Vovôs, com foco nas entidades, seus atributos e relacionamentos.
 
-# 📊 Modelo Entidade-Relacionamento (DER)
+# 📊 Diagrama Entidade-Relacionamento (DER)
 
-A estrutura foi desenhada para suportar perfis distintos (Idosos, Cuidadores, Administradores) e o monitoramento contínuo de dados vitais.
+![Diagrama Entidade e Relacionamento](./tabelasatualizadas.mwb.png)
 
----
+A estrutura foi desenhada para suportar perfis distintos (idosos e cuidadores) e o acompanhamento da saúde e da rotina dos idosos.
 
-# 🧩 Estrutura das Tabelas
+# 📦 Entidades
 
-## 👥Diagrama de Entidade e Relacionamento
+## 👤 Entidade: Usuário (`usuario`)
 
-![Diagrama Entidade e Relacionamento](der_dia_a_dia_vovos_svg.drawio.png)
+### 📌 Descrição
+Tabela central com as informações de um usuário geral do sistema. Relaciona-se com Idoso (1:1), Cuidador (1:1) e Endereços (1:N).
 
-## 👤 Núcleo de Usuários
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `nome` — VARCHAR(100)
+- `cpf` (UNIQUE) — CHAR(11)
+- `email` (UNIQUE) — VARCHAR(50)
+- `senha` — VARCHAR(255)
+- `data_nascimento` — DATE
+- `estado_civil` — ENUM
 
-* **`usuario`**: Tabela central contendo `nome`, `cpf`, `email`, `senha` e `data_nascimento`.
+## 🏠 Entidade: Endereços (`enderecos`)
 
-* **`enderecos`**: Armazena a localização dos usuários, vinculada pelo `id_usuario`.
+### 📌 Descrição
+Armazena a localização dos usuários. Relaciona-se com Usuário (N:1).
 
-* **`idoso`**: Atributos específicos como `tipo_sanguineo`, `pcd` e `telefone`.
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `logradouro` — VARCHAR(255)
+- `numero` — VARCHAR(20)
+- `complemento` — VARCHAR(100)
+- `bairro` — VARCHAR(100)
+- `cidade` — VARCHAR(100)
+- `UF` — CHAR(2)
+- `CEP` — VARCHAR(9)
+- `id_usuario` (FK) — CHAR(36)
 
-* **`cuidador`**: Identifica usuários com permissões de gestão de saúde.
+## 👵 Entidade: Idoso (`idoso`)
 
-* **`idoso_cuidador`**: Tabela associativa que vincula obrigatoriamente um idoso a um cuidador.
+### 📌 Descrição
+Identifica os usuários que se enquadram como idoso. Relaciona-se com Usuário (1:1) e, de forma opcional, com Registro de Saúde, Medicamento, Doença, Consulta e Idoso/Cuidador (1:N).
 
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `tipo_sanguineo` — VARCHAR
+- `telefone` — VARCHAR(20)
+- `pcd` — ENUM('sim', 'nao')
+- `id_usuario` (FK) — CHAR(36)
+- `id_imagem` (FK, opcional) — CHAR(36)
 
-## 👤 Entidades
+## 🧑‍⚕️ Entidade: Cuidador (`cuidador`)
 
-* **`usuario`**: Tabela central contendo as informações de um usuário geral. Se relaciona com as entidades Idoso (um para um), Cuidador (um para um) e Endereco (um para muitos);
-![Tabela de usuário](usuario.png)
+### 📌 Descrição
+Identifica os usuários que se enquadram como cuidador, responsáveis pela gestão de saúde dos idosos vinculados a eles. Relaciona-se com Usuário (1:1) e, de forma opcional, com Idoso/Cuidador (1:N).
 
-* **`enderecos`**: Armazena a localização dos usuários. Se relaciona com a entidade Usuario (muitos para um);
-![Tabela de endereço](endereco.png)
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `telefone` — VARCHAR
+- `id_usuario` (FK) — CHAR(36)
+- `id_imagem` (FK, opcional) — CHAR(36)
 
-* **`idoso`**: Identifica usuários que se enquadram como idoso. Se relaciona com as entidades Usuario (um para um), registroSaude (um para muitos opicional), medicamento (um para muitos opicional), doenca (um para muitos opicional), consulta (um para muitos opicional), idoso_cuidador (um para muitos opicional);
-![Tabela de idoso](idoso.png)
+## 🔗 Entidade Associativa: Idoso e Cuidador (`idoso_cuidador`)
 
-* **`cuidador`**: Identifica usuários que se enquadram como cuidador, responsável pela gestão de saúde dos usuários idosos vinculados à ele. Se relaciona com as entidades Usuario (um para um), idoso_cuidador (um para muitos opicional);
-![Tabela de usuários cuidador](cuidador.png)
+### 📌 Descrição
+Vincula um idoso a um cuidador e, para isso, exige um usuário de cada tipo. Relaciona-se com Idoso (N:1) e Cuidador (N:1).
 
-* **`idosoCuidador`**: Tabela associativa que vincula um idoso a um cuidador e para isso precisa obrigatoriamente de um usário de cada tipo. Se relaciona com Cuidador (muitos opicional para um), Idoso (muitos opicional para um);
-![Tabela de vínculo idoso e cuidador](idosoCuidador.png)
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `id_idoso` (FK) — CHAR(36)
+- `id_cuidador` (FK) — CHAR(36)
+- `contato_emergencia` — VARCHAR
 
-* **`registroSaude`**: Armazena os dados da saúde do idoso, esses sendo `pressao_arterial`, `glicemia`, `peso`, além do vínculo com o `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela de registros de saúde](registroSaude.png)
+## ❤️ Entidade: Registro de Saúde (`registrosaude`)
 
-* **`medicamentos`**: Registra os medicamentos que o idoso consome, inclui `nome`, `dosagem`, `horario`, `frequencia`, `observacoes`, além do vínculo com o `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela de medicamento](medicamentos.png)
+### 📌 Descrição
+Armazena os dados de saúde do idoso. Relaciona-se com Idoso (N:1).
 
-* **`doenca`**: Registra as doenças que o idoso possui, contendo `nome`, `descricao`, além do vínculo com `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela de doenças](doenca.png)
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `frequencia_cardiaca` — CHAR
+- `saturacao_sangue` — CHAR(4)
+- `peso` — DECIMAL(5,2)
+- `data_registro` — DATETIME
+- `id_idoso` (FK) — CHAR(36)
 
-* **`consulta`**: Registra as informações de uma consulta médica que o idoso compareceu ou comparecerá, contendo `nome_medico`, `horario`, `local_consulta`, alpem do vínculo com `id_idoso`. Se relaciona com Idoso (muitos opicional para um);
-![Tabela de consulta](consulta.png)
+## 💊 Entidade: Medicamento (`medicamento`)
 
-* **`receitaMedica`**: Armazena as informações que foram passadas em uma consulta, contendo `descricao` e `data_emissao`. Se relaciona com Consulta (um para um);
-![Tabela de receita médica](receitaMedica.png)
+### 📌 Descrição
+Registra os medicamentos que o idoso utiliza, para o controle da rotina. Relaciona-se com Idoso (N:1).
 
-## 🏥 Gestão de Saúde e Rotina
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `nome` — VARCHAR(100)
+- `dosagem` — VARCHAR(50)
+- `horario` — TIME
+- `frequencia` — VARCHAR(50)
+- `observacoes` — VARCHAR
+- `id_idoso` (FK) — CHAR(36)
 
-* **`medicamento`**: Registro de `nome`, `dosagem`, `horario` e `frequencia` para controle do idoso.
+## 🩺 Entidade: Doença (`doenca`)
 
+### 📌 Descrição
+Registra as doenças que o idoso possui. Relaciona-se com Idoso (N:1).
 
-* **`registroSaude`**: Histórico de sinais vitais como `pressao_arterial`, `glicemia`, `batimento_cardiaco`, `temperatura` e `peso`.
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `nome` — VARCHAR(100)
+- `descricao` — VARCHAR(255)
+- `id_idoso` (FK) — CHAR(36)
 
+## 📅 Entidade: Consulta (`consulta`)
 
-* **`doenca`**: Cadastro de patologias e descrições do histórico médico do idoso.
+### 📌 Descrição
+Registra as informações de uma consulta médica que o idoso compareceu ou comparecerá. Relaciona-se com Idoso (N:1).
 
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `nome_medico` — VARCHAR(100)
+- `horario` — TIME
+- `local_consulta` — VARCHAR(150)
+- `id_idoso` (FK) — CHAR(36)
+- `compareceu` — TINYINT
+- `data` — DATE
+- `descricao` — VARCHAR(150)
 
-* **`consulta`**: Agendamento de compromissos com `nome_medico`, `horario` e `local_consulta`.
+## 🧾 Entidade: Receita Médica (`receitamedica`)
 
+### 📌 Descrição
+Armazena as informações passadas em uma consulta. Relaciona-se com Consulta (N:1).
 
-* **`receitaMedica`**: Armazena descrições e datas de emissão vinculadas às consultas médicas em `descricao` e em `data_emissao`.
+### 🧾 Atributos
+- `id` (PK) — CHAR(36)
+- `descricao` — VARCHAR
+- `data_emissao` — DATE
+- `data_vencimento` — DATE
+- `id_consulta` (FK) — CHAR(36)
 
+# 🔗 Relacionamentos
 
----
+| Relacionamento | Chave estrangeira | Cardinalidade |
+|---|---|---|
+| Usuário × Idoso | `idoso.id_usuario` → `usuario.id` | 1:1 |
+| Usuário × Cuidador | `cuidador.id_usuario` → `usuario.id` | 1:1 |
+| Usuário × Endereços | `enderecos.id_usuario` → `usuario.id` | 1:N |
+| Idoso × Cuidador | `idoso_cuidador.id_idoso` e `idoso_cuidador.id_cuidador` | N:N (tabela associativa) |
+| Idoso × Registro de Saúde | `registrosaude.id_idoso` → `idoso.id` | 1:N |
+| Idoso × Medicamento | `medicamento.id_idoso` → `idoso.id` | 1:N |
+| Idoso × Doença | `doenca.id_idoso` → `idoso.id` | 1:N |
+| Idoso × Consulta | `consulta.id_idoso` → `idoso.id` | 1:N |
+| Consulta × Receita Médica | `receitamedica.id_consulta` → `consulta.id` | 1:N |
 
 # 🛠️ Tecnologias e Regras
 
-* **SGBD**: MySQL.
-
-
-* **Integridade**:
-* O preenchimento de `tipo_sanguineo`, `contato_emergencia` e `doenca` é obrigatório no primeiro acesso (RN-005).
-
-
-* Relacionamentos via UUID para garantir a segurança e unicidade dos registros de saúde.
-
-
-* **Segurança (LGPD)**: Todos os dados sensíveis são armazenados seguindo os protocolos de conformidade da Lei Geral de Proteção de Dados (RNF-005).
-
-
+- **SGBD:** MySQL.
+- **Identificadores:** as tabelas usam UUID (`CHAR(36)`) para garantir a segurança e a unicidade dos registros.
+- **Integridade:** as chaves estrangeiras garantem a consistência dos relacionamentos. O preenchimento de `tipo_sanguineo`, `contato_emergencia` e `doenca` é obrigatório no primeiro acesso (RN-005).
+- **Segurança (LGPD):** os dados sensíveis são armazenados conforme a Lei Geral de Proteção de Dados (RNF-005).
 
 ---
 

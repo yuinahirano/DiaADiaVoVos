@@ -26,12 +26,14 @@ export class ConsultaController {
 
   criar = async (req: Request, res: Response) => {
     try {
-      const { nomeMedico, horario, localConsulta, idIdoso } = req.body;
+      const { nomeMedico, horario, localConsulta, idIdoso, data, descricao } = req.body;
       const novo = await this._service.criar(
         nomeMedico,
         horario,
         localConsulta,
         idIdoso,
+        data,
+        descricao,
       );
       res.status(201).json({ novo });
     } catch (error: unknown) {
@@ -48,12 +50,14 @@ export class ConsultaController {
   editar = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);
-      const { nomeMedico, horario, localConsulta, idIdoso } = req.body;
+      const { nomeMedico, horario, localConsulta, idIdoso, data, descricao } = req.body;
       const editado = await this._service.editar(
         nomeMedico,
         horario,
         localConsulta,
         idIdoso,
+        data,
+        descricao,
         id,
       );
       res.status(200).json({ editado });
@@ -67,6 +71,23 @@ export class ConsultaController {
       });
     }
   };
+
+Compareceu = async (req: Request, res: Response) => {
+  try {
+    const id = String(req.params.id);
+
+    const atualizado = await this._service.Compareceu(id);
+    res.status(200).json({ atualizado });
+  } catch (error: unknown) {
+    console.error(error);
+    const message =
+      error instanceof Error ? error.message : "Erro desconhecido";
+    return res.status(500).json({
+      message: "Ocorreu um erro no servidor",
+      errorMessage: message,
+    });
+  }
+};
 
   deletar = async (req: Request, res: Response) => {
     try {

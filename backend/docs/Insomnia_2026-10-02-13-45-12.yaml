@@ -15,12 +15,12 @@ collection:
       sortKey: -1781282057115
       description: ""
     children:
-      - url: localhost:8000/usuarios
+      - url: localhost:8000/usuario/e255b352-ab78-11f1-aa6d-0a0027000003
         name: selecionar
         meta:
           id: req_55274e0bff2c4cf994a527404f98b5d6
           created: 1781282058999
-          modified: 1786723983032
+          modified: 1789148904909
           isPrivate: false
           description: ""
           sortKey: -1781282058999
@@ -30,6 +30,8 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: none
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -43,7 +45,7 @@ collection:
         meta:
           id: req_8f516d8339284eb9a4c5796955ba2fb5
           created: 1781283423830
-          modified: 1786723960153
+          modified: 1788867158201
           isPrivate: false
           description: ""
           sortKey: -1781283423830
@@ -52,9 +54,9 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "nome": "Para APAGAR",
+              "nome": "idoso",
               "cpf": "844.125.260-20",
-              "email": "apaga@email.com",
+              "email": "cuiador@email.com",
               "senha": "Senh@123",
               "dataNascimento": "1995-06-15",
               "estadoCivil": "solteiro"
@@ -139,12 +141,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8000/usuarios/login
+      - url: localhost:8000/usuario/login
         name: login
         meta:
           id: req_20c1863495994944b8e8f465c4de5a2f
           created: 1781896834240
-          modified: 1786723966518
+          modified: 1790956108550
           isPrivate: false
           description: ""
           sortKey: -1781283082622.25
@@ -153,7 +155,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "email": "apaga@email.com",
+              "email": "cuidador@email.com",
               "senha": "Senh@123"
             }
         headers:
@@ -163,6 +165,8 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: none
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -271,7 +275,7 @@ collection:
         meta:
           id: req_a42c96d21564442e86b6f23771a12121
           created: 1781289817744
-          modified: 1786724094296
+          modified: 1789140482430
           isPrivate: false
           description: ""
           sortKey: -1781282058999
@@ -335,12 +339,17 @@ collection:
         meta:
           id: req_63519719e7b5459dafbe475b937b2d41
           created: 1781609726553
-          modified: 1786724130342
+          modified: 1788870389694
           isPrivate: false
           description: ""
           sortKey: -1781282058999
         method: GET
+        body:
+          mimeType: application/json
+          text: ""
         headers:
+          - name: Content-Type
+            value: application/json
           - name: User-Agent
             value: insomnia/12.6.0
             description: ""
@@ -353,12 +362,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8000/idosoCuidador/22
+      - url: localhost:8000/idosoCuidador/48375dca-adfd-11f1-b8c7-109819aa17b5
         name: apagar
         meta:
           id: req_ad188b4b9bcf4275b1fac937e25b27fe
           created: 1781609726553
-          modified: 1786724135976
+          modified: 1789143924017
           isPrivate: false
           description: ""
           sortKey: -1780545749071
@@ -381,7 +390,7 @@ collection:
         meta:
           id: req_ebe2065a71a640ca8d01e9d469fdef49
           created: 1781609726553
-          modified: 1786724120724
+          modified: 1789148921537
           isPrivate: false
           description: ""
           sortKey: -1781283423830
@@ -390,9 +399,9 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "idIdoso": "08ad144c-8d07-11f1-be1c-0a0027000003",
-              "idCuidador": "0cdc4ce8-8d07-11f1-be1c-0a0027000003",
-            	"telefoneEmergencia":"8994670-3636"
+              "idIdoso": "1675b940-a87e-11f1-aa6d-0a0027000003",
+              "idCuidador": "a2f710b0-ab7d-11f1-aa6d-0a0027000003",
+            	"telefoneEmergencia":"19988489490"
             }
         headers:
           - name: Content-Type
@@ -445,7 +454,7 @@ collection:
         meta:
           id: req_277618228cb04fdbbbdb100b30999904
           created: 1781631049097
-          modified: 1786724141902
+          modified: 1790955909098
           isPrivate: false
           description: ""
           sortKey: -1781283423830
@@ -454,7 +463,7 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "idIdoso": "d1d0bbee-668e-11f1-88f9-0a0027000003",
+              "idIdoso": "1cdb994c-97ff-11f1-93fe-0a0027000003",
               "nome": "tralaleiro",
             	"descricao":"sixseven"
             }
@@ -465,6 +474,9 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU0MjAxMWNmLTk3ZTAtMTFmMS05M2ZlLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY2ljZXJvQGVtYWlsLmNvbSIsImlhdCI6MTc4NzMzMDU3MiwiZXhwIjoxNzg3MzU5MzcyfQ.NxgfQYGG8-ycPvxvV97nzZLEXfZmBc7tW1NS_CtSFzQ
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -537,12 +549,12 @@ collection:
       sortKey: -1779584773155.9375
       description: ""
     children:
-      - url: localhost:8000/consulta/ee85c474-97fc-11f1-93fe-0a0027000003
+      - url: localhost:8000/consulta/66032cc6-add5-11f1-b8c7-109819aa17b5
         name: deletar
         meta:
           id: req_8063f7249e204f5a99d3e62cd84ecdbd
           created: 1781867541132
-          modified: 1786724865162
+          modified: 1789130664320
           isPrivate: false
           description: ""
           sortKey: -1780545749071
@@ -599,7 +611,7 @@ collection:
         meta:
           id: req_8c1c61ebc626406b90b73002fd6e6ee6
           created: 1781867541132
-          modified: 1786724169951
+          modified: 1789736989229
           isPrivate: false
           description: ""
           sortKey: -1781282058999
@@ -609,6 +621,8 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: none
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -622,19 +636,21 @@ collection:
         meta:
           id: req_9b022d3a9ef9404ca23cad2ff504d640
           created: 1781867541132
-          modified: 1786724802939
+          modified: 1790335122074
           isPrivate: false
           description: ""
           sortKey: -1781283423830
         method: POST
         body:
           mimeType: application/json
-          text: |
+          text: >-
             {
-              "nomeMedico": "tralaleiro",
-            	"horario":"14:30",
-            	"localConsulta":"Avenida Salerno",
-            	"idIdoso": "e4375a8e-8d08-11f1-be1c-0a0027000003"
+              "nomeMedico": "DR trulimeiro",
+              "horario": "14:30",
+              "localConsulta": "Avenida Salerno",
+              "idIdoso": "1675b940-a87e-11f1-aa6d-0a0027000003",
+              "data": "2026-10-05",
+              "descricao": "Consulta de rotina para acompanhamento de pressão arterial"
             }
         headers:
           - name: Content-Type
@@ -643,6 +659,31 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwMzM0NzE1LCJleHAiOjE3OTAzNjM1MTV9.8Gvb7pIHVo-7xrLuVE9vE7OF54Yl95FDQOzfw1LyKqk
+          prefix: ""
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/consulta/54aeaac1-ade0-11f1-b8c7-109819aa17b5/compareceu
+        name: compareceu
+        meta:
+          id: req_8d3fd036041d4c50a5b190b03fe3e8c4
+          created: 1789736991370
+          modified: 1789738155265
+          isPrivate: false
+          description: ""
+          sortKey: -1789736991370
+        method: PATCH
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5NzM1MDk2LCJleHAiOjE3ODk3NjM4OTZ9.tZQQue_6wJBsc7mJI_fffapYUStFngSO8kxdXyMi7tY
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -664,7 +705,7 @@ collection:
         meta:
           id: req_09f2138b6a024194b300a322777b75a3
           created: 1781876760402
-          modified: 1786724213689
+          modified: 1789144306302
           isPrivate: false
           description: ""
           sortKey: -1781283423830
@@ -673,12 +714,12 @@ collection:
           mimeType: application/json
           text: |-
             {
-              "nome": "clonazepan",
+              "nome": "tralala",
               "dosagem": "1mg",
             	"horario": "10:00",
             	"frequencia": "4 Vezes ao dia",
             	"observacoes": "tralaleiro",
-            	"idIdoso": "e597f36a-6bd2-11f1-9d42-0a0027000003"
+            	"idIdoso": "e1ea6601-ade7-11f1-b8c7-109819aa17b5"
             }
         headers:
           - name: Content-Type
@@ -687,6 +728,9 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5MTI2NzE5LCJleHAiOjE3ODkxNTU1MTl9.0_UDFS4gZ1QNJGSoAUDMcfC703O7SW-COIZpJ1ruud4
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -718,12 +762,12 @@ collection:
             send: true
             store: true
           rebuildPath: true
-      - url: localhost:8000/medicamento/504e026f-6c0c-11f1-9d42-0a0027000003
+      - url: localhost:8000/medicamento
         name: selecionar
         meta:
           id: req_91a196d864a94b9695393e0dd16f3d42
           created: 1781876760402
-          modified: 1786724230416
+          modified: 1789143076973
           isPrivate: false
           description: ""
           sortKey: -1781282058999
@@ -733,6 +777,8 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: bearer
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -790,7 +836,7 @@ collection:
         meta:
           id: req_3cf25fccfd6f400ba010995637de84d0
           created: 1781895333457
-          modified: 1786724057493
+          modified: 1789140687050
           isPrivate: false
           description: ""
           sortKey: -1781282058999
@@ -870,7 +916,7 @@ collection:
         meta:
           id: req_c7f46ee8bce24a0497b84c4c1150385d
           created: 1781895333457
-          modified: 1786724037731
+          modified: 1788539488038
           isPrivate: false
           description: ""
           sortKey: -1781283423830
@@ -882,7 +928,7 @@ collection:
               "tipoSanguineo": "O+",
               "telefone": "19 999182381",
               "pcd": "Sim",
-              "idUsuario": "e31118a4-8d06-11f1-be1c-0a0027000003"
+              "idUsuario": "fc10bdb6-a874-11f1-aa6d-0a0027000003"
             }
         headers:
           - name: Content-Type
@@ -935,7 +981,7 @@ collection:
         meta:
           id: req_6f80885ff3a2410da2588a94ebcd9d9d
           created: 1786721248970
-          modified: 1786725037808
+          modified: 1789735276716
           isPrivate: false
           description: ""
           sortKey: -1781283423830
@@ -947,7 +993,7 @@ collection:
               "descricao": "Uso contínuo de Losartana 50mg, 1 comprimido pela manhã",
               "dataEmissao": "2026-08-14",
               "dataVencimento": "2026-11-14",
-              "idConsulta": "16c8c66e-97fd-11f1-93fe-0a0027000003"
+              "idConsulta": "43da1109-adfe-11f1-b8c7-109819aa17b5"
             }
         headers:
           - name: Content-Type
@@ -956,6 +1002,9 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5NzM1MDk2LCJleHAiOjE3ODk3NjM4OTZ9.tZQQue_6wJBsc7mJI_fffapYUStFngSO8kxdXyMi7tY
         settings:
           renderRequestBody: true
           encodeUrl: true
@@ -1135,6 +1184,566 @@ collection:
             value: insomnia/12.6.0
             description: ""
             disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: admin
+    meta:
+      id: fld_b6e992395c4941fe970b70556941e866
+      created: 1787315204264
+      modified: 1787315204264
+      sortKey: -1781084355636.75
+      description: ""
+    children:
+      - url: localhost:8000/admin
+        name: cadastro
+        meta:
+          id: req_23ab09fbe29c4f60b57ff119f6e9e643
+          created: 1787315204264
+          modified: 1787316052249
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "Para APAGAR",
+              "email": "apaga@email.com",
+              "senha": "Senh@123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/admin/5bc4d6d1-9d5d-11f1-87e9-0a0027000003
+        name: editar
+        meta:
+          id: req_6f1f701e6d9f4467a9f38e71ef722e49
+          created: 1787315204264
+          modified: 1787317024298
+          isPrivate: false
+          description: ""
+          sortKey: -1781282741414.5
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nome": "apaga",
+              "email": "joao.pereira@email.com",
+              "senha": "Joao@2024"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiZW1haWwiOiJhcGFnYUBlbWFpbC5jb20iLCJpYXQiOjE3ODczMTYzODcsImV4cCI6MTc4NzMxOTk4N30.cQGePZvNmxkwPv4zAaOmpDOtkDXUmAlla37X9tJBgwk
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/admin/8f07ac48-9d5d-11f1-87e9-0a0027000003
+        name: apagar
+        meta:
+          id: req_7570b8e78d324107b7d72a2fc4c2ab30
+          created: 1787315204264
+          modified: 1787316448962
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjhmMDdhYzQ4LTlkNWQtMTFmMS04N2U5LTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiYXBhZ2FAZW1haWwuY29tIiwiaWF0IjoxNzg3MzE2MzY0LCJleHAiOjE3OTA5MTI3NjR9.FCVhYqHqMYFqgT16ZGZTeuLLQnRLRvpxYKJI1tApRY4
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/admin/login
+        name: login
+        meta:
+          id: req_a24272824b2f4693bb306a8e025481be
+          created: 1787315204264
+          modified: 1789735080392
+          isPrivate: false
+          description: ""
+          sortKey: -1781283082622.25
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "email": "cuidador@email.com",
+              "senha": "Senh@123"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: none
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/admin
+        name: selecionar
+        meta:
+          id: req_d7e9a5297c274ad29f1eeb20deb55b61
+          created: 1787315204264
+          modified: 1787920184968
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: solicitacaoRelacionamento
+    meta:
+      id: fld_d128985772f847a4ad607feaef2ff038
+      created: 1789139555964
+      modified: 1789139555964
+      sortKey: -1780150534475.625
+      description: ""
+    children:
+      - url: localhost:8000/solicitacaoCuidador
+        name: criar
+        meta:
+          id: req_604f18bd86de4300bba42b2b22e78f7c
+          created: 1789139555964
+          modified: 1789151557689
+          isPrivate: false
+          description: ""
+          sortKey: -1781283423830
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "emailIdoso": "idoso@email.com",
+              "idCuidador": "29eb59fc-ab83-11f1-aa6d-0a0027000003",
+              "contatoEmergencia": "91962220071",
+              "diasParaExpirar": 3
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5MTI2NzE5LCJleHAiOjE3ODkxNTU1MTl9.0_UDFS4gZ1QNJGSoAUDMcfC703O7SW-COIZpJ1ruud4
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/solicitacoesCuidador/
+        name: deletar
+        meta:
+          id: req_b05571633ab14597bc2acfae2fc98a8f
+          created: 1789139555964
+          modified: 1789141902488
+          isPrivate: false
+          description: ""
+          sortKey: -1780545749071
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/solicitacaoCuidador/idoso/1675b940-a87e-11f1-aa6d-0a0027000003
+        name: selecionar
+        meta:
+          id: req_d8b72a66ba564470a466828e7465ab8f
+          created: 1789139555964
+          modified: 1789149335334
+          isPrivate: false
+          description: ""
+          sortKey: -1781282058999
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5MTI2NzE5LCJleHAiOjE3ODkxNTU1MTl9.0_UDFS4gZ1QNJGSoAUDMcfC703O7SW-COIZpJ1ruud4
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/solicitacaoCuidador/6f7ca50e-ae06-11f1-b8c7-109819aa17b5/aceitar
+        name: aceitar
+        meta:
+          id: req_30dbe6eb858f4fed848ab0f8ce610892
+          created: 1789140576740
+          modified: 1789147843020
+          isPrivate: false
+          description: ""
+          sortKey: -1781283253226.125
+        method: PATCH
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5MTI2NzE5LCJleHAiOjE3ODkxNTU1MTl9.0_UDFS4gZ1QNJGSoAUDMcfC703O7SW-COIZpJ1ruud4
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/solicitacaoCuidador/2cadcf1f-adf8-11f1-b8c7-109819aa17b5/recusar
+        name: recusar
+        meta:
+          id: req_aa496e275158482c98522df4c58b3246
+          created: 1789141849369
+          modified: 1789141858148
+          isPrivate: false
+          description: ""
+          sortKey: -1781283167924.1875
+        method: PATCH
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5MTI2NzE5LCJleHAiOjE3ODkxNTU1MTl9.0_UDFS4gZ1QNJGSoAUDMcfC703O7SW-COIZpJ1ruud4
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/solicitacaoCuidador/2cadcf1f-adf8-11f1-b8c7-109819aa17b5/cancelar
+        name: cancelar
+        meta:
+          id: req_9d0b90e9ecd747cda3c46320148e2a44
+          created: 1789141868597
+          modified: 1789141887751
+          isPrivate: false
+          description: ""
+          sortKey: -1781283125273.2188
+        method: PATCH
+        headers:
+          - name: User-Agent
+            value: insomnia/12.6.0
+            description: ""
+            disabled: false
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzg5MTI2NzE5LCJleHAiOjE3ODkxNTU1MTl9.0_UDFS4gZ1QNJGSoAUDMcfC703O7SW-COIZpJ1ruud4
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: pulseira
+    meta:
+      id: fld_1479f334267e4af5ae43a790f8a56dc9
+      created: 1790955833340
+      modified: 1790955833340
+      sortKey: -1790955833340
+      description: ""
+    children:
+      - url: localhost:8000/pulseira
+        name: criar
+        meta:
+          id: req_36300524a4a643e69cc7c614e9d28df1
+          created: 1790955879846
+          modified: 1790956193367
+          isPrivate: false
+          description: ""
+          sortKey: -1790955879846
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "idIdoso": "1675b940-a87e-11f1-aa6d-0a0027000003",
+              "idCuidador": "044dd4d9-b378-11f1-b8c7-109819aa17b5",
+              "nome": "Pulseira do Seu José"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/pulseira/c3a590e4-be78-11f1-9f2a-0a0027000003
+        name: editar
+        meta:
+          id: req_09ee4aea548145fcaf92b72adb6e4a92
+          created: 1790956155362
+          modified: 1790956353114
+          isPrivate: false
+          description: ""
+          sortKey: -1790956155362
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "idIdoso": "1675b940-a87e-11f1-aa6d-0a0027000003",
+              "idCuidador": "044dd4d9-b378-11f1-b8c7-109819aa17b5",
+              "nome": "Pulseira do Seu Cicero"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/pulseira
+        name: selecionar
+        meta:
+          id: req_9f24064693ff430daa7d0b4b90a191b7
+          created: 1790956251282
+          modified: 1790956292965
+          isPrivate: false
+          description: ""
+          sortKey: -1790956017604
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/pulseira/c3a590e4-be78-11f1-9f2a-0a0027000003
+        name: apagar
+        meta:
+          id: req_db0c540fce314da18585a10961cebced
+          created: 1790956310539
+          modified: 1790956358905
+          isPrivate: false
+          description: ""
+          sortKey: -1790955948725
+        method: DELETE
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: leitura
+    meta:
+      id: fld_537496cd39394884a6678126eef6a069
+      created: 1790956753107
+      modified: 1790956753107
+      sortKey: -1786680033486.5
+      description: ""
+    children:
+      - url: localhost:8000/leitura
+        name: selecionar
+        meta:
+          id: req_236dd9600b5b4daabae31cb535d55b13
+          created: 1790956753107
+          modified: 1790956771590
+          isPrivate: false
+          description: ""
+          sortKey: -1790956017604
+        method: GET
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/leitura
+        name: editar
+        meta:
+          id: req_4b4fe71742494974939df0ec9c33f5ec
+          created: 1790956753107
+          modified: 1790956763074
+          isPrivate: false
+          description: ""
+          sortKey: -1790956155362
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "idIdoso": "1675b940-a87e-11f1-aa6d-0a0027000003",
+              "idCuidador": "044dd4d9-b378-11f1-b8c7-109819aa17b5",
+              "nome": "Pulseira do Seu Cicero"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/leitura
+        name: criar
+        meta:
+          id: req_8a32f55834bd4f1995ee56de066d8ea0
+          created: 1790956753107
+          modified: 1790956880954
+          isPrivate: false
+          description: ""
+          sortKey: -1790955879846
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "idPulseira": "76400b42-be7a-11f1-9f2a-0a0027000003",
+              "bpm": 78,
+              "spo2": 97
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8000/pulseira/c3a590e4-be78-11f1-9f2a-0a0027000003
+        name: apagar
+        meta:
+          id: req_973f0da535b74268bb398e0f57d1a558
+          created: 1790956753107
+          modified: 1790956753107
+          isPrivate: false
+          description: ""
+          sortKey: -1790955948725
+        method: DELETE
+        authentication:
+          type: bearer
+          token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUyNTViMzUyLWFiNzgtMTFmMS1hYTZkLTBhMDAyNzAwMDAwMyIsImVtYWlsIjoiY3VpZGFkb3JAZW1haWwuY29tIiwiaWF0IjoxNzkwOTU2MTEwLCJleHAiOjE3OTA5ODQ5MTB9.tRrPdgV3Ro-fghIUgVHqpmC-a199_BvnVZ96dM6awAo
         settings:
           renderRequestBody: true
           encodeUrl: true

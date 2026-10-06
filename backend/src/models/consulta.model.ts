@@ -5,6 +5,9 @@ export interface IConsulta extends RowDataPacket {
     horario: string,
     localConsulta: string,
     idIdoso: string,
+    data: string,
+    descricao: string,
+    compareceu?: boolean,
     id?: string,
 }
 
@@ -14,19 +17,28 @@ export class Consulta {
   private _horario: string;
   private _localconsulta!: string;
   private _idIdoso!: string;
+  private _data!: string;
+  private _descricao!: string;
+  private _compareceu: boolean;
 
   constructor(
     nomeMedico: string,
     horario: string,
     localConsulta: string,
     idIdoso: string,
+    data: string,
+    descricao: string,
     id?: string,
+    compareceu: boolean = false,
   ) {
     this._id = id;
     this._nomeMedico = nomeMedico;
     this._horario = horario;
     this._localconsulta = localConsulta;
     this._idIdoso = idIdoso;
+    this._data = data;
+    this._descricao = descricao;
+    this._compareceu = compareceu;
   }
 
   public get Id(): string | undefined {
@@ -37,70 +49,113 @@ export class Consulta {
     return this._nomeMedico;
   }
 
-    public get Horario(): string {
+  public get Horario(): string {
     return this._horario;
   }
-    public get LocalConsulta(): string {
+  public get LocalConsulta(): string {
     return this._localconsulta;
   }
-      public get IdIdoso(): string {
+  public get IdIdoso(): string {
     return this._idIdoso;
+  }
+  public get Data(): string {
+    return this._data;
+  }
+  public get Descricao(): string {
+    return this._descricao;
+  }
+  public get Compareceu(): boolean {
+    return this._compareceu;
   }
 
   public set Id(value: string) {
-this._validarId(value);
-this._id = value;
-}
-  public set NomeMedico(value: string) {
-this._validarNomeMedico(value);
-this._nomeMedico = value;
-}
-  public set LocalConsulta(value: string) {
-this._validarLocalConsulta(value);
-this._localconsulta = value;
-}
-  public set IdIdoso(value: string) {
-this._validarIdIdoso(value);
-this._idIdoso = value;
-}
-  public set Horario(value: string) {
-this._validarHorario(value);
-this._horario = value;
-}
-  
-private _validarId(value: string): void {
-    if (!value || value.trim().length < 3)
-        throw new Error("O campo id está incompleto");
+    this._validarId(value);
     this._id = value;
-}
-private _validarNomeMedico(value: string): void {
-    if (!value || value.trim().length < 3)
-        throw new Error("O campo nome médico está incompleto");
+  }
+  public set NomeMedico(value: string) {
+    this._validarNomeMedico(value);
     this._nomeMedico = value;
-}
-private _validarHorario(value: string): void {
-    if (!value || value.trim().length < 4)
-        throw new Error("O campo horario está incompleto");
-    this._horario = value;
-}
-private _validarLocalConsulta(value: string): void {
-    if (!value || value.trim().length < 3)
-        throw new Error("O campo validarLocalConsulta está incompleto");
+  }
+  public set LocalConsulta(value: string) {
+    this._validarLocalConsulta(value);
     this._localconsulta = value;
-}
-private _validarIdIdoso(value: string): void {
-    if (!value || value.trim().length < 3)
-        throw new Error("O campo idIdoso está incompleto");
+  }
+  public set IdIdoso(value: string) {
+    this._validarIdIdoso(value);
     this._idIdoso = value;
-}
+  }
+  public set Horario(value: string) {
+    this._validarHorario(value);
+    this._horario = value;
+  }
+  public set Data(value: string) {
+    this._validarData(value);
+    this._data = value;
+  }
+  public set Descricao(value: string) {
+    this._validarDescricao(value);
+    this._descricao = value;
+  }
+  public set Compareceu(value: boolean) {
+    this._validarCompareceu(value);
+    this._compareceu = value;
+  }
+  
+  private _validarId(value: string): void {
+      if (!value || value.trim().length < 3)
+          throw new Error("O campo id está incompleto");
+      this._id = value;
+  }
+  private _validarNomeMedico(value: string): void {
+      if (!value || value.trim().length < 3)
+          throw new Error("O campo nome médico está incompleto");
+      this._nomeMedico = value;
+  }
+  private _validarHorario(value: string): void {
+      if (!value || value.trim().length < 4)
+          throw new Error("O campo horario está incompleto");
+      this._horario = value;
+  }
+  private _validarLocalConsulta(value: string): void {
+      if (!value || value.trim().length < 3)
+          throw new Error("O campo validarLocalConsulta está incompleto");
+      this._localconsulta = value;
+  }
+  private _validarIdIdoso(value: string): void {
+      if (!value || value.trim().length < 3)
+          throw new Error("O campo idIdoso está incompleto");
+      this._idIdoso = value;
+  }
+  private _validarData(value: string): void {
+      if (!value || value.trim().length < 8)
+          throw new Error("O campo data está incompleto");
+      const dataConvertida = new Date(value);
+      if (isNaN(dataConvertida.getTime()))
+          throw new Error("O campo data possui um formato inválido");
+      this._data = value;
+  }
+  private _validarDescricao(value: string): void {
+      if (!value || value.trim().length === 0)
+          throw new Error("O campo descrição está incompleto");
+      if (value.trim().length > 150)
+          throw new Error("O campo descrição deve ter no máximo 150 caracteres");
+      this._descricao = value;
+  }
+  private _validarCompareceu(value: boolean): void {
+      if (typeof value !== "boolean")
+          throw new Error("O campo compareceu deve ser um valor booleano");
+      this._compareceu = value;
+  }
 
- public static criar(
+  public static criar(
     nomeMedico: string,
     horario: string,
     localConsulta: string,
     idIdoso: string,
+    data: string,
+    descricao: string,
   ): Consulta {
-    return new Consulta( nomeMedico, horario, localConsulta, idIdoso);
+    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data, descricao);
   }
   
   public static editar(
@@ -108,8 +163,10 @@ private _validarIdIdoso(value: string): void {
       horario: string,
       localConsulta: string,
       idIdoso: string,
+      data: string,
+      descricao: string,
       id: string,
     ): Consulta {
-    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, id);
+    return new Consulta(nomeMedico, horario, localConsulta, idIdoso, data, descricao, id);
   }
 }

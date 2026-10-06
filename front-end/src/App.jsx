@@ -15,14 +15,16 @@ import PaginaHomeCuidador from './pages/cuidador/PaginaHomeCuidador';
 import PaginaVincularCuidador from './pages/cuidador/PaginaVincularCuidador';
 import PaginaMedicamentos from './pages/cuidador/PaginaMedicamentos';
 import PaginaRegistroSaude from './pages/cuidador/PaginaRegistroSaude';
-import PaginaConsultas from './pages/cuidador/PaginaConsultas';
-import PaginaDoencas from './pages/cuidador/PaginaDoencas';
+import PaginaConsultas from './pages/cuidador/PaginaConsultasCuidador';
+import PaginaDoencas from './pages/cuidador/PaginaDoencasCuidador';
 
 // Páginas do idoso
 import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
 import PaginaHomeIdoso from './pages/idoso/PaginaHomeIdoso';
 import PaginaMedicamentosIdoso from './pages/idoso/PaginaMedicamentosIdoso';
 import PaginaNotificacoesIdoso from './pages/idoso/PaginaNotificacoesIdoso';
+import PaginaConsultasIdoso from './pages/idoso/PaginaConsultasIdoso';
+import PaginaDoencasIdoso from './pages/idoso/PaginaDoencasIdoso';
 
 function App() {
   return (
@@ -83,10 +85,18 @@ function App() {
               path="/medicamentos-idoso"
               element={<PaginaMedicamentosIdoso />}
             />
-
             <Route
               path="/notificacoes-idoso"
               element={<PaginaNotificacoesIdoso />}
+            />
+            <Route
+              path="/consultas-idoso"
+              element={<PaginaConsultasIdoso />}
+            />
+
+            <Route
+              path="/doencas-idoso"
+              element={<PaginaDoencasIdoso />}
             />
 
           </Route>

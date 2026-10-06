@@ -1,6 +1,8 @@
 # API Reference
 
-## 🏠Endereço
+## 🏠 Endereço
+
+Armazena os endereços dos usuários do sistema.
 
 > ⚠️ Todas as rotas exigem autenticação via JWT (`authMiddleware`). As rotas de criar, editar e deletar são restritas a usuários com papel de **cuidador**.
 
@@ -9,216 +11,209 @@
 ```http
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```
-<br>
 
-### ➕Criar endereço
+> ℹ️ O endereço completo (logradouro, bairro, cidade, UF) é armazenado na tabela `enderecos`; veja [database.md](./database.md).
+
+---
+
+### ➕ Criar endereço
 
 - Método: POST
 - Caminho: http://localhost:8000/enderecos
 - 🔒 Restrito a cuidador
 
-#### Corpo de requisição:
+#### Corpo da requisição
 ```json
 {
-	"numero": 123,
-	"complemento": "Apto 45",
-	"cep": "01310100",
-	"idUsuario": "string"
+  "numero": 123,
+  "complemento": "Apto 45",
+  "cep": "01310100",
+  "idUsuario": "string"
 }
 ```
-<br>
 
 #### Regras de Validação
 
-| Número |
-|---------|
-| Obrigatório |
-| Entre 1 e 8 caracteres |
-<br>
+| Campo | Regras |
+|---|---|
+| `numero` | Obrigatório. Entre 1 e 8 caracteres |
+| `complemento` | Obrigatório. Máximo de 150 caracteres |
+| `cep` | Obrigatório. Exatamente 8 dígitos numéricos |
+| `idUsuario` | Obrigatório |
 
-| Complemento |
-|---------|
-| Obrigatório |
-| Máximo de 150 caracteres |
-<br>
-
-| CEP |
-|---------|
-| Obrigatório |
-| Deve conter exatamente 8 dígitos numéricos |
-<br>
-
-| idUsuario |
-|---------|
-| Obrigatório |
-<br>
-
----
-
-#### Resposta de Sucesso:
+#### Resposta de Sucesso
 ```json
 {
-	"novo": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 0
-	}
+  "novo": {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 0,
+    "info": "",
+    "serverStatus": 2,
+    "warningStatus": 0,
+    "changedRows": 0
+  }
 }
 ```
-<br>
 
 #### Possíveis erros
 
 ```json
 {
-	"message": "Ocorreu um erro no servidor",
-	"errorMessage": "CEP inválido"
+  "message": "Ocorreu um erro no servidor",
+  "errorMessage": "CEP inválido"
 }
 ```
 <br>
 
 ```json
 {
-	"message": "Acesso restrito a cuidadores"
+  "message": "Acesso restrito a cuidadores"
 }
 ```
-<br>
 
 ---
 
-### ✅Buscar endereços
+### ✅ Buscar endereços
 
 - Método: GET
 - Caminho: http://localhost:8000/enderecos
+- 🔒 Requer autenticação
 
-#### Resposta de Sucesso:
+#### Resposta de Sucesso
 ```json
 {
-	"result": [
-		{
-			"id": "id",
-			"numero": 123,
-			"complemento": "Apto 45",
-			"cep": "01310100",
-			"idUsuario": "id"
-		}
-	]
+  "result": [
+    {
+      "id": "id",
+      "numero": 123,
+      "complemento": "Apto 45",
+      "cep": "01310100",
+      "idUsuario": "id"
+    }
+  ]
 }
 ```
-<br>
 
 ---
 
-### 🆔Buscar por ID
+### 🆔 Buscar por ID
+
 - Método: GET
 - Caminho: http://localhost:8000/enderecos/:id
-<br>
+- 🔒 Requer autenticação
 
 #### Parâmetros da rota
 
 | Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
+|---|---|---|
 | id | UUID | Identificador único do endereço |
 
-<br>
-
-#### Resposta de Sucesso:
+#### Resposta de Sucesso
 ```json
 {
-	"result": [
-		{
-			"id": "id",
-			"numero": 123,
-			"complemento": "Apto 45",
-			"cep": "01310100",
-			"idUsuario": "id"
-		}
-	]
+  "result": [
+    {
+      "id": "id",
+      "numero": 123,
+      "complemento": "Apto 45",
+      "cep": "01310100",
+      "idUsuario": "id"
+    }
+  ]
 }
 ```
-<br>
 
 ---
 
-### ✏️Editar endereço
+### ✏️ Editar endereço
+
 - Método: PUT
 - Caminho: http://localhost:8000/enderecos/:id
 - 🔒 Restrito a cuidador
-<br>
 
 #### Parâmetros da rota
 
 | Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
+|---|---|---|
 | id | UUID | Identificador único do endereço |
-
-<br>
 
 #### Corpo da requisição
 ```json
 {
-	"numero": 123,
-	"complemento": "predio fiesp",
-	"cep": "01310100",
-	"idUsuario": "string"
+  "numero": 123,
+  "complemento": "Apto 45",
+  "cep": "01310100",
+  "idUsuario": "string"
 }
 ```
-<br>
 
 #### Regras de Validação
 
 Mesmas regras da criação.
-<br>
 
 #### Resposta de Sucesso
 ```json
 {
-	"novo": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "Rows matched: 1  Changed: 1  Warnings: 0",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 1
-	}
+  "novo": {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 0,
+    "info": "Rows matched: 1  Changed: 1  Warnings: 0",
+    "serverStatus": 2,
+    "warningStatus": 0,
+    "changedRows": 1
+  }
 }
 ```
+
 > ⚠️ Nesta rota, diferente das demais, a chave de resposta é `novo` (não `editado`).
-<br>
+
 
 ---
 
-### ❌Deletar endereço
-- Método: DEL
+### ❌ Deletar endereço
+
+- Método: DELETE
 - Caminho: http://localhost:8000/enderecos/:id
 - 🔒 Restrito a cuidador
-<br>
 
 #### Parâmetros da rota
 
 | Parâmetro | Tipo | Descrição |
-|-----------|------|-----------|
+|---|---|---|
 | id | UUID | Identificador único do endereço |
-
-<br>
 
 #### Resposta de Sucesso
 ```json
 {
-	"deletado": {
-		"fieldCount": 0,
-		"affectedRows": 1,
-		"insertId": 0,
-		"info": "",
-		"serverStatus": 2,
-		"warningStatus": 0,
-		"changedRows": 0
-	}
+  "deletado": {
+    "fieldCount": 0,
+    "affectedRows": 1,
+    "insertId": 0,
+    "info": "",
+    "serverStatus": 2,
+    "warningStatus": 0,
+    "changedRows": 0
+  }
+}
+```
+
+
+
+---
+
+### 🔐 Erros de autenticação (comuns a todas as rotas protegidas)
+
+```json
+{
+  "message": "Token não fornecido"
 }
 ```
 <br>
+
+```json
+{
+  "message": "Token inválido ou expirado"
+}
+```

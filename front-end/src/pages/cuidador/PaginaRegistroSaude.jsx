@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";  
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";  
 import { useRegistroSaude } from "../../hooks/useRegistroSaude";  
-import logoImg from "../../assets/logo_DiaADia.png";  
+import logoImg from "../../assets/logo_DiaADia.png"; 
+import PaginaHomeCuidador from '../../pages/cuidador/PaginaHomeCuidador'; 
 
 //estilizações
 import "../../components/styles/HomeIdoso.css";
@@ -55,7 +56,7 @@ export default function PaginaRegistroSaude() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
           >
           <i className="bi bi-chevron-left"></i>
@@ -89,13 +90,13 @@ export default function PaginaRegistroSaude() {
 
         <button className="home-idoso-btn-ativo">Registro Saúde</button>
 
+        {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
-          aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
-          style={styles.notifyButton}
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
         >
-          <i className="bi bi-bell"></i>
+          <i className="bi bi-box-arrow-right"></i>
         </button>
       </header>  
   

@@ -1,7 +1,11 @@
-import { useAddMedicamento } from '../../hooks/useAddMed';
+import { useAddConsulta } from '../../hooks/useAddConsulta';
 import { useIdososDoCuidador } from '../../hooks/useIdososDoCuidador';
 
-export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEditando = null }) {
+export default function CadastrarConsulta({
+    isOpen,
+    onClose,
+    consultaEditando = null
+}) {
     const {
         formData,
         handleChange,
@@ -12,9 +16,13 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
         erro,
         setErro,
         emEdicao
-    } = useAddMedicamento(medicamentoEditando);
+    } = useAddConsulta(consultaEditando);
 
-    const { idosos, loading: loadingIdosos, erro: erroIdosos } = useIdososDoCuidador();
+    const {
+        idosos,
+        loading: loadingIdosos,
+        erro: erroIdosos
+    } = useIdososDoCuidador();
 
     if (!isOpen) return null;
 
@@ -35,13 +43,22 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
     return (
         <div style={styles.modalOverlay}>
             <div style={styles.card}>
+
                 <h1 style={styles.title}>
-                    {emEdicao ? 'Editar Medicamento' : 'Cadastrar Medicamento'}
+                    {emEdicao ? 'Editar Consulta' : 'Cadastrar Consulta'}
                 </h1>
 
                 <form onSubmit={handleSubmit} style={styles.form}>
+
+                    {/* IDOSO */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="idIdoso">Idoso:</label>
+                        <label
+                            style={styles.label}
+                            htmlFor="idIdoso"
+                        >
+                            Idoso:
+                        </label>
+
                         <select
                             id="idIdoso"
                             name="idIdoso"
@@ -49,51 +66,100 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
                             onChange={handleChange}
                             style={styles.input}
                             required
-                            // disabled={loadingIdosos || emEdicao}
-                            disabled={true}
+                            disabled={loadingIdosos || emEdicao}
                         >
-                            {/* <option value="" disabled>
-                                {loadingIdosos ? 'Carregando idosos...' : 'Selecione o idoso'}
-                            </option> */}
+                            <option value="" disabled>
+                                {loadingIdosos
+                                    ? 'Carregando idosos...'
+                                    : 'Selecione o idoso'}
+                            </option>
+
                             {idosos.map((idoso) => (
-                                <option key={idoso.id} value={idoso.id}>
+                                <option
+                                    key={idoso.id}
+                                    value={idoso.id}
+                                >
                                     {idoso.nome}
                                 </option>
                             ))}
                         </select>
+
                         {erroIdosos && (
-                            <span style={styles.fieldError}>{erroIdosos}</span>
+                            <span style={styles.fieldError}>
+                                {erroIdosos}
+                            </span>
                         )}
                     </div>
 
+                    {/* MÉDICO */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="nome">Nome:</label>
+                        <label
+                            style={styles.label}
+                            htmlFor="nomeMedico"
+                        >
+                            Médico:
+                        </label>
+
                         <input
-                            id="nome"
-                            name="nome"
+                            id="nomeMedico"
+                            name="nomeMedico"
                             type="text"
-                            value={formData.nome}
+                            value={formData.nomeMedico}
                             onChange={handleChange}
                             style={styles.input}
                             required
                         />
                     </div>
 
+                    {/* LOCAL */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="dosagem">Dosagem:</label>
+                        <label
+                            style={styles.label}
+                            htmlFor="localConsulta"
+                        >
+                            Local:
+                        </label>
+
                         <input
-                            id="dosagem"
-                            name="dosagem"
+                            id="localConsulta"
+                            name="localConsulta"
                             type="text"
-                            value={formData.dosagem}
+                            value={formData.localConsulta}
                             onChange={handleChange}
                             style={styles.input}
                             required
                         />
                     </div>
 
+                    {/* DATA */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="horario">Horário:</label>
+                        <label
+                            style={styles.label}
+                            htmlFor="data"
+                        >
+                            Data:
+                        </label>
+
+                        <input
+                            id="data"
+                            name="data"
+                            type="date"
+                            value={formData.data}
+                            onChange={handleChange}
+                            style={styles.input}
+                            required
+                        />
+                    </div>
+
+                    {/* HORÁRIO */}
+                    <div style={styles.inputGroup}>
+                        <label
+                            style={styles.label}
+                            htmlFor="horario"
+                        >
+                            Horário:
+                        </label>
+
                         <input
                             id="horario"
                             name="horario"
@@ -105,32 +171,28 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
                         />
                     </div>
 
+                    {/* OBSERVAÇÕES */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="frequencia">Frequência:</label>
+                        <label
+                            style={styles.label}
+                            htmlFor="descricao"
+                        >
+                            Observações:
+                        </label>
+
                         <input
-                            id="frequencia"
-                            name="frequencia"
+                            id="descricao"
+                            name="descricao"
                             type="text"
-                            value={formData.frequencia}
+                            value={formData.descricao}
                             onChange={handleChange}
                             style={styles.input}
                         />
                     </div>
 
-                    <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="observacoes">Observações:</label>
-                        <input
-                            id="observacoes"
-                            name="observacoes"
-                            type="text"
-                            value={formData.observacoes}
-                            onChange={handleChange}
-                            style={styles.input}
-                            required
-                        />
-                    </div>
-
+                    {/* BOTÕES */}
                     <div style={styles.buttonRow}>
+
                         <button
                             type="button"
                             onClick={onClose}
@@ -147,44 +209,64 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
                         >
                             {loading
                                 ? 'Salvando...'
-                                : (emEdicao ? 'Salvar alterações' : 'Cadastrar')}
+                                : (
+                                    emEdicao
+                                        ? 'Salvar alterações'
+                                        : 'Cadastrar'
+                                )}
                         </button>
+
                     </div>
+
                 </form>
             </div>
 
+            {/* MODAL DE SUCESSO */}
             {sucesso && (
                 <div style={styles.innerModalOverlay}>
                     <div style={styles.modalContent}>
-                        <h2 style={styles.modalTitle}>Sucesso!</h2>
+
+                        <h2 style={styles.modalTitle}>
+                            Sucesso!
+                        </h2>
+
                         <p style={styles.modalText}>
                             {emEdicao
-                                ? 'O medicamento foi atualizado com sucesso.'
-                                : 'O medicamento foi salvo com sucesso.'}
+                                ? 'A consulta foi atualizada com sucesso.'
+                                : 'A consulta foi salva com sucesso.'}
                         </p>
+
                         <button
                             onClick={handleConfirmModal}
                             style={styles.modalButton}
                         >
                             OK
                         </button>
+
                     </div>
                 </div>
             )}
 
+            {/* MODAL DE ERRO */}
             {erro && (
                 <div style={styles.innerModalOverlay}>
                     <div style={styles.modalContent}>
-                        <h2 style={styles.modalTitle}>Erro</h2>
+
+                        <h2 style={styles.modalTitle}>
+                            Erro
+                        </h2>
+
                         <p style={styles.modalText}>
                             {erro}
                         </p>
+
                         <button
                             onClick={handleErrorModal}
                             style={styles.modalButton}
                         >
                             OK
                         </button>
+
                     </div>
                 </div>
             )}
@@ -192,7 +274,6 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
     );
 }
 
-//estilização
 const styles = {
     modalOverlay: {
         position: 'fixed',
@@ -215,12 +296,13 @@ const styles = {
         borderRadius: '28px',
         padding: '30px 40px',
         width: '100%',
-        maxHeight: '500px',
+        maxHeight: '600px',
         maxWidth: '500px',
         overflowY: 'auto',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
         boxSizing: 'border-box'
     },
+
     title: {
         fontSize: '26px',
         fontWeight: 'bold',
@@ -229,21 +311,25 @@ const styles = {
         marginTop: 0,
         marginBottom: '20px'
     },
+
     form: {
         display: 'flex',
         flexDirection: 'column',
         gap: '14px'
     },
+
     inputGroup: {
         display: 'flex',
         flexDirection: 'column',
         gap: '4px'
     },
+
     label: {
         fontSize: '15px',
         fontWeight: 'bold',
         color: '#000000'
     },
+
     input: {
         backgroundColor: '#E4ECF2',
         border: '1.5px solid #000000',
@@ -255,16 +341,18 @@ const styles = {
         width: '100%',
         boxSizing: 'border-box'
     },
+
     fieldError: {
         color: '#B00020',
         fontSize: '13px'
     },
+
     buttonRow: {
         display: 'flex',
-        justify: 'space-between',
         gap: '16px',
         marginTop: '15px'
     },
+
     cancelButton: {
         flex: 1,
         backgroundColor: '#E1E8EC',
@@ -277,6 +365,7 @@ const styles = {
         cursor: 'pointer',
         outline: 'none'
     },
+
     submitButton: {
         flex: 1,
         backgroundColor: '#FFE866',
@@ -289,6 +378,7 @@ const styles = {
         cursor: 'pointer',
         outline: 'none'
     },
+
     innerModalOverlay: {
         position: 'fixed',
         top: 0,
@@ -301,6 +391,7 @@ const styles = {
         alignItems: 'center',
         zIndex: 1100
     },
+
     modalContent: {
         backgroundColor: '#FFFFFF',
         borderRadius: '24px',
@@ -310,6 +401,7 @@ const styles = {
         textAlign: 'center',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
     },
+
     modalTitle: {
         fontSize: '22px',
         fontWeight: 'bold',
@@ -317,11 +409,13 @@ const styles = {
         marginBottom: '12px',
         color: '#000000'
     },
+
     modalText: {
         fontSize: '15px',
         color: '#444444',
         marginBottom: '24px'
     },
+
     modalButton: {
         backgroundColor: '#FFE866',
         color: '#000000',

@@ -1,6 +1,6 @@
 export default function ButtonEdit({ onClick }) {
   return (
-    <button style={styles.button} onClick={onClick} aria-label="Editar">
+    <button style={styles.btnEdit} onClick={onClick} aria-label="Editar">
       <i className="bi bi-pencil-fill" style={styles.icone}></i>
     </button>
   );
@@ -8,23 +8,18 @@ export default function ButtonEdit({ onClick }) {
 
 //estilização
 const styles = {
-  button: {
-    backgroundColor: '#E4ECF2',
-    border: 'none',
-    borderRadius: '50%',
-    width: '60px',
-    height: '60px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    outline: 'none',
-    padding: 0,
-    boxShadow: '0 4px 10px rgba(0,0,0,0.03)'
+  btnEdit: {
+    backgroundColor: "#e3f2fd",
+    color: "#0d6efd",
+    border: "none",
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    fontSize: "16px",
+    transition: "background-color 0.2s",
   },
-
-  icone: {
-    fontSize: '24px',
-    color: '#000000'
-  }
 };

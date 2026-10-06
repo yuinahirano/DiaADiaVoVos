@@ -5,6 +5,7 @@ import { useMedicamentosIdoso } from "../../hooks/useMedicamentosIdoso";
 import logoImg from "../../assets/logo_DiaADia.png";
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Consultas.css";
+import MedicamentosListIdoso from "../../components/medicamentos/MedicamentosListIdoso";
 
 export default function PaginaMedicamentosIdoso() {
   const { user } = useContext(AuthContext);
@@ -14,9 +15,13 @@ export default function PaginaMedicamentosIdoso() {
 
   return (
     <div className="home-idoso-container">
+      {/* barra de navegação */}
       <header className="home-idoso-header">
+
+        {/* saudação */}
         <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
+{/* botão de home */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Início"
@@ -25,22 +30,26 @@ export default function PaginaMedicamentosIdoso() {
           <i className="bi bi-house-door-fill"></i>
         </button>
 
+{/* botão de consultas */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/consultas")}
+          onClick={() => navigate("/consultas-idoso")}
         >
           Consultas
         </button>
 
+{/* botão de medicamentos - ATIVO */}
         <button className="home-idoso-btn-ativo">Medicamentos</button>
 
+{/* botão de doenças */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/doencas")}
+          onClick={() => navigate("/doencas-idoso")}
         >
           Doenças
         </button>
 
+{/* botão de notificações */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
@@ -48,6 +57,16 @@ export default function PaginaMedicamentosIdoso() {
         >
           <i className="bi bi-bell"></i>
         </button>
+
+        {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
+        
       </header>
 
       <div className="home-idoso-consultas">
@@ -67,43 +86,9 @@ export default function PaginaMedicamentosIdoso() {
             </p>
           </div>
         )}
-        {!loading &&
-          !error &&
-          medicamentos.map((medicamento) => (
-            <div className="consulta-card" key={medicamento.id}>
-              <h2 className="consulta-card-titulo">{medicamento.nome}</h2>
-
-              <div className="consulta-card-info">
-                <p className="consulta-card-label">
-                  Dosagem:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.dosagem}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Horário:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.horario}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Frequência:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.frequencia}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Observações:{" "}
-                  <span className="consulta-card-valor">
-                    {medicamento.observacoes}
-                  </span>
-                </p>
-              </div>
-            </div>
-          ))}
+        {!loading && !error && medicamentos.length > 0 && (
+    <MedicamentosListIdoso medicamentos={medicamentos} />
+  )}
       </div>
     </div>
   );
