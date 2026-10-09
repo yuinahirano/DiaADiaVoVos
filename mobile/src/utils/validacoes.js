@@ -119,3 +119,24 @@ export function validarEstadoCivil(valor) {
   if (!ESTADOS_CIVIS.some((e) => e.valor === valor)) return 'Estado civil inválido';
   return '';
 }
+
+// Mantém só os dígitos: "(19) 99999-0000" -> "19999990000"
+export function apenasDigitos(texto) {
+  return String(texto || '').replace(/\D/g, '');
+}
+
+// Máscara enquanto digita: (DD) 99999-9999 ou (DD) 9999-9999
+export function formatarTelefone(texto) {
+  const d = apenasDigitos(texto).slice(0, 11);
+  if (d.length === 0) return '';
+  if (d.length <= 2) return `(${d}`;
+  if (d.length <= 6) return `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  if (d.length <= 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+}
+
+// DDD + 8 ou 9 dígitos
+export function telefoneValido(texto) {
+  const tamanho = apenasDigitos(texto).length;
+  return tamanho === 10 || tamanho === 11;
+}

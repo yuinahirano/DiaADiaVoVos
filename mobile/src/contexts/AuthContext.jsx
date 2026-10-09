@@ -65,8 +65,17 @@ export function AuthProvider({ children }) {
   }, []);
 
   const valor = useMemo(
-    () => ({ carregando, logado, perfil, erro, aoLogar, sair }),
-    [carregando, logado, perfil, erro, aoLogar, sair],
+    () => ({
+      carregando,
+      logado,
+      perfil,
+      erro,
+      aoLogar,
+      sair,
+      // Chamado depois de cadastrar idoso/cuidador, para buscar o novo perfil
+      recarregarPerfil: carregarPerfil,
+    }),
+    [carregando, logado, perfil, erro, aoLogar, sair, carregarPerfil],
   );
 
   return <AuthContext.Provider value={valor}>{children}</AuthContext.Provider>;

@@ -1,16 +1,6 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Pressable,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-  ScrollView,
-  Platform,
-  Modal,
-} from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable, ActivityIndicator, KeyboardAvoidingView, ScrollView, Platform, Modal } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -33,6 +23,7 @@ import {
 // Props: onCadastro(dados) é chamado depois que o usuário foi criado na API
 // (dados = o que foi cadastrado, caso a próxima tela precise)
 export default function Cadastro({ onCadastro }) {
+  const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
@@ -43,7 +34,6 @@ export default function Cadastro({ onCadastro }) {
   const [mostrarCalendario, setMostrarCalendario] = useState(false);
   const [estadoCivil, setEstadoCivil] = useState(''); // valor, ex: 'solteiro'
   const [mostrarEstadoCivil, setMostrarEstadoCivil] = useState(false);
-
   const [erros, setErros] = useState({}); // { nome, cpf, email, senha, data, estadoCivil }
   const [erroGeral, setErroGeral] = useState('');
   const [carregando, setCarregando] = useState(false);
@@ -62,10 +52,8 @@ export default function Cadastro({ onCadastro }) {
 
   function formatarDigitacaoData(texto) {
     const numeros = texto.replace(/\D/g, '').slice(0, 8);
-
     if (numeros.length <= 2) return numeros;
     if (numeros.length <= 4) return `${numeros.slice(0, 2)}/${numeros.slice(2)}`;
-
     return `${numeros.slice(0, 2)}/${numeros.slice(2, 4)}/${numeros.slice(4)}`;
   }
 
@@ -89,10 +77,8 @@ export default function Cadastro({ onCadastro }) {
   function aoMudarDataDigitada(texto) {
     const textoFormatado = formatarDigitacaoData(texto);
     const dataConvertida = converterTextoParaData(textoFormatado);
-
     setTextoDataNascimento(textoFormatado);
     setDataNascimento(dataConvertida);
-
     if (erros.data) definirErro('data', '');
   }
 
@@ -132,8 +118,7 @@ export default function Cadastro({ onCadastro }) {
     setMostrarEstadoCivil(false);
   }
 
-  const textoEstadoCivil =
-    ESTADOS_CIVIS.find((e) => e.valor === estadoCivil)?.texto ?? '';
+  const textoEstadoCivil = ESTADOS_CIVIS.find((e) => e.valor === estadoCivil)?.texto ?? '';
 
   async function proximo() {
     if (carregando) return;
@@ -151,6 +136,7 @@ export default function Cadastro({ onCadastro }) {
       data: erroData,
       estadoCivil: validarEstadoCivil(estadoCivil),
     };
+
     setErros(novosErros);
     setErroGeral('');
     if (Object.values(novosErros).some(Boolean)) return;
@@ -182,14 +168,8 @@ export default function Cadastro({ onCadastro }) {
   const mostrarRegrasSenha = senha.length > 0 || !!erros.senha;
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView
-        contentContainerStyle={styles.scroll}
-        keyboardShouldPersistTaps="handled"
-      >
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled">
         <View style={styles.card}>
           <Text style={styles.titulo}>Criar conta</Text>
 
@@ -253,16 +233,8 @@ export default function Cadastro({ onCadastro }) {
               autoCorrect={false}
               editable={!carregando}
             />
-            <Pressable
-              onPress={() => setMostrarSenha((v) => !v)}
-              hitSlop={10}
-              style={styles.olho}
-            >
-              <Ionicons
-                name={mostrarSenha ? 'eye-outline' : 'eye-off-outline'}
-                size={24}
-                color="#000"
-              />
+            <Pressable onPress={() => setMostrarSenha((v) => !v)} hitSlop={10} style={styles.olho}>
+              <Ionicons name={mostrarSenha ? 'eye-outline' : 'eye-off-outline'} size={24} color="#000" />
             </Pressable>
           </View>
 
@@ -272,11 +244,7 @@ export default function Cadastro({ onCadastro }) {
                 const ok = regra.ok(senha);
                 return (
                   <View key={regra.id} style={styles.regra}>
-                    <Ionicons
-                      name={ok ? 'checkmark-circle' : 'ellipse-outline'}
-                      size={16}
-                      color={ok ? '#1b7a2f' : '#777'}
-                    />
+                    <Ionicons name={ok ? 'checkmark-circle' : 'ellipse-outline'} size={16} color={ok ? '#1b7a2f' : '#777'} />
                     <Text style={[styles.regraTexto, ok && styles.regraOk]}>{regra.texto}</Text>
                   </View>
                 );
@@ -299,16 +267,8 @@ export default function Cadastro({ onCadastro }) {
           </Pressable>
           {erros.estadoCivil ? <Text style={styles.erro}>{erros.estadoCivil}</Text> : null}
 
-          <Modal
-            visible={mostrarEstadoCivil}
-            transparent
-            animationType="fade"
-            onRequestClose={() => setMostrarEstadoCivil(false)}
-          >
-            <Pressable
-              style={styles.modalFundo}
-              onPress={() => setMostrarEstadoCivil(false)}
-            >
+          <Modal visible={mostrarEstadoCivil} transparent animationType="fade" onRequestClose={() => setMostrarEstadoCivil(false)}>
+            <Pressable style={styles.modalFundo} onPress={() => setMostrarEstadoCivil(false)}>
               <Pressable style={styles.modalCaixa} onPress={() => {}}>
                 <Text style={styles.modalTitulo}>Estado civil</Text>
                 {ESTADOS_CIVIS.map((op) => {
@@ -321,9 +281,7 @@ export default function Cadastro({ onCadastro }) {
                       accessibilityRole="button"
                     >
                       <Text style={styles.opcaoTexto}>{op.texto}</Text>
-                      {selecionado ? (
-                        <Ionicons name="checkmark" size={20} color="#1b7a2f" />
-                      ) : null}
+                      {selecionado ? <Ionicons name="checkmark" size={20} color="#1b7a2f" /> : null}
                     </Pressable>
                   );
                 })}
@@ -390,16 +348,17 @@ export default function Cadastro({ onCadastro }) {
 
           {erroGeral ? <Text style={styles.erroGeral}>{erroGeral}</Text> : null}
 
+          <Pressable style={[styles.botao, carregando && styles.botaoDesabilitado]} onPress={proximo} disabled={carregando}>
+            {carregando ? <ActivityIndicator color="#000" /> : <Text style={styles.botaoTexto}>Próximo</Text>}
+          </Pressable>
+
           <Pressable
-            style={[styles.botao, carregando && styles.botaoDesabilitado]}
-            onPress={proximo}
+            style={styles.botaoVoltar}
+            onPress={() => navigation.navigate('Login')}
             disabled={carregando}
+            accessibilityRole="button"
           >
-            {carregando ? (
-              <ActivityIndicator color="#000" />
-            ) : (
-              <Text style={styles.botaoTexto}>Próximo</Text>
-            )}
+            <Text style={styles.botaoVoltarTexto}>Voltar para o login</Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -412,20 +371,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EAF1FF',
   },
-
   scroll: {
     flexGrow: 1,
     justifyContent: 'center',
     padding: 16,
   },
-
   card: {
     backgroundColor: '#fff',
     borderRadius: 24,
     paddingVertical: 20,
     paddingHorizontal: 24,
   },
-
   titulo: {
     fontSize: 32,
     fontWeight: 'bold',
@@ -433,7 +389,6 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 12,
   },
-
   label: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -441,7 +396,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 6,
   },
-
   input: {
     backgroundColor: '#E1EAF1',
     borderWidth: 2,
@@ -452,11 +406,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
   },
-
   inputErro: {
     borderColor: '#b00020',
   },
-
   campoSenha: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -465,7 +417,6 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderRadius: 10,
   },
-
   inputSenha: {
     flex: 1,
     paddingVertical: 8,
@@ -473,48 +424,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
   },
-
   olho: {
     paddingHorizontal: 10,
   },
-
   regras: {
     marginTop: 8,
     gap: 4,
   },
-
   regra: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
   },
-
   regraTexto: {
     fontSize: 13,
     color: '#555',
   },
-
   regraOk: {
     color: '#1b7a2f',
   },
-
   campoData: {
     marginTop: 16,
   },
-
   linhaData: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
-
   labelData: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 6,
   },
-
   inputDataCampo: {
     flex: 1,
     minWidth: 0,
@@ -528,7 +470,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
   },
-
   botaoCalendario: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -539,50 +480,41 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
     paddingHorizontal: 10,
   },
-
   botaoConfirmarData: {
     alignSelf: 'center',
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
-
   botaoConfirmarDataTexto: {
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
     textDecorationLine: 'underline',
   },
-
-  // Seletor de estado civil
   seletor: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-
   seletorTexto: {
     fontSize: 16,
     color: '#000',
   },
-
   seletorPlaceholder: {
     color: '#777',
   },
-
   modalFundo: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.4)',
     justifyContent: 'center',
     padding: 24,
   },
-
   modalCaixa: {
     backgroundColor: '#fff',
     borderRadius: 20,
     paddingVertical: 16,
     paddingHorizontal: 12,
   },
-
   modalTitulo: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -590,7 +522,6 @@ const styles = StyleSheet.create({
     color: '#000',
     marginBottom: 8,
   },
-
   opcao: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -599,29 +530,24 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 10,
   },
-
   opcaoSelecionada: {
     backgroundColor: '#E1EAF1',
   },
-
   opcaoTexto: {
     fontSize: 16,
     color: '#000',
   },
-
   erro: {
     color: '#b00020',
     fontSize: 13,
     marginTop: 4,
   },
-
   erroGeral: {
     color: '#b00020',
     fontSize: 14,
     marginTop: 12,
     textAlign: 'center',
   },
-
   botao: {
     backgroundColor: '#FFE566',
     paddingVertical: 14,
@@ -630,14 +556,23 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginHorizontal: 40,
   },
-
   botaoDesabilitado: {
     opacity: 0.6,
   },
-
   botaoTexto: {
     color: '#000',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  botaoVoltar: {
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  botaoVoltarTexto: {
+    color: '#000',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
 });

@@ -18,11 +18,11 @@ import { sincronizarAgora } from '../../services/sync/sync';
 
 // Paleta "Dia a Dia Vovôs"
 const cores = {
-  fundo: '#E1F5FE', // azul gelo
+  fundo: '#EAF1FF', // azul muito claro
   branco: '#FFFFFF',
   preto: '#000000',
-  destaque: '#FFD600', // amarelo forte
-  suave: '#B39DDB', // roxo suave
+  destaque: '#FFE566', // amarelo dos botões
+  suave: '#E1EAF1', // azul-claro dos campos
   textoSecundario: '#333333',
   erro: '#B00020',
 };
