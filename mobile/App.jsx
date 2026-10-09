@@ -1,24 +1,35 @@
 import React from 'react';
-import { StatusBar, View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+  StatusBar,
+  View,
+  Text,
+  Pressable,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
 
-// Públicas
+// Telas públicas
 import Login from './src/screens/Login/Login';
 import Cadastro from './src/screens/Cadastro/Cadastro';
 
-// Escolha de perfil (logado, mas sem idoso/cuidador)
-import { EscolherPerfil, DadosIdoso, DadosCuidador } from './src/screens/Cadastro/EtapaPerfil';
+// Cadastro de perfil
+import {
+  EscolherPerfil,
+  DadosIdoso,
+  DadosCuidador,
+} from './src/screens/Cadastro/EtapaPerfil';
 
-// Cuidador
-import HomeCuidador from './src/screens/Cuidador/HomeCuidador';
+// Pulseiras
 import PulseiraCuidador from './src/screens/Cuidador/PulseiraCuidador';
-
-// Idoso
-import HomeIdoso from './src/screens/Idoso/HomeIdoso';
 import PulseiraIdoso from './src/screens/Idoso/PulseiraIdoso';
+
+// Telas do idoso
+import HomeIdoso from './src/screens/Idoso/HomeIdoso';
+import HomeIdosoPulseira from './src/screens/Idoso/HomeIdosoPulseira';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +45,6 @@ function TelaLogin({ navigation }) {
 }
 
 function TelaCadastro({ navigation }) {
-  // Chamado pelo Cadastro depois que a API criou o usuário
   return (
     <Cadastro
       onCadastro={(dados) =>
@@ -66,7 +76,6 @@ function TelaProximaEtapa({ navigation, route }) {
   );
 }
 
-// Logado, mas o usuário ainda não é idoso nem cuidador
 function TelaEscolherPerfil({ navigation }) {
   const { sair } = useAuth();
 
@@ -83,7 +92,6 @@ function TelaEscolherPerfil({ navigation }) {
 }
 
 function TelaDadosIdoso({ navigation }) {
-  // Depois do cadastro, busca o perfil de novo: o Rotas troca sozinho para a Home
   const { recarregarPerfil } = useAuth();
 
   return (
@@ -128,16 +136,48 @@ function TelaSemPerfil() {
   );
 }
 
-function TelaHomeCuidador(props) {
+// Os dois perfis utilizam a nova tela inicial
+function TelaHomePrincipal(props) {
   const { sair } = useAuth();
 
-  return <HomeCuidador {...props} onSair={sair} />;
+  return <HomeIdoso {...props} onLogout={sair} />;
 }
 
-function TelaHomeIdoso(props) {
+// Tela Saúde: HomeIdosoPulseira
+function TelaHomeIdosoPulseira(props) {
   const { sair } = useAuth();
 
-  return <HomeIdoso {...props} onSair={sair} />;
+  return <HomeIdosoPulseira {...props} onSair={sair} />;
+}
+
+// Telas provisórias para os atalhos da home
+function TelaDestinoIdoso({ navigation, route }) {
+  const titulos = {
+    ConsultasIdoso: 'Consultas',
+    MedicamentosIdoso: 'Medicamentos',
+    DoencasIdoso: 'Doenças',
+    NotificacoesIdoso: 'Notificações',
+  };
+
+  return (
+    <View style={styles.centro}>
+      <Text style={styles.titulo}>
+        {titulos[route.name] || 'Página'}
+      </Text>
+
+      <Text style={styles.texto}>
+        Esta tela será implementada posteriormente.
+      </Text>
+
+      <Pressable
+        style={styles.botao}
+        onPress={() => navigation.goBack()}
+        accessibilityRole="button"
+      >
+        <Text style={styles.botaoTexto}>Voltar para a home</Text>
+      </Pressable>
+    </View>
+  );
 }
 
 function Rotas() {
@@ -151,7 +191,7 @@ function Rotas() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#E1F5FE' },
+        contentStyle: { backgroundColor: '#EAF1FF' },
       }}
       initialRouteName={
         !logado
@@ -160,47 +200,93 @@ function Rotas() {
             ? 'SemPerfil'
             : perfil === null
               ? 'EscolherPerfil'
-              : perfil === 'cuidador'
-                ? 'HomeCuidador'
-                : 'HomeIdoso'
+              : 'HomePrincipal'
       }
     >
       {!logado ? (
-        // NÃO LOGADO
         <>
           <Stack.Screen name="Login" component={TelaLogin} />
           <Stack.Screen name="Cadastro" component={TelaCadastro} />
-          <Stack.Screen name="ProximaEtapa" component={TelaProximaEtapa} />
+          <Stack.Screen
+            name="ProximaEtapa"
+            component={TelaProximaEtapa}
+          />
         </>
       ) : erro ? (
-        // LOGADO, MAS DEU ERRO AO BUSCAR O PERFIL
         <Stack.Screen name="SemPerfil" component={TelaSemPerfil} />
       ) : perfil === null ? (
-        // LOGADO, MAS AINDA NÃO É IDOSO NEM CUIDADOR: escolha obrigatória
         <>
           <Stack.Screen
             name="EscolherPerfil"
             component={TelaEscolherPerfil}
           />
           <Stack.Screen name="DadosIdoso" component={TelaDadosIdoso} />
-          <Stack.Screen name="DadosCuidador" component={TelaDadosCuidador} />
+          <Stack.Screen
+            name="DadosCuidador"
+            component={TelaDadosCuidador}
+          />
         </>
       ) : perfil === 'cuidador' ? (
-        // CUIDADOR
         <>
-          <Stack.Screen name="HomeCuidador" component={TelaHomeCuidador} />
+          <Stack.Screen
+            name="HomePrincipal"
+            component={TelaHomePrincipal}
+          />
+          <Stack.Screen
+            name="HomeIdosoPulseira"
+            component={TelaHomeIdosoPulseira}
+          />
           <Stack.Screen
             name="PulseiraCuidador"
             component={PulseiraCuidador}
           />
-          {/* TODO: demais telas do cuidador */}
+          <Stack.Screen
+            name="ConsultasIdoso"
+            component={TelaDestinoIdoso}
+          />
+          <Stack.Screen
+            name="MedicamentosIdoso"
+            component={TelaDestinoIdoso}
+          />
+          <Stack.Screen
+            name="DoencasIdoso"
+            component={TelaDestinoIdoso}
+          />
+          <Stack.Screen
+            name="NotificacoesIdoso"
+            component={TelaDestinoIdoso}
+          />
         </>
       ) : (
-        // IDOSO
         <>
-          <Stack.Screen name="HomeIdoso" component={TelaHomeIdoso} />
-          <Stack.Screen name="PulseiraIdoso" component={PulseiraIdoso} />
-          {/* TODO: demais telas do idoso */}
+          <Stack.Screen
+            name="HomePrincipal"
+            component={TelaHomePrincipal}
+          />
+          <Stack.Screen
+            name="HomeIdosoPulseira"
+            component={TelaHomeIdosoPulseira}
+          />
+          <Stack.Screen
+            name="PulseiraIdoso"
+            component={PulseiraIdoso}
+          />
+          <Stack.Screen
+            name="ConsultasIdoso"
+            component={TelaDestinoIdoso}
+          />
+          <Stack.Screen
+            name="MedicamentosIdoso"
+            component={TelaDestinoIdoso}
+          />
+          <Stack.Screen
+            name="DoencasIdoso"
+            component={TelaDestinoIdoso}
+          />
+          <Stack.Screen
+            name="NotificacoesIdoso"
+            component={TelaDestinoIdoso}
+          />
         </>
       )}
     </Stack.Navigator>
@@ -210,14 +296,11 @@ function Rotas() {
 export default function App() {
   return (
     <AuthProvider>
-      <View
-        style={{
-          flex: 1,
-          paddingTop: StatusBar.currentHeight ?? 44,
-          backgroundColor: '#E1F5FE',
-        }}
-      >
-        <StatusBar />
+      <View style={styles.app}>
+        <StatusBar
+          backgroundColor="#EAF1FF"
+          barStyle="dark-content"
+        />
         <NavigationContainer>
           <Rotas />
         </NavigationContainer>
@@ -227,6 +310,11 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  app: {
+    flex: 1,
+    paddingTop: StatusBar.currentHeight ?? 0,
+    backgroundColor: '#EAF1FF',
+  },
   centro: {
     flex: 1,
     padding: 24,
@@ -243,7 +331,7 @@ const styles = StyleSheet.create({
     color: '#333333',
   },
   botao: {
-    minHeight: 72,
+    minHeight: 64,
     borderRadius: 16,
     backgroundColor: '#FFFFFF',
     borderWidth: 2,
@@ -252,7 +340,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   botaoTexto: {
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: 'bold',
     color: '#000000',
   },

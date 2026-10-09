@@ -1,247 +1,252 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { View, Text, ScrollView, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
+import React from 'react';
+import {
+  ScrollView,
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  StatusBar,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useAuth } from '../../contexts/AuthContext';
 
-import { listarLeituras, buscarPulseira } from '../../services/api/api';
-import { definirNomePulseira } from '../../services/http/pulseiraHttp';
-import { lerPulseira } from '../../services/storage/pulseira';
-import { sincronizarAgora, iniciarAutomatico } from '../../services/sync/sync';
-import PulseiraIdoso from './PulseiraIdoso';
+export default function HomeIdoso({ onLogout }) {
+  const navigation = useNavigation();
+  const { user } = useAuth();
 
-// Paleta "Dia a Dia Vovôs"
-const cores = {
-  fundo: '#EAF1FF', // azul muito claro
-  branco: '#FFFFFF',
-  preto: '#000000',
-  destaque: '#FFE566', // amarelo dos botões
-  suave: '#E1EAF1', // azul-claro dos campos
-  textoSecundario: '#333333',
-  erro: '#B00020',
-};
+  const nome =
+    user?.nome ??
+    user?.name ??
+    user?.nomeCompleto ??
+    '';
 
-const VARIANTES = {
-  primario: { fundo: cores.preto, texto: cores.branco },
-  destaque: { fundo: cores.destaque, texto: cores.preto },
-  suave: { fundo: cores.suave, texto: cores.preto },
-  contorno: { fundo: cores.branco, texto: cores.preto, borda: true },
-};
+  const primeiroNome =
+    typeof nome === 'string' && nome.trim()
+      ? nome.trim().split(/\s+/)[0]
+      : '';
 
-// Botão grande, fácil de tocar
-function Botao({ titulo, onPress, disabled, variante = 'primario' }) {
-  const v = VARIANTES[variante] ?? VARIANTES.primario;
-  return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={titulo}
-      onPress={onPress}
-      disabled={disabled}
-      style={({ pressed }) => [
-        styles.botao,
-        { backgroundColor: v.fundo },
-        v.borda && styles.botaoBorda,
-        (disabled || pressed) && styles.botaoApagado,
-      ]}
-    >
-      <Text style={[styles.botaoTexto, { color: v.texto }]}>{titulo}</Text>
-    </Pressable>
-  );
-}
+  const cards = [
+    {
+      titulo: 'Consultas',
+      icone: 'calendar-check-outline',
+      cor: '#FFE16A',
+      rota: 'ConsultasIdoso',
+    },
+    {
+      titulo: 'Saúde',
+      icone: 'heart-pulse',
+      cor: '#F5B4C5',
+      rota: 'HomeIdosoPulseira',
+    },
+    {
+      titulo: 'Medicamentos',
+      icone: 'pill',
+      cor: '#C8ACE4',
+      rota: 'MedicamentosIdoso',
+    },
+    {
+      titulo: 'Doenças',
+      icone: 'clipboard-pulse-outline',
+      cor: '#F5877E',
+      rota: 'DoencasIdoso',
+    },
+    {
+      titulo: 'Notificações',
+      icone: 'bell-outline',
+      cor: '#A6D8B7',
+      rota: 'NotificacoesIdoso',
+      largo: true,
+    },
+  ];
 
-// ISO 8601 (com "Z" = UTC) ou epoch -> dd/mm/aaaa hh:mm:ss no fuso do celular
-function formatarData(valor) {
-  if (valor === undefined || valor === null) return '--';
-  const d = typeof valor === 'number' ? new Date(valor < 1e12 ? valor * 1000 : valor) : new Date(valor);
-  if (Number.isNaN(d.getTime())) return String(valor);
-  const dois = (n) => String(n).padStart(2, '0');
-  return (
-    `${dois(d.getDate())}/${dois(d.getMonth() + 1)}/${d.getFullYear()} ` +
-    `${dois(d.getHours())}:${dois(d.getMinutes())}:${dois(d.getSeconds())}`
-  );
-}
-
-function maisRecente(lista) {
-  return [...lista].sort((a, b) => {
-    const ta = new Date(a.medidoEm ?? a.medido_em).getTime() || 0;
-    const tb = new Date(b.medidoEm ?? b.medido_em).getTime() || 0;
-    return tb - ta;
-  })[0];
-}
-
-// HOME DO IDOSO: poucas opções, botões grandes.
-// Ele só pode ver as leituras, conectar a pulseira (se ainda não tiver) e atualizar.
-// Fila, Wi-Fi, desvincular e IP ficam só com o cuidador.
-// Props: onSair
-export default function HomeIdoso({ onSair }) {
-  const [config, setConfig] = useState(null);
-  const [carregado, setCarregado] = useState(false);
-  const [tela, setTela] = useState('home'); // 'home' | 'leituras' | 'conectar'
-  const [nome, setNome] = useState('');
-  const [ultima, setUltima] = useState(null);
-  const [mensagem, setMensagem] = useState('');
-  const [ocupado, setOcupado] = useState(false);
-
-  // Vínculo salvo no celular (id, token e IP da pulseira)
-  const recarregar = useCallback(async () => {
-    try {
-      setConfig(await lerPulseira());
-    } finally {
-      setCarregado(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    recarregar().catch(() => {});
-  }, [recarregar]);
-
-  // Sincronização automática: liga sozinha quando há pulseira vinculada
-  useEffect(() => {
-    if (!config) return undefined;
-    const parar = iniciarAutomatico(() => {});
-    return () => parar?.();
-  }, [config?.idPulseira, config?.ip, config?.deviceToken]);
-
-  // Nome da pulseira: busca na API e manda para ela
-  useEffect(() => {
-    if (!config) {
-      setNome('');
-      return undefined;
-    }
-    let ativo = true;
-    (async () => {
-      let p;
-      try {
-        p = await buscarPulseira(config.idPulseira);
-      } catch (e) {
-        return;
-      }
-      if (!ativo || !p?.nome) return;
-      setNome(p.nome);
-      try {
-        await definirNomePulseira(config.ip, p.nome);
-      } catch (e) {
-        // pulseira desligada: tenta de novo na próxima abertura
-      }
-    })();
-    return () => {
-      ativo = false;
-    };
-  }, [config?.idPulseira, config?.ip]);
-
-  // Última leitura para o resumo da tela inicial
-  const carregarUltima = useCallback(async () => {
-    if (!config) {
-      setUltima(null);
-      return;
-    }
-    try {
-      setUltima(maisRecente(await listarLeituras(config.idPulseira)) ?? null);
-    } catch (e) {
-      // sem internet: mantém o que já estava na tela
-    }
-  }, [config?.idPulseira]);
-
-  useEffect(() => {
-    if (tela === 'home') carregarUltima();
-  }, [tela, carregarUltima]);
-
-  const pulseira = useMemo(
-    () => (config ? { id: config.idPulseira, nome: nome || 'Minha pulseira' } : null),
-    [config?.idPulseira, nome],
-  );
-
-  const atualizar = async () => {
-    setOcupado(true);
-    setMensagem('Atualizando...');
-    try {
-      await sincronizarAgora(() => {});
-      await carregarUltima();
-      setMensagem('Tudo atualizado!');
-    } catch (e) {
-      setMensagem('Não consegui atualizar. Confira se a pulseira está ligada e no mesmo Wi-Fi.');
-    } finally {
-      setOcupado(false);
+  const sair = () => {
+    if (onLogout) {
+      onLogout();
+    } else {
+      navigation.navigate('Login');
     }
   };
 
-  if (!carregado) {
-    return (
-      <View style={[styles.tela, { justifyContent: 'center' }]}>
-        <ActivityIndicator size="large" color={cores.preto} />
-      </View>
-    );
-  }
-
-  if (tela === 'leituras' || tela === 'conectar') {
-    return (
-      <PulseiraIdoso
-        modo={tela}
-        pulseira={pulseira}
-        onConcluir={recarregar}
-        onVoltar={() => setTela('home')}
-      />
-    );
-  }
-
   return (
-    <ScrollView contentContainerStyle={styles.tela}>
-      <Text style={styles.titulo}>Dia a Dia Vovôs</Text>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar
+        backgroundColor="#EAF1FF"
+        barStyle="dark-content"
+      />
 
-      {config ? (
-        <>
-          <View style={styles.card}>
-            <Text style={styles.status}>✓ Pulseira conectada</Text>
-            {ultima ? (
-              <>
-                <Text style={styles.valorGrande}>{ultima.bpm ?? '--'} bpm</Text>
-                <Text style={styles.valorMedio}>Oxigênio {ultima.spo2 ?? '--'}%</Text>
-                <Text style={styles.data}>Última leitura: {formatarData(ultima.medidoEm ?? ultima.medido_em)}</Text>
-              </>
-            ) : (
-              <Text style={styles.texto}>Ainda não há leituras. Coloque o dedo na pulseira.</Text>
-            )}
+      <ScrollView
+        contentContainerStyle={styles.container}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.header}>
+          <View style={styles.saudacaoContainer}>
+            <Text style={styles.titulo}>
+              Olá{primeiroNome ? `, ${primeiroNome}` : ''}
+            </Text>
+
+            <Text style={styles.subtitulo}>
+              Como podemos ajudar hoje?
+            </Text>
           </View>
 
-          <Botao titulo="Ver minhas leituras" onPress={() => setTela('leituras')} />
-          <Botao titulo="Atualizar agora" variante="destaque" onPress={atualizar} disabled={ocupado} />
-          {mensagem ? <Text style={styles.mensagem}>{mensagem}</Text> : null}
-        </>
-      ) : (
-        <>
-          <View style={styles.card}>
-            <Text style={styles.status}>Pulseira não conectada</Text>
-            <Text style={styles.texto}>Ligue a pulseira e toque no botão abaixo.</Text>
-          </View>
-          <Botao titulo="Conectar minha pulseira" variante="destaque" onPress={() => setTela('conectar')} />
-        </>
-      )}
+          <View style={styles.acoes}>
+            <Pressable
+              style={styles.botaoHeader}
+              accessibilityRole="button"
+              accessibilityLabel="Notificações"
+              onPress={() => navigation.navigate('NotificacoesIdoso')}
+            >
+              <MaterialCommunityIcons
+                name="bell-outline"
+                size={28}
+                color="#000000"
+              />
+            </Pressable>
 
-      {onSair ? (
-        <View style={{ marginTop: 24 }}>
-          <Botao titulo="Sair" variante="contorno" onPress={onSair} />
+            <Pressable
+              style={styles.botaoHeader}
+              accessibilityRole="button"
+              accessibilityLabel="Sair"
+              onPress={sair}
+            >
+              <MaterialCommunityIcons
+                name="logout"
+                size={27}
+                color="#000000"
+              />
+            </Pressable>
+          </View>
         </View>
-      ) : null}
-    </ScrollView>
+
+        <View style={styles.menu}>
+          {cards.map((card) => (
+            <Pressable
+              key={card.titulo}
+              style={({ pressed }) => [
+                styles.card,
+                card.largo && styles.cardLargo,
+                { backgroundColor: card.cor },
+                pressed && styles.cardPressionado,
+              ]}
+              onPress={() => navigation.navigate(card.rota)}
+              accessibilityRole="button"
+              accessibilityLabel={card.titulo}
+            >
+              <MaterialCommunityIcons
+                name={card.icone}
+                size={card.largo ? 48 : 60}
+                color="#000000"
+              />
+
+              <Text
+                style={[
+                  styles.cardTexto,
+                  card.largo && styles.cardTextoLargo,
+                ]}
+              >
+                {card.titulo}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  tela: { flexGrow: 1, backgroundColor: cores.fundo, padding: 24, paddingTop: 60, gap: 16 },
-  titulo: { fontSize: 32, fontWeight: 'bold', color: cores.preto },
-  card: {
-    backgroundColor: cores.branco,
-    borderWidth: 2,
-    borderColor: cores.preto,
-    borderRadius: 16,
-    padding: 18,
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#EAF1FF',
+  },
+
+  container: {
+    flexGrow: 1,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 24,
+  },
+
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+
+  saudacaoContainer: {
+    flex: 1,
+    marginRight: 10,
+  },
+
+  titulo: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+
+  subtitulo: {
+    fontSize: 16,
+    color: '#333333',
+    marginTop: 6,
+  },
+
+  acoes: {
+    flexDirection: 'row',
     gap: 8,
   },
-  status: { fontSize: 24, fontWeight: 'bold', color: cores.preto },
-  valorGrande: { fontSize: 48, fontWeight: 'bold', color: cores.preto },
-  valorMedio: { fontSize: 24, fontWeight: 'bold', color: cores.preto },
-  data: { fontSize: 16, color: cores.textoSecundario },
-  texto: { fontSize: 20, color: cores.textoSecundario },
-  mensagem: { fontSize: 20, color: cores.preto, textAlign: 'center' },
-  botao: { minHeight: 72, paddingHorizontal: 16, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
-  botaoBorda: { borderWidth: 2, borderColor: cores.preto },
-  botaoApagado: { opacity: 0.5 },
-  botaoTexto: { fontSize: 22, fontWeight: 'bold', textAlign: 'center' },
+
+  botaoHeader: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  menu: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+
+  card: {
+    width: '48.5%',
+    aspectRatio: 0.88,
+    borderRadius: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 8,
+    marginBottom: 14,
+  },
+
+  cardLargo: {
+    width: '100%',
+    height: 112,
+    aspectRatio: undefined,
+    flexDirection: 'row',
+    gap: 20,
+    borderRadius: 24,
+  },
+
+  cardPressionado: {
+    opacity: 0.8,
+    transform: [{ scale: 0.98 }],
+  },
+
+  cardTexto: {
+    color: '#000000',
+    fontSize: 19,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 18,
+  },
+
+  cardTextoLargo: {
+    marginTop: 0,
+    fontSize: 20,
+  },
 });

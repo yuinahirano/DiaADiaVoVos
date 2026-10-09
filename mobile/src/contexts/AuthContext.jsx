@@ -7,51 +7,77 @@ import React, {
   useState,
 } from 'react';
 
-import { logout, aoSessaoExpirar, perfilDoUsuarioLogado } from '../services/api/api';
+import api, {
+  logout,
+  aoSessaoExpirar,
+} from '../services/api/api';
+
 import { lerJwt } from '../services/storage/auth';
 
-// perfil: 'cuidador' | 'idoso' | null (logado, mas sem role ou ainda não carregado)
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  // true enquanto verifica o token guardado ou busca o perfil
   const [carregando, setCarregando] = useState(true);
   const [logado, setLogado] = useState(false);
   const [perfil, setPerfil] = useState(null);
+  const [user, setUser] = useState(null);
   const [erro, setErro] = useState('');
 
-  // Descobre o perfil em GET /usuario/me (campo role)
+  // Busca os dados e o perfil do usuário logado
   const carregarPerfil = useCallback(async () => {
     setErro('');
     setCarregando(true);
+
     try {
-      setPerfil(await perfilDoUsuarioLogado());
+      const { data } = await api.get('/usuario/me');
+
+      const resultado = data?.result;
+      const usuario = Array.isArray(resultado)
+        ? resultado[0] ?? null
+        : resultado ?? data?.usuario ?? data?.user ?? null;
+
+      setUser(usuario);
+
+      const role = String(usuario?.role ?? '').toLowerCase();
+
+      if (role === 'cuidador' || role === 'idoso') {
+        setPerfil(role);
+      } else {
+        setPerfil(null);
+      }
     } catch (e) {
-      setErro(e.message);
+      setUser(null);
+      setPerfil(null);
+      setErro(e?.message || 'Não foi possível carregar o perfil.');
     } finally {
       setCarregando(false);
     }
   }, []);
 
   useEffect(() => {
-    // Token vencido: o api.js apaga o JWT e chama isto, voltando para o login
     aoSessaoExpirar(() => {
       setLogado(false);
       setPerfil(null);
+      setUser(null);
       setErro('');
+      setCarregando(false);
     });
 
-    lerJwt().then((jwt) => {
-      if (jwt) {
-        setLogado(true);
-        carregarPerfil();
-      } else {
+    lerJwt()
+      .then((jwt) => {
+        if (jwt) {
+          setLogado(true);
+          carregarPerfil();
+        } else {
+          setCarregando(false);
+        }
+      })
+      .catch((e) => {
+        setErro(e?.message || 'Não foi possível verificar a sessão.');
         setCarregando(false);
-      }
-    });
+      });
   }, [carregarPerfil]);
 
-  // Chamado pelo Login depois que o JWT foi salvo
   const aoLogar = useCallback(async () => {
     setLogado(true);
     await carregarPerfil();
@@ -59,8 +85,10 @@ export function AuthProvider({ children }) {
 
   const sair = useCallback(async () => {
     await logout();
+
     setLogado(false);
     setPerfil(null);
+    setUser(null);
     setErro('');
   }, []);
 
@@ -69,20 +97,37 @@ export function AuthProvider({ children }) {
       carregando,
       logado,
       perfil,
+      user,
       erro,
       aoLogar,
       sair,
-      // Chamado depois de cadastrar idoso/cuidador, para buscar o novo perfil
       recarregarPerfil: carregarPerfil,
     }),
-    [carregando, logado, perfil, erro, aoLogar, sair, carregarPerfil],
+    [
+      carregando,
+      logado,
+      perfil,
+      user,
+      erro,
+      aoLogar,
+      sair,
+      carregarPerfil,
+    ],
   );
 
-  return <AuthContext.Provider value={valor}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={valor}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error('useAuth deve ser usado dentro de <AuthProvider>');
+
+  if (!ctx) {
+    throw new Error('useAuth deve ser usado dentro de AuthProvider');
+  }
+
   return ctx;
 }
