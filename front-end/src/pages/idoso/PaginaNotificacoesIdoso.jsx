@@ -40,8 +40,11 @@
     return (
       <div className="home-idoso-container">
         <header className="home-idoso-header">
+
+          {/* saudação */}
           <h1 className="home-idoso-titulo">Olá, {primeiroNome}</h1>
 
+          {/* botão para home */}
           <button
             className="home-idoso-icone-btn"
             aria-label="Início"
@@ -50,6 +53,7 @@
             <i className="bi bi-house-door-fill"></i>
           </button>
 
+          {/* botão para consultas */}
           <button
             className="home-idoso-link"
             onClick={() => navigate("/consultas-idoso")}
@@ -57,6 +61,7 @@
             Consultas
           </button>
 
+          {/* botão para medicamentos */}
           <button
             className="home-idoso-link"
             onClick={() => navigate("/medicamentos-idoso")}
@@ -72,12 +77,22 @@
             Doenças
           </button>
 
+          {/* botão de notificação */}
           <button
             className="home-idoso-icone-btn"
             aria-label="Notificações"
           >
             <i className="bi bi-bell-fill"></i>
           </button>
+
+          {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
         </header>
 
         <div className="home-idoso-consultas">

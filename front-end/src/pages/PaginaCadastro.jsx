@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCadastro } from '../hooks/useCadastro';
 
+import "../components/styles/HomeIdoso.css";
+
 export default function PaginaCadastro() {
   const navigate = useNavigate();
 
@@ -34,6 +36,16 @@ export default function PaginaCadastro() {
           borderRadius: '35px'
         }}
       >
+        {/* botão de voltar */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Voltar"
+          onClick={() => navigate("/login")}
+          style={styles.backButton}
+        >
+          <i className="bi bi-chevron-left"></i>
+        </button>
+
         <h2 className="fw-bold text-center mb-4" style={{ fontSize: '2.2rem', color: '#000' }}>
           Criar conta
         </h2>
@@ -192,4 +204,11 @@ export default function PaginaCadastro() {
       </div>
     </div>
   );
+}
+
+const styles = {
+  backButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+  },
 }
