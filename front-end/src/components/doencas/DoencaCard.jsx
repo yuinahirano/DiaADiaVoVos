@@ -1,5 +1,5 @@
-import ButtonEdit from "./ButtonDelete";
-import ButtonDelete from "./ButtonEdit";
+import ButtonEdit from "./ButtonEdit";
+import ButtonDelete from "./ButtonDelete";
 
 export default function DoencaCard({ condicao, onDelete, onEdit }) {
   if (!condicao) return null;
@@ -14,8 +14,8 @@ export default function DoencaCard({ condicao, onDelete, onEdit }) {
       </div>
 
       <div style={styles.buttonContainer}>
-        <ButtonDelete onClick={() => onDelete(condicao.id)} />
         <ButtonEdit onClick={() => onEdit(condicao)} />
+        <ButtonDelete onClick={() => onDelete(condicao.id)} />
       </div>
     </div>
   );
