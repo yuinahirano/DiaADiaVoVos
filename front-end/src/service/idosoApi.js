@@ -54,3 +54,33 @@ export async function deleteConsulta(id) {
     throw erro;
   }
 }
+
+export async function addDoenca(dadosDoenca) {
+  try {
+    const resposta = await api_auth.post(`/doenca`, dadosDoenca);
+    return resposta.data.result;
+  } catch (erro) {
+    console.error("Erro ao adicionar doença:", erro);
+    throw erro;
+  }
+}
+
+export async function updateDoenca(id, dadosDoenca) {
+  try {
+    const resposta = await api_auth.put(`/doenca/${id}`, dadosDoenca);
+    return resposta.data.result;
+  } catch (erro) {
+    console.error("Erro ao atualizar doença:", erro);
+    throw erro;
+  }
+}
+
+export async function deleteDoenca(id) {
+  try {
+    const resposta = await api_auth.delete(`/doenca/${id}`);
+    return resposta.data.result;
+  } catch (erro) {
+    console.error("Erro ao deletar doença:", erro);
+    throw erro;
+  }
+}

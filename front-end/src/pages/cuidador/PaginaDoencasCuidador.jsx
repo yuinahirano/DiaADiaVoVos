@@ -1,23 +1,24 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useDoencas } from "../../hooks/useDoencas";
 import logoImg from "../../assets/logo_DiaADia.png";
 import DoencasList from "../../components/doencas/DoencaList";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
-import PaginaHomeCuidador from '../../pages/cuidador/PaginaHomeCuidador';
+import CadastrarDoenca from "./PaginaAddDoenca";
 
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
 
 export default function PaginaDoencas() {
-  //const { user } = useContext(AuthContext);
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { doencas, loading, error, deleteDoenca } = useDoencas(idoso?.id);
+  const { doencas, loading, error, deleteDoenca, refetch } = useDoencas(idoso?.id);
   const navigate = useNavigate();
-  //const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [doencaEditando, setDoencaEditando] = useState(null);
 
   const handleDelete = (id) => {
     if (deleteDoenca) {
@@ -27,30 +28,39 @@ export default function PaginaDoencas() {
     }
   };
 
+  const handleAbrirCadastro = () => {
+    setDoencaEditando(null);
+    setIsModalOpen(true);
+  };
+
   const handleEdit = (doenca) => {
-    console.log("Editar doença:", doenca);
-    // Exemplo: navigate(`/editar-doenca/${doenca.id}`);
+    setDoencaEditando(doenca);
+    setIsModalOpen(true);
+  };
+
+  const handleFecharModal = () => {
+    setIsModalOpen(false);
+    setDoencaEditando(null);
+    refetch();
   };
 
   return (
     <div className="home-idoso-container">
       <header className="home-idoso-header">
-
         {/* botão de voltar */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
           onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
-          >
+        >
           <i className="bi bi-chevron-left"></i>
         </button>
 
         {/* saudacao */}
         <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
 
-
-        {/* barra de navegação e seus botoões */}
+        {/* barra de navegação e seus botões */}
         <button className="home-idoso-btn-ativo">Doenças</button>
 
         <button
@@ -84,6 +94,14 @@ export default function PaginaDoencas() {
         </button>
       </header>
 
+      {/* botão de adicionar doença */}
+      <div style={styles.actionRow}>
+        <button style={styles.addButton} onClick={handleAbrirCadastro}>
+          <span style={styles.addIcon}>+</span>
+          Adicionar doença
+        </button>
+      </div>
+
       {/* corpo */}
       <div className="home-idoso-doencas">
         {loading && <p>Carregando doenças...</p>}
@@ -101,7 +119,6 @@ export default function PaginaDoencas() {
           </div>
         )}
 
-        {/* chamando os componentes com a listagem */}
         {!loading && !error && doencas.length > 0 && (
           <DoencasList
             doencas={doencas}
@@ -109,8 +126,14 @@ export default function PaginaDoencas() {
             onEdit={handleEdit}
           />
         )}
-
       </div>
+
+      {/* modal de cadastro/edição */}
+      <CadastrarDoenca
+        isOpen={isModalOpen}
+        onClose={handleFecharModal}
+        doencaEditando={doencaEditando}
+      />
     </div>
   );
 }
@@ -123,5 +146,31 @@ const styles = {
   notifyButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
+  },
+  actionRow: {
+    display: "flex",
+    justifyContent: "flex-end",
+    marginTop: "25px",
+    marginBottom: "10px",
+  },
+  addButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+    border: "none",
+    borderRadius: "25px",
+    padding: "10px 24px",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+    outline: "none",
+  },
+  addIcon: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    lineHeight: "1",
   },
 };
