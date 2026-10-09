@@ -14,7 +14,7 @@ export default function PaginaHomeIdoso() {
       {/* barra de navegação */}
       <header className="home-idoso-header">
 
-{/* saudação */}
+        {/* saudação */}
         <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
         {/* botão de notificação */}
@@ -26,7 +26,7 @@ export default function PaginaHomeIdoso() {
           <i className="bi bi-bell"></i>
         </button>
 
-{/* botão de sair */}
+        {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Sair"

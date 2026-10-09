@@ -4,6 +4,8 @@ import { useCadastro } from '../hooks/useCadastro';
 
 export default function PaginaCadastro() {
   const navigate = useNavigate();
+
+  // salva as informações que estão sendo inseridas pelo usuário
   const {
     formData,
     loading,
@@ -24,6 +26,7 @@ export default function PaginaCadastro() {
       className="min-vh-100 d-flex align-items-center justify-content-center p-3"
       style={{ backgroundColor: '#EBF3FF', fontFamily: 'Arial, sans-serif' }}
     >
+      {/* card de cadastro */}
       <div
         className="bg-white p-4 p-md-5 w-100 shadow-sm"
         style={{

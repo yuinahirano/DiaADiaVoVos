@@ -13,7 +13,7 @@ export default function PaginaDadosIdoso() {
     e.preventDefault();
     setLoading(true);
 
-    const usuarioId = localStorage.getItem('usuarioId');
+    const usuarioId = localStorage.getItem('usuarioId'); //pega o id salvo no login
 
     try {
       if (usuarioId) {

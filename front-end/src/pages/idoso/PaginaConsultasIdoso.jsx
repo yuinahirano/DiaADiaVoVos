@@ -36,17 +36,17 @@ export default function PaginaConsultasIdoso() {
         {/* saudação */}
         <h1 className="home-idoso-titulo">Olá {nomeIdoso}</h1>
 
-{/* botão de home */}
+        {/* botão de home */}
         <button className="home-idoso-icone-btn" 
         aria-label="Início"
         onClick={() => navigate("/home-idoso")}>
           <i className="bi bi-house-door-fill"></i>
         </button>
 
-{/* botão de consultas - ATIVO */}
+        {/* botão de consultas - ATIVO */}
         <button className="home-idoso-btn-ativo">Consultas</button>
 
-{/* botão de medicamentos */}
+        {/* botão de medicamentos */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos-idoso")}
@@ -54,7 +54,7 @@ export default function PaginaConsultasIdoso() {
           Medicamentos
         </button>
 
-{/* botão de página de doenças */}
+        {/* botão de página de doenças */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/doencas-idoso")}
@@ -62,7 +62,7 @@ export default function PaginaConsultasIdoso() {
           Doenças
         </button>
 
-{/* botão de notificações */}
+        {/* botão de notificações */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
@@ -71,7 +71,7 @@ export default function PaginaConsultasIdoso() {
           <i className="bi bi-bell"></i>
         </button>
 
-{/* botão de sair */}
+        {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Sair"
@@ -81,6 +81,7 @@ export default function PaginaConsultasIdoso() {
         </button>
       </header>
 
+      {/* card quando não possui consultas */}
       <div className="home-idoso-consultas">
         {loading && <p>Carregando consultas...</p>}
 
@@ -97,6 +98,7 @@ export default function PaginaConsultasIdoso() {
           </div>
         )}
 
+        {/* chama cards de consultas */}
         {!loading && !error && consultas.length > 0 && (
     <ConsultasListIdoso consultas={consultas} formatarData={formatarData} />
   )}
@@ -105,6 +107,7 @@ export default function PaginaConsultasIdoso() {
   );
 }
 
+// outras estilizações
 const styles = {
   corBotoes: {
     backgroundColor: "#FFE866",
