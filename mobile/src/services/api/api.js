@@ -18,7 +18,7 @@ function criarInstancia() {
   // Avisa com clareza se o .env não foi lido
   instancia.interceptors.request.use((config) => {
     if (!API_URL) {
-      throw new Error('EXPO_PUBLIC_API_URL não está definida no .env (reinicie o Expo com: npx expo start -c)');
+      throw new Error('_API_URL não está definida no .env (reinicie o Expo com: npx expo start -c)');
     }
     return config;
   });
