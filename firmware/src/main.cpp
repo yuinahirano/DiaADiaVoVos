@@ -75,6 +75,7 @@ static const uint32_t INTERVALO_MAX_SEG        = 86400;
 static const uint32_t INTERVALO_RETENTATIVA_MS = 20UL * 1000UL;
 static const uint8_t  FALHAS_PARA_REINICIAR_SENSOR = 3;
 static const uint32_t TIMEOUT_DEDO_MS = 30000;
+static const uint32_t TIMEOUT_RELOGIO_MS = 15000; // NOVO: sem NTP em 15 s, pula a espera do relogio
 static const uint32_t LIMIAR_IR       = 30000;
 static const uint32_t EPOCH_MINIMO    = 1704067200UL; // 2024-01-01
 static const size_t   MAX_REGISTROS   = 2000;
@@ -84,6 +85,11 @@ static const char*    ARQUIVO_TMP     = "/registros.tmp";
 static const char*    AP_NOME_PADRAO  = "Pulseira-Config";
 static const char*    AP_SENHA        = "pulseira123"; // minimo 8 caracteres
 static const int      NOME_MAX        = 32;            // limite de SSID
+
+// Wi-Fi fixo no codigo: preencha para a pulseira conectar direto, sem usar o celular.
+// Deixe "" (vazio) para voltar ao modo normal (teclado + portal no celular).
+static const char* WIFI_SSID_CODIGO  = "CONECTA+";   // so 2.4 GHz, respeite maiusculas/minusculas
+static const char* WIFI_SENHA_CODIGO = "senai512";
 
 constexpr uint16_t rgb565(uint8_t r, uint8_t g, uint8_t b) { return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3); }
 const uint16_t C_ICE    = rgb565(225, 245, 254);
@@ -122,6 +128,7 @@ volatile bool     medirAgora = false;
 volatile uint32_t intervaloSeg = INTERVALO_LEITURA_SEG;
 volatile bool     intervaloMudou = false;
 volatile bool     medicaoLiberada = false;
+volatile bool     relogioPulado = false; // NOVO: passou 15 s sem NTP, segue sem hora certa
 
 static Tela tela = T_NOME;
 String wifiSsid, wifiSenha, entrada, opcoesRedes;
@@ -261,6 +268,10 @@ void setup()
   // Com Wi-Fi salvo conecta narrando na tela; sem rede (ou se falhar) abre o teclado e o portal
   carregarNomeAp();
   carregarWifi();
+  if (strlen(WIFI_SSID_CODIGO) > 0) {   // NOVO: rede escrita no codigo tem prioridade sobre a salva
+    wifiSsid  = WIFI_SSID_CODIGO;
+    wifiSenha = WIFI_SENHA_CODIGO;
+  }
   if (wifiSsid.length() > 0) {
     ResConexao r = conectarComNarracao(wifiSsid, wifiSenha);
     if (r == CONN_OK) { entrarMonitor(); Serial.println("Pulseira pronta."); return; }
@@ -711,6 +722,7 @@ static void tarefaMedicao(void*)
   uint32_t proxima = 0;
   uint32_t base = 0; // quando terminou a ultima medicao boa
   uint8_t falhasSeguidas = 0;
+  uint32_t inicioEsperaRelogio = 0;
 
   for (;;) {
     if (!medicaoLiberada) { vTaskDelay(pdMS_TO_TICKS(200)); continue; }
@@ -722,11 +734,17 @@ static void tarefaMedicao(void*)
       continue;
     }
 
-    // Sem hora certa nao da para carimbar as leituras: espera o NTP
-    if (!relogioAjustado()) {
-      fase = F_ESPERA_RELOGIO;
-      vTaskDelay(pdMS_TO_TICKS(1000));
-      continue;
+    // Sem hora certa nao da para carimbar as leituras: espera o NTP por 15 s e depois pula
+    if (!relogioAjustado() && !relogioPulado) {
+      if (inicioEsperaRelogio == 0) inicioEsperaRelogio = millis();
+      if (millis() - inicioEsperaRelogio >= TIMEOUT_RELOGIO_MS) {
+        relogioPulado = true;
+        Serial.println("Relogio nao acertou em 15 s: seguindo sem hora certa");
+      } else {
+        fase = F_ESPERA_RELOGIO;
+        vTaskDelay(pdMS_TO_TICKS(1000));
+        continue;
+      }
     }
 
     // O app mudou o intervalo: reagenda a partir da ultima medicao boa
@@ -1058,6 +1076,7 @@ static ResConexao conectarComNarracao(const String& ssid, const String& senha)
 {
   tela = T_CONECTA;
   medicaoLiberada = false;
+  relogioPulado = false;
   iniciarLog("Conectando", "a pulseira...");
 
   char buf[40];
@@ -1117,14 +1136,15 @@ static ResConexao conectarComNarracao(const String& ssid, const String& senha)
   logAdd("Acertando o relogio...", C_BLACK);
   configTzTime(TZ_STR, "pool.ntp.org", "time.google.com"); // epoch continua UTC
   uint32_t t0 = millis();
-  while (!relogioAjustado() && millis() - t0 < 10000) delay(100);
+  while (!relogioAjustado() && millis() - t0 < TIMEOUT_RELOGIO_MS) delay(100);
   if (relogioAjustado()) {
     time_t agora = time(nullptr);
     struct tm tmv; localtime_r(&agora, &tmv);
     snprintf(buf, sizeof(buf), "Relogio ok %02d:%02d", tmv.tm_hour, tmv.tm_min);
     logTroca(buf, C_GREEN);
   } else {
-    logTroca("Sem relogio (sem net?)", C_RED);
+    relogioPulado = true; // o SNTP continua tentando em segundo plano
+    logTroca("Sem relogio, pulando", C_RED);
   }
 
   logAdd("Iniciando servidor...", C_BLACK);
