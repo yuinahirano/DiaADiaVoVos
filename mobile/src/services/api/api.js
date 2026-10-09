@@ -39,7 +39,7 @@ function traduzirErro(erro) {
   return erro;
 }
 
-// Sem JWT: usada só no login
+// Sem JWT: usada no login e no cadastro
 const apiPublica = criarInstancia();
 apiPublica.interceptors.response.use(
   (resposta) => resposta,
@@ -147,6 +147,13 @@ export async function login(email, senha) {
   }
   await salvarJwt(token);
   return token;
+}
+
+// POST /usuarios -> cria o usuário (rota pública, sem JWT)
+// dados: { nome, cpf, email, senha, dataNascimento (YYYY-MM-DD), estadoCivil? }
+export async function cadastrarUsuario(dados) {
+  const { data } = await apiPublica.post('/usuario', dados);
+  return data;
 }
 
 export async function logout() {
