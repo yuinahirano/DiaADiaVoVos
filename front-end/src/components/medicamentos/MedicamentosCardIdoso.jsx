@@ -10,7 +10,7 @@ export default function MedicamentoCardIdoso({ medicamento }) {
 
   return (
     <div style={styles.card}>
-      <h2 style={styles.cardTitle}>{medicamento.nome}</h2>
+      <h2 style={styles.cardTitle}>{medicamento.nome.toUpperCase()}</h2>
 
       <div style={styles.cardInfoDosagem}>
         <div style={styles.borderDosagem}>
