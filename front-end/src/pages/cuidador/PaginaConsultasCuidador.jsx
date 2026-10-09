@@ -77,15 +77,18 @@ export default function PaginaConsultas() {
           Doenças
         </button>
 
+        {/* botão de consultas */}
         <button className="home-idoso-btn-ativo">Consulta</button>
 
+        {/* botão de medicamentos */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos")}
-        >
+          >
           Medicamentos
         </button>
 
+          {/* botão de registro de saúde */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/registro-saude")}
@@ -93,6 +96,7 @@ export default function PaginaConsultas() {
           Registro Saúde
         </button>
 
+        {/* botão de notificação */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
@@ -100,6 +104,15 @@ export default function PaginaConsultas() {
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
+        </button>
+
+        {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
         </button>
       </header>
 

@@ -63,6 +63,7 @@ export default function PaginaDoencas() {
         {/* barra de navegação e seus botões */}
         <button className="home-idoso-btn-ativo">Doenças</button>
 
+        {/* botão de consultas*/}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/consultas")}
@@ -70,6 +71,7 @@ export default function PaginaDoencas() {
           Consultas
         </button>
 
+        {/* botão de medicamento*/}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos")}
@@ -77,11 +79,22 @@ export default function PaginaDoencas() {
           Medicamentos
         </button>
 
+        {/* botão de registro de saude */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/registro-saude")}
         >
           Registro Saúde
+        </button>
+
+        {/* botão de notificação */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Notificações"
+          onClick={() => navigate("/notificacoes-idoso")}
+          style={styles.notifyButton}
+        >
+          <i className="bi bi-bell"></i>
         </button>
 
         {/* botão de sair */}
