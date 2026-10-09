@@ -1,0 +1,452 @@
+/* ESTRUTURA GERAL DA LANDING PAGE */
+.landing-page {
+  min-height: 100vh;
+  background-color: #EBF3FF;
+  color: #1A2229;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* HEADER FIXO QUE SEGUE A ROLAGEM */
+.landing-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 10px 24px;
+  box-sizing: border-box;
+}
+
+.landing-header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landing-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* LOGO AMPLIADA DO CABEÇALHO (70px) */
+.landing-brand-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.landing-brand-title {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: #1A2229;
+}
+
+.landing-nav {
+  display: flex;
+  gap: 28px;
+}
+
+.landing-nav a {
+  text-decoration: none;
+  color: #1A2229;
+  font-weight: 800;
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+}
+
+.landing-nav a:hover {
+  color: #d8c21a;
+}
+
+/* BOTÕES AMARELOS UNIFICADOS (#FFEB60) */
+.landing-btn-login {
+  background-color: #FFEB60;
+  color: #1A2229;
+  border: none;
+  border-radius: 20px;
+  padding: 12px 24px;
+  font-weight: 900;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.landing-btn-login:hover {
+  transform: scale(1.03);
+  background-color: #f7e03f;
+}
+
+/* HERO SECTION (Espaçamento superior ajustado para o header fixo maior) */
+.landing-hero {
+  padding: 160px 24px 70px;
+  text-align: center;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.landing-badge {
+  background-color: #FFEB60;
+  color: #1A2229;
+  font-weight: 900;
+  font-size: 1rem;
+  padding: 8px 20px;
+  border-radius: 24px;
+  display: inline-block;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.landing-hero h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.25;
+  margin-bottom: 24px;
+  color: #1A2229;
+}
+
+.landing-hero p {
+  font-size: 1.35rem;
+  color: #4A5568;
+  line-height: 1.6;
+  margin-bottom: 36px;
+  font-weight: 600;
+}
+
+.landing-hero-btns {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.landing-btn-primary {
+  background-color: #FFEB60;
+  color: #1A2229;
+  border: none;
+  border-radius: 24px;
+  padding: 16px 38px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.landing-btn-primary:hover {
+  transform: translateY(-2px);
+  background-color: #f7e03f;
+}
+
+.landing-btn-secondary {
+  background-color: #FFFFFF;
+  color: #1A2229;
+  border: none;
+  border-radius: 24px;
+  padding: 16px 38px;
+  font-size: 1.25rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.15s ease;
+}
+
+.landing-btn-secondary:hover {
+  transform: translateY(-2px);
+}
+
+/* SEÇÕES GERAIS */
+html {
+  scroll-behavior: smooth;
+}
+
+.landing-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 90px 24px 40px;
+}
+
+.landing-section-title {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.landing-section-title h2 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  color: #1A2229;
+}
+
+.landing-section-title p {
+  font-size: 1.25rem;
+  color: #5A6A75;
+  font-weight: 600;
+}
+
+/* CARDS DE RECURSOS */
+.landing-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.landing-feature-card {
+  background-color: #FFFFFF;
+  border-radius: 28px;
+  padding: 36px 24px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+  text-align: center;
+}
+
+.landing-card-icon {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  margin: 0 auto 20px;
+}
+
+/* DETALHES COLORIDOS SECUNDÁRIOS */
+.icon-yellow { background-color: #FFEB60; color: #1A2229; }
+.icon-purple { background-color: #C9AEE6; color: #1A2229; }
+.icon-green  { background-color: #A8D8B9; color: #1A2229; }
+
+.landing-feature-card h3 {
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin-bottom: 12px;
+  color: #1A2229;
+}
+
+.landing-feature-card p {
+  color: #555;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* SEÇÃO DE HOMENAGEM AOS AVÓS */
+.landing-section-homenagem {
+  background-color: #FFFFFF;
+  border-radius: 36px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 60px 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.landing-homenagem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+.homenagem-card {
+  background-color: #F8FAFC;
+  border-radius: 24px;
+  overflow: hidden;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+}
+
+.homenagem-foto-container {
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  background-color: #E2E8F0;
+}
+
+.homenagem-foto-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.homenagem-card:hover .homenagem-foto-container img {
+  transform: scale(1.05);
+}
+
+.homenagem-info {
+  padding: 22px;
+  flex: 1;
+}
+
+.homenagem-info h3 {
+  font-size: 1.35rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+  color: #1A2229;
+}
+
+.homenagem-info p {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* CAIXINHAS COLORIDAS */
+.landing-recursos-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.recurso-linha-item {
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.recurso-linha-item i {
+  font-size: 2.4rem;
+  color: #1A2229;
+  padding: 14px;
+  border-radius: 18px;
+  flex-shrink: 0;
+}
+
+.icon-box-purple { background-color: #C9AEE6; }
+.icon-box-yellow { background-color: #FFEB60; }
+.icon-box-pink   { background-color: #F28B82; }
+.icon-box-green  { background-color: #A8D8B9; }
+
+.recurso-linha-item h4 {
+  font-size: 1.3rem;
+  font-weight: 900;
+  margin: 0 0 6px 0;
+  color: #1A2229;
+}
+
+.recurso-linha-item p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* EQUIPE */
+.landing-equipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+.equipe-card {
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  padding: 28px 16px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.equipe-card i {
+  font-size: 2.5rem;
+  color: #1A2229;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.equipe-card h4 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  margin: 0 0 6px 0;
+  color: #1A2229;
+}
+
+.equipe-card span {
+  font-size: 0.95rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* FOOTER */
+.landing-footer {
+  background-color: #FFFFFF;
+  border-top: 1px solid #E2E8F0;
+  padding: 36px 24px;
+  margin-top: 40px;
+}
+
+.landing-footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.landing-footer-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* LOGO AMPLIADA DO RODAPÉ (60px) */
+.landing-footer-info img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.landing-footer-info p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 767.98px) {
+  .landing-nav {
+    display: none;
+  }
+
+  .landing-brand-logo {
+    width: 54px;
+    height: 54px;
+  }
+
+  .landing-brand-title {
+    font-size: 1.3rem;
+  }
+
+  .landing-hero {
+    padding-top: 130px;
+  }
+
+  .landing-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .landing-hero p {
+    font-size: 1.1rem;
+  }
+
+  .landing-section-title h2 {
+    font-size: 2rem;
+  }
+
+  .landing-footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+}
