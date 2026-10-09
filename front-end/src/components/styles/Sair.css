@@ -11,12 +11,15 @@
   padding: 48px;
   width: 100%;
   max-width: 420px;
+  box-sizing: border-box;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .sair-card-logo {
   width: 100px;
+  max-width: 50%;
+  height: auto;
   margin-bottom: 24px;
 }
 
@@ -34,6 +37,7 @@
 
 .sair-card-acoes {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
 }
@@ -56,4 +60,23 @@
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
+}
+
+@media (max-width: 575.98px) {
+  .sair-wrapper {
+    margin-top: 32px;
+  }
+
+  .sair-card {
+    padding: 32px 20px;
+  }
+
+  .sair-card-acoes {
+    flex-direction: column;
+  }
+
+  .sair-btn-permanecer,
+  .sair-btn-sair {
+    width: 100%;
+  }
 }

@@ -7,69 +7,30 @@ export default function ConsultaCardIdoso({ consulta, formatarData }) {
   const horarioFormatado = consulta.horario ? consulta.horario.slice(0, 5) : "";
 
   return (
-    <div style={styles.card}>
-      <h2 style={styles.cardTitle}>{consulta.nome_medico}</h2>
+    <div className="consulta-card">
+      <h2 className="consulta-card-titulo">{consulta.nome_medico}</h2>
 
-      <div style={styles.cardInfo}>
+      <div className="consulta-card-info">
         {dataFormatada && (
-          <p style={styles.cardLabel}>
-            Data:{" "}
-            <span style={styles.cardValor}>{dataFormatada}</span>
+          <p className="consulta-card-label">
+            Data: <span className="consulta-card-valor">{dataFormatada}</span>
           </p>
         )}
 
-        <p style={styles.cardLabel}>
-          Horário:{" "}
-          <span style={styles.cardValor}>{horarioFormatado}</span>
+        <p className="consulta-card-label">
+          Horário: <span className="consulta-card-valor">{horarioFormatado}</span>
         </p>
 
-        <p style={styles.cardLabel}>
-          Local:{" "}
-          <span style={styles.cardValor}>{consulta.local_consulta}</span>
+        <p className="consulta-card-label">
+          Local: <span className="consulta-card-valor">{consulta.local_consulta}</span>
         </p>
 
         {consulta.descricao && (
-          <p style={styles.cardLabel}>
-            Descrição:{" "}
-            <span style={styles.cardValor}>{consulta.descricao}</span>
+          <p className="consulta-card-label">
+            Descrição: <span className="consulta-card-valor">{consulta.descricao}</span>
           </p>
         )}
       </div>
     </div>
   );
 }
-
-// Estilos
-const styles = {
-  card: {
-    backgroundColor: "#ffffff",
-    borderRadius: "24px",
-    padding: "24px",
-    width: "300px",
-    minHeight: "220px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)",
-    display: "flex",
-    flexDirection: "column",
-  },
-  cardTitle: {
-    color: '#000000',
-    fontSize: '28px',
-    fontWeight: 'bold',
-    margin: 0,
-  },
-  cardInfo: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-    marginTop: "auto",
-  },
-  cardLabel: {
-    fontWeight: "700",
-    margin: 0,
-    fontSize: "1rem",
-    color: "#000000",
-  },
-  cardValor: {
-    fontWeight: "400",
-  },
-};

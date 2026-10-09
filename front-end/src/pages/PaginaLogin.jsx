@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import logoImg from "../assets/logo_DiaADia.png";
-import '../components/styles/Login.css';
 
 export default function PaginaLogin() {
   const [email, setEmail] = useState("");

@@ -11,6 +11,7 @@
   padding: 40px 48px;
   width: 100%;
   max-width: 500px;
+  box-sizing: border-box;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -78,4 +79,24 @@
   text-align: center;
   margin-top: 16px;
   font-weight: 600;
+}
+
+@media (max-width: 575.98px) {
+  .vincular-cuidador-wrapper {
+    margin-top: 24px;
+  }
+
+  .vincular-cuidador-card {
+    padding: 28px 20px;
+    border-radius: 20px;
+  }
+
+  .vincular-cuidador-titulo {
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+  }
+
+  .vincular-cuidador-btn {
+    width: 100%;
+  }
 }

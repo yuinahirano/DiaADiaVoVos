@@ -64,7 +64,6 @@ export default function PaginaNotificacoesIdoso() {
           Medicamentos
         </button>
 
-        {/* botão de página de doenças */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/doencas-idoso")}
@@ -72,10 +71,7 @@ export default function PaginaNotificacoesIdoso() {
           Doenças
         </button>
 
-        <button
-          className="home-idoso-icone-btn"
-          aria-label="Notificações"
-        >
+        <button className="home-idoso-icone-btn" aria-label="Notificações">
           <i className="bi bi-bell-fill"></i>
         </button>
       </header>
@@ -104,61 +100,62 @@ export default function PaginaNotificacoesIdoso() {
               alt="Dia a Dia Vovôs"
               className="home-idoso-vazio-logo"
             />
-
             <p className="home-idoso-vazio-texto">
               Nenhuma notificação no momento
             </p>
           </div>
         )}
 
-        {!loading &&
-          !error &&
-          notificacoes.map((notificacao) => (
-            <div className="consulta-card" key={notificacao.id}>
-              <h2 className="consulta-card-titulo">Solicitação de cuidador</h2>
+        {!loading && !error && notificacoes.length > 0 && (
+          <div className="lista-grid">
+            {notificacoes.map((notificacao) => (
+              <div className="consulta-card" key={notificacao.id}>
+                <h2 className="consulta-card-titulo">Solicitação de cuidador</h2>
 
-              <div className="consulta-card-info">
-                <p className="consulta-card-label">
-                  Status:{" "}
-                  <span className="consulta-card-valor">
-                    {formatarStatus(notificacao.status)}
-                  </span>
-                </p>
+                <div className="consulta-card-info">
+                  <p className="consulta-card-label">
+                    Status:{" "}
+                    <span className="consulta-card-valor">
+                      {formatarStatus(notificacao.status)}
+                    </span>
+                  </p>
 
-                <p className="consulta-card-label">
-                  Contato de emergência:{" "}
-                  <span className="consulta-card-valor">
-                    {notificacao.contato_emergencia || "Não informado"}
-                  </span>
-                </p>
+                  <p className="consulta-card-label">
+                    Contato de emergência:{" "}
+                    <span className="consulta-card-valor">
+                      {notificacao.contato_emergencia || "Não informado"}
+                    </span>
+                  </p>
 
-                <p className="consulta-card-label">
-                  Expira em:{" "}
-                  <span className="consulta-card-valor">
-                    {formatarData(notificacao.expira_em)}
-                  </span>
-                </p>
-              </div>
-
-              {notificacao.status === "pendente" && (
-                <div className="consulta-card-acoes">
-                  <button
-                    className="notificacao-btn-aceitar"
-                    onClick={() => aceitar(notificacao.id)}
-                  >
-                    Aceitar
-                  </button>
-
-                  <button
-                    className="notificacao-btn-recusar"
-                    onClick={() => recusar(notificacao.id)}
-                  >
-                    Recusar
-                  </button>
+                  <p className="consulta-card-label">
+                    Expira em:{" "}
+                    <span className="consulta-card-valor">
+                      {formatarData(notificacao.expira_em)}
+                    </span>
+                  </p>
                 </div>
-              )}
-            </div>
-          ))}
+
+                {notificacao.status === "pendente" && (
+                  <div className="consulta-card-acoes">
+                    <button
+                      className="notificacao-btn-aceitar"
+                      onClick={() => aceitar(notificacao.id)}
+                    >
+                      Aceitar
+                    </button>
+
+                    <button
+                      className="notificacao-btn-recusar"
+                      onClick={() => recusar(notificacao.id)}
+                    >
+                      Recusar
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

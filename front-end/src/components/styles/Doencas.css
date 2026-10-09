@@ -2,6 +2,7 @@
   min-height: 100vh;
   background-color: #eaf1fd;
   padding: 24px;
+  box-sizing: border-box;
 }
 
 .home-idoso-doencas {
@@ -17,7 +18,8 @@
   background-color: #ffffff;
   border-radius: 24px;
   padding: 24px;
-  width: 300px;
+  width: min(100%, 300px);
+  box-sizing: border-box;
   min-height: 220px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   display: flex;
@@ -28,6 +30,7 @@
   font-size: 1.3rem;
   font-weight: 700;
   margin: 0 0 20px 0;
+  overflow-wrap: anywhere;
 }
 
 .doenca-card-info {
@@ -59,11 +62,13 @@
   text-align: center;
   width: 100%;
   max-width: 400px;
+  box-sizing: border-box;
 }
 
 .home-idoso-vazio-logo {
   width: 140px;
-  height: 140px;
+  max-width: 60%;
+  height: auto;
   object-fit: contain;
   margin-bottom: 16px;
   opacity: 0.85;
@@ -74,4 +79,25 @@
   font-weight: 700;
   color: #1a1a1a;
   margin: 0;
+}
+
+@media (max-width: 767.98px) {
+  .doencas-container {
+    padding: 12px;
+  }
+
+  .home-idoso-doencas {
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .doenca-card {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .home-idoso-vazio {
+    margin-top: 24px;
+    padding: 36px 20px;
+  }
 }

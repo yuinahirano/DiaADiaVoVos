@@ -2,23 +2,31 @@
   min-height: 100vh;
   background-color: #eaf1fd;
   padding: 24px;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .home-idoso-header {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
   background-color: #ffffff;
   border-radius: 50px;
-  padding: 16px 32px;
+  padding: 16px 24px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .home-idoso-titulo {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin: 0;
   margin-right: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .home-idoso-icone-btn {
@@ -26,30 +34,43 @@
   color: #000000;
   border: none;
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
+  cursor: pointer;
 }
 
 .home-idoso-link {
   background: none;
   border: none;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  white-space: nowrap;
 }
 
+.home-idoso-btn-ativo {
+  background-color: #ffe066;
+  border: none;
+  border-radius: 24px;
+  padding: 8px 18px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+/* ---------- Menu Principal (Página Inicial) ---------- */
 .home-idoso-menu {
   display: grid;
-  /* Cria colunas de tamanho fixo ou dinâmico ajustadas à esquerda */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-  gap: 32px;
-  margin-top: 48px;
-  
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
   width: 100%;
-  max-width: 900px; /* Ajuste essa largura máxima para limitar o tamanho do bloco */
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -57,8 +78,8 @@
 .home-idoso-menu-card {
   border: none;
   border-radius: 24px;
-  width: 280px;
-  height: 280px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,39 +94,85 @@
 }
 
 .home-idoso-menu-card i {
-  font-size: 4.5rem;
+  font-size: 4rem;
 }
 
 .home-idoso-menu-card span {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: 700;
 }
 
-.home-idoso-menu-card-consultas {
-  background-color: #ffe066;
+.home-idoso-menu-card-consultas { background-color: #ffe066; }
+.home-idoso-menu-card-medicamentos { background-color: #c9aee6; }
+.home-idoso-menu-card-notificacoes { background-color: #a8d8b9; }
+.home-idoso-menu-card-doencas { background-color: #f28b82; }
+
+/* ---------- Grelha Padrão das Listas (3 colunas no desktop) ---------- */
+.lista-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.home-idoso-menu-card-medicamentos {
-  background-color: #c9aee6;
+/* ===================================================
+   RESPONSIVIDADE
+   =================================================== */
+
+@media (max-width: 991.98px) {
+  .home-idoso-header {
+    flex-wrap: wrap;
+    justify-content: center;
+    border-radius: 28px;
+    padding: 16px;
+    gap: 10px;
+  }
+
+  .home-idoso-titulo {
+    width: 100%;
+    text-align: center;
+    margin-right: 0;
+    margin-bottom: 6px;
+    font-size: 1.3rem;
+  }
+
+  .lista-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.home-idoso-btn-ativo {
-  background-color: #ffe066;
-  border: none;
-  border-radius: 24px;
-  padding: 10px 24px;
-  font-weight: 700;
-  font-size: 1rem;
-}
+@media (max-width: 767.98px) {
+  .home-idoso-container {
+    padding: 12px;
+  }
 
-.home-idoso-menu-card-notificacoes {
-  background-color: #a8d8b9;
-}
+  .home-idoso-header {
+    padding: 12px;
+    border-radius: 24px;
+  }
 
-.home-idoso-icone-btn-ativo {
-  background-color: #333;
-}
+  .lista-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
 
-.home-idoso-menu-card-doencas {
-  background-color: #f28b82;
+  .home-idoso-menu {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .home-idoso-menu-card i {
+    font-size: 2.5rem;
+  }
+
+  .home-idoso-menu-card span {
+    font-size: 1rem;
+  }
+
+  .home-idoso-link, .home-idoso-btn-ativo {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
 }
