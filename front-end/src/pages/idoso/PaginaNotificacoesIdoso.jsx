@@ -52,7 +52,7 @@ export default function PaginaNotificacoesIdoso() {
 
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/consultas")}
+          onClick={() => navigate("/consultas-idoso")}
         >
           Consultas
         </button>
