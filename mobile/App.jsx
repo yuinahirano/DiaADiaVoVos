@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar, View, Text, Pressable, ActivityIndicator, StyleSheet } from 'react-native';
-import Login from './src/screens/Login/Login';
+import Login from './src/screens/login/login';
 import HomeIdoso from './src/screens/Idoso/HomeIdoso';
 import HomeCuidador from './src/screens/Cuidador/HomeCuidador';
 import { lerJwt } from './src/services/storage/auth';
