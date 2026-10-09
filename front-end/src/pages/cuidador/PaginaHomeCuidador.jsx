@@ -220,6 +220,15 @@ export default function PaginaHomeCuidador() {
           >
             <i className="bi bi-gear-fill"></i>
           </button>
+
+          {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
         </div>
       </header>
 
