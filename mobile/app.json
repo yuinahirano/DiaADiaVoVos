@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "DiaDiaVovos",
+    "slug": "DiaDiaVovos",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4FE",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ],
+      "package": "com.anonymous.DiaDiaVovos"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+"plugins": [
+  "expo-secure-store",
+  "expo-sqlite"
+]
+  }
+}
