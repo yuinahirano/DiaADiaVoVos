@@ -93,6 +93,15 @@ export default function PaginaVincularCuidador() {
   return (
     <div className="home-idoso-container">
       <header className="home-idoso-header">
+        {/* botão de voltar */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Voltar"
+          onClick={() => navigate("/home-cuidador")}
+          style={styles.backButton}
+          >
+          <i className="bi bi-chevron-left"></i>
+        </button>
         <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
 
         <button
@@ -149,3 +158,14 @@ export default function PaginaVincularCuidador() {
     </div>
   );
 }
+
+const styles = {
+  backButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+  },
+  notifyButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+  },
+};

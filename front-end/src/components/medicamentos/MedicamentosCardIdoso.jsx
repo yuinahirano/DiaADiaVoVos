@@ -43,48 +43,30 @@ export default function MedicamentoCardIdoso({ medicamento }) {
 // Estilos
 const styles = {
   card: {
-    backgroundColor: "#ffffff",
-    borderRadius: "24px",
-    padding: "24px",
-    width: "300px",
-    minHeight: "220px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.06)",
-    display: "flex",
-    flexDirection: "column",
-    gap: '20px'
+    backgroundColor: '#ffffff',
+    borderRadius: '24px',
+    padding: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '18px',
+    boxShadow: '0 4px 10px rgba(0,0,0,0.03)'
   },
   cardTitle: {
     color: '#000000',
     fontSize: '28px',
     fontWeight: 'bold',
-    margin: 0,
+    margin: '10px 0 10px 10px',
   },
-  cardInfo: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-    marginTop: "auto",
+  cardField: {
+    fontSize: '18px',
+    color: '#000000',
+    padding: '0px 10px 10px'
   },
-  cardInfoDosagem: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "12px",
-    marginTop: "auto",
-
-    textAlign: 'center',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  gap: '6px',
-  },
-  cardLabel: {
-    fontWeight: "700",
-    margin: 0,
-    fontSize: "1rem",
-    color: "#000000",
-  },
-  cardValor: {
-    fontWeight: "400",
+  cardFieldInline: {
+    fontSize: '18px',
+    color: '#000000',
+    display: 'flex',
+    alignItems: 'center',
   },
   borderDosagem: {
     fontSize: '18px',
@@ -93,4 +75,11 @@ const styles = {
     padding: '10px',
     borderRadius: '20px'
   },
+  buttonContainer: {
+    alignSelf: 'flex-end',
+    marginTop: 'auto',
+    display: 'flex',
+    gap: '10px'
+  }
+
 };

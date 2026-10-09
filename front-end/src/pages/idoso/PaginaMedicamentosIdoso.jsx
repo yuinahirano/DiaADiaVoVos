@@ -11,7 +11,7 @@ export default function PaginaMedicamentosIdoso() {
   const { user } = useContext(AuthContext);
   const { medicamentos, loading, error } = useMedicamentosIdoso();
   const navigate = useNavigate();
-  const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
+  const primeiroNome = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
 
   return (
     <div className="home-idoso-container">
@@ -19,7 +19,7 @@ export default function PaginaMedicamentosIdoso() {
       <header className="home-idoso-header">
 
         {/* saudação */}
-        <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
+        <h1 className="home-idoso-titulo">Olá, {primeiroNome}</h1>
 
 {/* botão de home */}
         <button

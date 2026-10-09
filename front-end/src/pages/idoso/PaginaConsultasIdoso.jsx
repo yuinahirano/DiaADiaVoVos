@@ -21,11 +21,9 @@ function formatarData(data) {
 
 export default function PaginaConsultasIdoso() {
   const { user } = useContext(AuthContext);
-  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { consultas, loading, error } = useConsultas(idoso?.id);
+  const { consultas, loading, error } = useConsultas(user?.id);
   const navigate = useNavigate();
-  //const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
-  const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
+  const nomeIdoso = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
 
   return (
     <div className="home-idoso-container">
@@ -34,7 +32,7 @@ export default function PaginaConsultasIdoso() {
       <header className="home-idoso-header">
 
         {/* saudação */}
-        <h1 className="home-idoso-titulo">Olá {nomeIdoso}</h1>
+        <h1 className="home-idoso-titulo">Olá, {nomeIdoso}</h1>
 
         {/* botão de home */}
         <button className="home-idoso-icone-btn" 

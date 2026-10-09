@@ -27,7 +27,8 @@ export function useNotificacoesIdoso() {
       const result = await getNotificacoesIdoso(idosoId);
       setNotificacoes(result || []);
     } catch (err) {
-      setError(err);
+      setNotificacoes([]);
+      setError(null);
     } finally {
       setLoading(false);
     }
