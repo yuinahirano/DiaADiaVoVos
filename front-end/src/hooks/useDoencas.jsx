@@ -1,44 +1,50 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import { getDoencas, getIdosos } from "../service/idosoApi";
+import { useEffect, useState, useCallback } from "react";
+import { getDoencas, deleteDoenca as deleteDoencaApi } from "../service/idosoApi";
 
 export function useDoencas(idosoId) {
-  const { user } = useContext(AuthContext);
   const [doencas, setDoencas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function carregarDoencas() {
-      // Se não houver ID do idoso passado ainda, interrompe a busca
-      if (!idosoId) {
-        setDoencas([]);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        setError(null);
-
-        const todasDoencas = await getDoencas();
-
-        // Filtra as doenças associadas ao ID do idoso ativo
-        const doencasDoIdoso = todasDoencas.filter(
-          (doenca) => String(doenca.id_idoso) === String(idosoId)
-        );
-
-        setDoencas(doencasDoIdoso);
-      } catch (err) {
-        console.error("Erro ao carregar doenças:", err);
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
+  const carregarDoencas = useCallback(async () => {
+    if (!idosoId) {
+      setDoencas([]);
+      setLoading(false);
+      return;
     }
 
-    carregarDoencas();
-  }, [idosoId]); // Executa novamente sempre que o idoso selecionado mudar
+    try {
+      setLoading(true);
+      setError(null);
 
-  return { doencas, loading, error };
+      const todasDoencas = await getDoencas();
+
+      const doencasDoIdoso = todasDoencas.filter(
+        (doenca) => String(doenca.id_idoso) === String(idosoId)
+      );
+
+      setDoencas(doencasDoIdoso);
+    } catch (err) {
+      console.error("Erro ao carregar doenças:", err);
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [idosoId]);
+
+  useEffect(() => {
+    carregarDoencas();
+  }, [carregarDoencas]);
+
+  const deleteDoenca = useCallback(async (id) => {
+    try {
+      await deleteDoencaApi(id);
+      setDoencas((prev) => prev.filter((d) => d.id !== id));
+    } catch (err) {
+      console.error("Erro ao deletar doença:", err);
+      setError(err);
+    }
+  }, []);
+
+  return { doencas, loading, error, deleteDoenca, refetch: carregarDoencas };
 }

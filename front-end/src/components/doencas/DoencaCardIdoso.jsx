@@ -3,7 +3,7 @@ export default function DoencaCardIdoso({ condicao, onDelete, onEdit }) {
 
   return (
     <div style={styles.card}>
-      <h2 style={styles.cardTitle}>{condicao.nome}</h2>
+      <h2 style={styles.cardTitle}>{condicao.nome.toUpperCase()}</h2>
 
       <div style={styles.cardField}>
         <strong>Descrição:</strong>

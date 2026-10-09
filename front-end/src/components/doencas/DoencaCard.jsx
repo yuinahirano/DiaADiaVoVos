@@ -6,7 +6,7 @@ export default function DoencaCard({ condicao, onDelete, onEdit }) {
 
   return (
     <div style={styles.card}>
-      <h2 style={styles.cardTitle}>{condicao.nome}</h2>
+      <h2 style={styles.cardTitle}>{condicao.nome.toUpperCase()}</h2>
 
       <div style={styles.cardField}>
         <strong>Descrição:</strong>
@@ -14,8 +14,8 @@ export default function DoencaCard({ condicao, onDelete, onEdit }) {
       </div>
 
       <div style={styles.buttonContainer}>
-        <ButtonEdit onClick={() => onEdit(condicao)} />
         <ButtonDelete onClick={() => onDelete(condicao.id)} />
+        <ButtonEdit onClick={() => onEdit(condicao)} />
       </div>
     </div>
   );

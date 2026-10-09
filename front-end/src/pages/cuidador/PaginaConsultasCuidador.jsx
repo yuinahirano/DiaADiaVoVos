@@ -11,6 +11,15 @@ import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
 
+import ConsultasList from "../../components/consultas/ConsultasList";
+
+function formatarData(data) {
+  if (!data) return null;
+  const dataConvertida = new Date(data);
+  if (isNaN(dataConvertida.getTime())) return null;
+  return dataConvertida.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+}
+
 export default function PaginaConsultas() {
   const { user } = useContext(AuthContext);
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
@@ -34,8 +43,15 @@ export default function PaginaConsultas() {
   const handleFecharModal = () => {
     setIsModalOpen(false);
     setConsultaEditando(null);
-    refetch();
+    refetch();}
+  // // Handlers para exclusão e edição de consultas
+  const handleDelete = (id) => {
+    console.log("Deletar consulta:", id);
   };
+
+  // const handleEdit = (consulta) => {
+  //   console.log("Editar consulta:", consulta);
+  // };
 
   return (
     <div className="consultas-container">
@@ -111,34 +127,15 @@ export default function PaginaConsultas() {
           </div>
         )}
 
-        {!loading &&
-          !error &&
-          consultas.map((consulta) => (
-            <div
-              className="consulta-card"
-              key={consulta.id}
-              onClick={() => handleAbrirEdicao(consulta)}
-              style={{ cursor: "pointer" }}
-            >
-              <h2 className="consulta-card-titulo">{consulta.nome_medico}</h2>
-
-              <div className="consulta-card-info">
-                <p className="consulta-card-label">
-                  Horário:{" "}
-                  <span className="consulta-card-valor">
-                    {consulta.horario}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Local:{" "}
-                  <span className="consulta-card-valor">
-                    {consulta.local_consulta}
-                  </span>
-                </p>
-              </div>
-            </div>
-          ))}
+        {/* chamando os componentes com a listagem */}
+        {!loading && !error && consultas.length > 0 && (
+        <ConsultasList
+          consultas={consultas}
+          formatarData={formatarData}
+          onDelete={handleDelete}
+          onEdit={handleAbrirEdicao}
+        />
+        )}
       </div>
 
       {/* modal de cadastro/edição */}

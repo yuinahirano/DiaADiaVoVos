@@ -13,12 +13,12 @@ import "../../components/styles/Consultas.css";
 import "../../App.css";
 
 export default function PaginaDoencasIdoso() {
-  //const { user } = useContext(AuthContext);
-  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { doencas, loading, error, deleteDoenca } = useDoencas(idoso?.id);
+  const { user } = useContext(AuthContext);
+  //const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
+  const { doencas, loading, error, deleteDoenca } = useDoencas(user?.id);
   const navigate = useNavigate();
   //const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
-  const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
+  const nomeIdoso = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
 
   //botão de deletar
   const handleDelete = (id) => {
@@ -40,8 +40,8 @@ export default function PaginaDoencasIdoso() {
       {/* barra de navegação */}
       <header className="home-idoso-header">
 
-        {/* saudação */}
-        <h1 className="home-idoso-titulo">Olá {nomeIdoso}</h1>
+{/* saudação */}
+        <h1 className="home-idoso-titulo">Olá, {nomeIdoso}</h1>
 
         {/* botão da home */}
         <button className="home-idoso-icone-btn" 

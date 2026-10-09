@@ -1,8 +1,9 @@
 import React from "react";
-
+import ButtonDelete from "./ButtonDelete";
+import ButtonEdit from "./ButtonEdit";
 import "../../components/styles/Consultas.css";
 
-export default function ConsultaCardIdoso({ consulta, formatarData }) {
+export default function ConsultaCard({ consulta, formatarData, onDelete, onEdit }) {
   if (!consulta) return null;
 
   const dataFormatada = formatarData ? formatarData(consulta.data) : consulta.data;
@@ -37,6 +38,21 @@ export default function ConsultaCardIdoso({ consulta, formatarData }) {
           </p>
         )}
       </div>
+
+      {/* Container de Ações no rodapé do Card */}
+      <div style={styles.buttonContainer}>
+        <ButtonEdit onClick={() => onEdit(consulta)} />
+        <ButtonDelete onClick={() => onDelete(consulta.id)} />
+      </div>
     </div>
   );
 }
+
+const styles = {
+  buttonContainer: {
+    alignSelf: 'flex-end',
+    marginTop: 'auto',
+    display: 'flex',
+    gap: '10px',
+  },
+};
