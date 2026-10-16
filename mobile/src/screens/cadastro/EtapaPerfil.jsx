@@ -174,7 +174,7 @@ export function DadosIdoso({ onConcluido, onVoltar }) {
 
   return (
     <MolduraFormulario titulo="Insira seus dados pessoais:">
-      <Text style={styles.rotulo}>🩸 Tipo Sanguíneo</Text>
+      <Text style={styles.rotulo}> Tipo Sanguíneo</Text>
 
       <View style={styles.tipos}>
         {TIPOS_SANGUINEOS.map((tipo) => {
@@ -194,7 +194,7 @@ export function DadosIdoso({ onConcluido, onVoltar }) {
         })}
       </View>
 
-      <Text style={styles.rotulo}>📞 Telefone</Text>
+      <Text style={styles.rotulo}>Telefone</Text>
 
       <TextInput
         style={styles.campo}

@@ -20,9 +20,8 @@ import {
   ESTADOS_CIVIS,
 } from '../../utils/validacoes';
 
-// Props: onCadastro(dados) é chamado depois que o usuário foi criado na API
-// (dados = o que foi cadastrado, caso a próxima tela precise)
-export default function Cadastro({ onCadastro }) {
+// Depois que o usuário é criado na API, vai direto para a tela de login
+export default function Cadastro() {
   const navigation = useNavigation();
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
@@ -42,7 +41,7 @@ export default function Cadastro({ onCadastro }) {
     setErros((atual) => ({ ...atual, [campo]: mensagem }));
   }
 
-  // Valida um campo ao sair dele
+  // Valida o campo ao sair dele
   function aoSair(campo) {
     if (campo === 'nome') definirErro('nome', validarNome(nome));
     if (campo === 'cpf') definirErro('cpf', validarCpf(cpf));
@@ -152,13 +151,18 @@ export default function Cadastro({ onCadastro }) {
         estadoCivil,
       };
       await cadastrarUsuario(dados);
-      onCadastro?.(dados);
+
+      // Cadastrou: manda direto para o login (reset impede de voltar ao cadastro)
+      navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
     } catch (e) {
-      // 409 = conflito (e-mail ou CPF já existem na base)
-      if (String(e.message).includes('409')) {
+      if (e.status === 409) {
         setErroGeral('Já existe uma conta com esse e-mail ou CPF');
+      } else if (e.rede) {
+        setErroGeral('Sem conexão com o servidor. Verifique sua internet.');
+      } else if (e.status === 400) {
+        setErroGeral(String(e.message).replace(/^API respondeu \d{3}:\s*/, ''));
       } else {
-        setErroGeral(e.message);
+        setErroGeral('Não foi possível criar a conta. Tente novamente.');
       }
     } finally {
       setCarregando(false);

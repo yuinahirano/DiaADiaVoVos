@@ -7,6 +7,7 @@ import {
   Pressable,
   ActivityIndicator,
   KeyboardAvoidingView,
+  Keyboard,
   Platform,
   Image,
   ScrollView,
@@ -17,14 +18,17 @@ import { useFonts, OpenSans_600SemiBold, OpenSans_700Bold } from '@expo-google-f
 import { login } from '../../services/api/api';
 
 const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
-const STATUS_CREDENCIAL_INVALIDA = [400, 401, 403, 404, 500];
+const STATUS_CREDENCIAL_INVALIDA = [400, 401, 403, 404];
+const MENSAGEM_CREDENCIAL_INVALIDA = /inv[aá]lid/i;
 
 function traduzirErro(e) {
   const msg = e?.message || '';
   const status = e?.status ?? Number(msg.match(/API respondeu (\d{3})/)?.[1]);
 
   if (msg.includes('Sem conexão')) return 'Sem conexão com o servidor. Verifique sua internet.';
+  if (msg.includes('Tempo esgotado')) return 'O servidor demorou para responder. Tente novamente.';
   if (STATUS_CREDENCIAL_INVALIDA.includes(status)) return 'E-mail ou senha inválidos.';
+  if (status >= 500 && MENSAGEM_CREDENCIAL_INVALIDA.test(msg)) return 'E-mail ou senha inválidos.';
   if (status >= 500) return 'Erro no servidor. Tente novamente em instantes.';
   return 'Não foi possível entrar. Tente novamente.';
 }
@@ -52,6 +56,7 @@ export default function Login({ onLogin, onCriarUsuario }) {
     }
 
     setErro('');
+    Keyboard.dismiss();
     setCarregando(true);
 
     try {
@@ -75,8 +80,15 @@ export default function Login({ onLogin, onCriarUsuario }) {
   if (!fontsLoaded) return null;
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView contentContainerStyle={styles.scroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView
+        contentContainerStyle={styles.scroll}
+        keyboardShouldPersistTaps="always"
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.card}>
           <Image source={require('../../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
 
@@ -162,8 +174,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    width: 110,
-    height: 90,
+    width: 220,
+    height: 180,
     marginBottom: 28,
   },
   linha: {
