@@ -56,65 +56,6 @@
   font-size: 1rem;
 }
 
-.home-idoso-menu {
-  display: grid;
-  /* Cria colunas de tamanho fixo ou dinâmico ajustadas à esquerda */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-  gap: 32px;
-  margin-top: 48px;
-  
-  width: 100%;
-  max-width: 900px; /* Ajuste essa largura máxima para limitar o tamanho do bloco */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.home-idoso-menu-card {
-  border: none;
-  border-radius: 24px;
-  width: 280px;
-  height: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.home-idoso-menu-card:hover {
-  transform: scale(1.03);
-}
-
-.home-idoso-menu-card i {
-  font-size: 4.5rem;
-}
-
-.home-idoso-menu-card span {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.home-idoso-btn-ativo {
-  background-color: #c9aee6;
-  border: none;
-  border-radius: 24px;
-  padding: 10px 24px;
-  font-weight: 700;
-  font-size: 1rem;
-}
-
-.home-idoso-icone-btn-ativo {
-  background-color: #333;
-}
-
-.consultas-container {
-  min-height: 100vh;
-  background-color: #eaf1fd;
-  padding: 24px;
-}
-
 /* espaçamento dos cards e barra denavegação */
 .medicamento-idoso-consultas {
   display: flex;
