@@ -84,3 +84,14 @@ export async function deleteDoenca(id) {
     throw erro;
   }
 }
+
+
+export async function marcarCompareceu(id) {
+  try {
+    const resposta = await api_auth.patch(`/consulta/${id}/compareceu`);
+    return resposta.data.atualizado;
+  } catch (erro) {
+    console.error("Erro ao atualizar comparecimento:", erro);
+    throw erro;
+  }
+}

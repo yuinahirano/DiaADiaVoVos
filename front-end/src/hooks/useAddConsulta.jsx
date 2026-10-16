@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { addConsulta, updateConsulta } from "../service/idosoApi";
+import { addConsulta, updateConsulta, marcarCompareceu } from "../service/idosoApi";
 
 const formVazio = {
   nomeMedico: '',
