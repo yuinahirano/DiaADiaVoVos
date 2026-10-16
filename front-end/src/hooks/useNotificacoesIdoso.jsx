@@ -1,22 +1,23 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useCallback, useEffect, useState } from "react";
+import { useIdosoLogado } from "./useIdosoLogado";
 import {
   getNotificacoesIdoso,
   aceitarSolicitacao,
   recusarSolicitacao,
-  limparSolicitacoesIdoso
+  limparSolicitacoesIdoso,
 } from "../service/solicitacaoApi";
 
 export function useNotificacoesIdoso() {
-  const { user } = useContext(AuthContext);
+  const { idosoId, loading: loadingIdoso } = useIdosoLogado();
   const [notificacoes, setNotificacoes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  async function fetchNotificacoes() {
-    const idosoId = user?.idIdoso || user?.id;
+  const fetchNotificacoes = useCallback(async () => {
+    if (loadingIdoso) return;
 
     if (!idosoId) {
+      setNotificacoes([]);
       setLoading(false);
       return;
     }
@@ -32,11 +33,11 @@ export function useNotificacoesIdoso() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [idosoId, loadingIdoso]);
 
   useEffect(() => {
     fetchNotificacoes();
-  }, [user]);
+  }, [fetchNotificacoes]);
 
   async function aceitar(id) {
     await aceitarSolicitacao(id);
@@ -49,13 +50,10 @@ export function useNotificacoesIdoso() {
   }
 
   async function limparSolicitacoes() {
-  const idosoId = user?.idIdoso || user?.id;
-
-  if (!idosoId) return;
-
-  await limparSolicitacoesIdoso(idosoId);
-  await fetchNotificacoes();
-}
+    if (!idosoId) return;
+    await limparSolicitacoesIdoso(idosoId);
+    await fetchNotificacoes();
+  }
 
   return { notificacoes, loading, error, aceitar, recusar, limparSolicitacoes };
 }

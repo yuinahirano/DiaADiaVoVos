@@ -13,7 +13,7 @@ export default function PaginaDadosIdoso() {
     e.preventDefault();
     setLoading(true);
 
-    const usuarioId = localStorage.getItem('usuarioId'); //pega o id salvo no login
+    const usuarioId = localStorage.getItem('usuarioId'); //pega o id salvo no cadastro/login
 
     try {
       if (usuarioId) {
@@ -32,6 +32,7 @@ export default function PaginaDadosIdoso() {
     } finally {
       setLoading(false);
       localStorage.removeItem('userToken');
+      localStorage.removeItem('@DiaADiaVoVos:token');
       localStorage.removeItem('usuarioId');
 
       alert('Cadastro finalizado com sucesso! Faça login para continuar.');
