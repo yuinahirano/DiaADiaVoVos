@@ -36,8 +36,8 @@
 
 /* LOGO AMPLIADA DO CABEÇALHO (70px) */
 .landing-brand-logo {
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
 }
 
@@ -83,7 +83,7 @@
   background-color: #f7e03f;
 }
 
-/* HERO SECTION (Espaçamento superior ajustado para o header fixo maior) */
+/* HERO SECTION */
 .landing-hero {
   padding: 160px 24px 70px;
   text-align: center;
