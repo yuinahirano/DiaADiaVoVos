@@ -4,7 +4,8 @@
   padding: 24px;
 }
 
-.home-idoso-doencas {
+/* card de doenças */
+.doenca-idoso-doencas {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -46,7 +47,8 @@
   font-weight: 700;
 }
 
-.home-idoso-vazio {
+/* card vazio */
+.doenca-idoso-vazio {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -61,7 +63,8 @@
   max-width: 400px;
 }
 
-.home-idoso-vazio-logo {
+/* logo do card vazio */
+.doenca-idoso-vazio-logo {
   width: 140px;
   height: 140px;
   object-fit: contain;
@@ -69,20 +72,23 @@
   opacity: 0.85;
 }
 
-.home-idoso-vazio-texto {
+/* texto do card vazio */
+.doenca-idoso-vazio-texto {
   font-size: 1.2rem;
   font-weight: 700;
   color: #1a1a1a;
   margin: 0;
 }
 
-.home-idoso-container {
+/* parte principal */
+.doenca-idoso-container {
   min-height: 100vh;
   background-color: #eaf1fd;
   padding: 24px;
 }
 
-.home-idoso-header {
+/* barra de navegação */
+.doenca-idoso-header {
   display: flex;
   align-items: center;
   gap: 24px;
@@ -92,15 +98,17 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.home-idoso-titulo {
+/* saudação */
+.doenca-idoso-titulo {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
   margin-right: auto;
 }
 
-.home-idoso-icone-btn {
-  background-color: #FFE866;
+/* botões de HOME, NOTIFICAÇÃO e SAIR */
+.doenca-idoso-icone-btn {
+  background-color: #f28b82;
   color: #000000;
   border: none;
   border-radius: 50%;
@@ -112,61 +120,15 @@
   font-size: 1.1rem;
 }
 
-.home-idoso-link {
+/* botões de CONSULTAS e MEDICAMENTOS */
+.doenca-idoso-link {
   background: none;
   border: none;
   font-weight: 700;
   font-size: 1rem;
 }
 
-.home-idoso-menu {
-  display: grid;
-  /* Cria colunas de tamanho fixo ou dinâmico ajustadas à esquerda */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
-  gap: 32px;
-  margin-top: 48px;
-  
-  width: 100%;
-  max-width: 900px; /* Ajuste essa largura máxima para limitar o tamanho do bloco */
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.home-idoso-menu-card {
-  border: none;
-  border-radius: 24px;
-  width: 280px;
-  height: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.home-idoso-menu-card:hover {
-  transform: scale(1.03);
-}
-
-.home-idoso-menu-card i {
-  font-size: 4.5rem;
-}
-
-.home-idoso-menu-card span {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.home-idoso-menu-card-consultas {
-  background-color: #ffe066;
-}
-
-.home-idoso-menu-card-medicamentos {
-  background-color: #c9aee6;
-}
-
+/* botão ATIVADO */
 .doenca-idoso-btn-ativo {
   background-color: #f28b82;
   border: none;
