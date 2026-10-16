@@ -3,6 +3,9 @@ import './App.css';
 
 import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ThemeProvider } from './contexts/ThemeContext';
+import './components/styles/TemaEscuro.css';
+import TemaCuidador from './components/TemaCuidador';
 
 // Páginas públicas
 import PaginaSobre from './pages/PaginaSobre';
@@ -18,6 +21,7 @@ import PaginaMedicamentos from './pages/cuidador/PaginaMedicamentos';
 import PaginaRegistroSaude from './pages/cuidador/PaginaRegistroSaude';
 import PaginaConsultas from './pages/cuidador/PaginaConsultasCuidador';
 import PaginaDoencas from './pages/cuidador/PaginaDoencasCuidador';
+import PaginaConfiguracao from './pages/cuidador/PaginaConfiguracao';
 
 // Páginas do idoso
 import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
@@ -30,6 +34,8 @@ import PaginaDoencasIdoso from './pages/idoso/PaginaDoencasIdoso';
 function App() {
   return (
     <AuthProvider>
+      <ThemeProvider>
+
       <BrowserRouter>
         <Routes>
 
@@ -117,6 +123,8 @@ function App() {
 
           <Route element={<ProtectedRoute allowedRoles={['cuidador']} />}>
 
+          <Route element={<TemaCuidador />}>
+
             <Route
               path="/home-cuidador"
               element={<PaginaHomeCuidador />}
@@ -142,6 +150,11 @@ function App() {
               element={<PaginaDoencas />}
             />
 
+            <Route
+              path="/configuracoes"
+              element={<PaginaConfiguracao />}
+            />
+          </Route>
           </Route>
 
           {/* Rotas acessíveis por IDOSO e CUIDADOR */}
@@ -162,6 +175,7 @@ function App() {
 
         </Routes>
       </BrowserRouter>
+      </ThemeProvider>
     </AuthProvider>
   );
 }
