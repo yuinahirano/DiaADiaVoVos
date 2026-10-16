@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useAddMedicamento } from '../../hooks/useAddMed';
 import { useIdososDoCuidador } from '../../hooks/useIdososDoCuidador';
 
@@ -15,6 +16,11 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
     } = useAddMedicamento(medicamentoEditando);
 
     const { idosos, loading: loadingIdosos, erro: erroIdosos } = useIdososDoCuidador();
+    useEffect(() => {
+        if (!emEdicao && idosos.length === 1 && !formData.idIdoso) {
+            handleChange({ target: { name: 'idIdoso', value: String(idosos[0].id) } });
+        }
+    }, [idosos, emEdicao]);
 
     if (!isOpen) return null;
 
@@ -49,12 +55,11 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
                             onChange={handleChange}
                             style={styles.input}
                             required
-                            // disabled={loadingIdosos || emEdicao}
-                            disabled={true}
+                            disabled={loadingIdosos || emEdicao}
                         >
-                            {/* <option value="" disabled>
+                            <option value="" disabled>
                                 {loadingIdosos ? 'Carregando idosos...' : 'Selecione o idoso'}
-                            </option> */}
+                            </option>
                             {idosos.map((idoso) => (
                                 <option key={idoso.id} value={idoso.id}>
                                     {idoso.nome}
@@ -260,11 +265,11 @@ const styles = {
         fontSize: '13px'
     },
     buttonRow: {
-        display: 'flex',
-        justify: 'space-between',
-        gap: '16px',
-        marginTop: '15px'
-    },
+    display: 'flex',
+    justifyContent: 'space-between',
+    gap: '16px',
+    marginTop: '15px'
+},
     cancelButton: {
         flex: 1,
         backgroundColor: '#E1E8EC',
