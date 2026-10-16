@@ -1,13 +1,14 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { criarSolicitacaoCuidador } from "../service/solicitacaoApi";
-import { AuthContext } from "../contexts/AuthContext";
+import { useCuidadorLogado } from "./useCuidadorLogado";
+
 const formVazio = {
   emailIdoso: '',
   contatoEmergencia: ''
 };
 
 export function useAdicionarIdoso() {
-  const { user } = useContext(AuthContext);
+  const { cuidadorId, loading: loadingCuidador } = useCuidadorLogado();
   const [formData, setFormData] = useState(formVazio);
 
   const [efetuarCadastro, setEfetuarCadastro] = useState(false);
@@ -24,7 +25,13 @@ export function useAdicionarIdoso() {
     if (!efetuarCadastro) return;
 
     async function salvar() {
-      if (!user?.id) {
+      if (loadingCuidador) {
+        setErro("Aguarde, carregando seus dados de cuidador...");
+        setEfetuarCadastro(false);
+        return;
+      }
+
+      if (!cuidadorId) {
         setErro("Você precisa estar logado como cuidador para adicionar um idoso.");
         setEfetuarCadastro(false);
         return;
@@ -32,11 +39,12 @@ export function useAdicionarIdoso() {
 
       setLoading(true);
       setErro(null);
+      setSucesso(false);
 
       try {
         await criarSolicitacaoCuidador({
           emailIdoso: formData.emailIdoso,
-          idCuidador: user.id,
+          idCuidador: cuidadorId, // id da tabela "cuidador", não do usuário
           contatoEmergencia: formData.contatoEmergencia,
           diasParaExpirar: 3
         });
@@ -56,7 +64,7 @@ export function useAdicionarIdoso() {
     }
 
     salvar();
-  }, [efetuarCadastro, formData, user]);
+  }, [efetuarCadastro, formData, cuidadorId, loadingCuidador]);
 
   return {
     formData,
