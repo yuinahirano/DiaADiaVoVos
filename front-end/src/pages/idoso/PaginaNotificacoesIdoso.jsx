@@ -3,7 +3,9 @@
   import { AuthContext } from "../../contexts/AuthContext";
   import { useNotificacoesIdoso } from "../../hooks/useNotificacoesIdoso";
   import logoImg from "../../assets/logo_DiaADia.png";
-  import "../../components/styles/HomeIdoso.css";
+
+  //estilização
+  import "../../components/styles/Notificacao.css";
   import "../../components/styles/Consultas.css";
 
   function formatarData(dataIso) {
@@ -38,15 +40,15 @@
     const primeiroNome = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
 
     return (
-      <div className="home-idoso-container">
-        <header className="home-idoso-header">
+      <div className="notificacao-idoso-container">
+        <header className="notificacao-idoso-header">
 
           {/* saudação */}
-          <h1 className="home-idoso-titulo">Olá, {primeiroNome}</h1>
+          <h1 className="notificacao-idoso-titulo">Olá, {primeiroNome}</h1>
 
           {/* botão para home */}
           <button
-            className="home-idoso-icone-btn"
+            className="notificacao-idoso-icone-btn"
             aria-label="Início"
             onClick={() => navigate("/home-idoso")}
           >
@@ -55,7 +57,7 @@
 
           {/* botão para consultas */}
           <button
-            className="home-idoso-link"
+            className="notificacao-idoso-link"
             onClick={() => navigate("/consultas-idoso")}
           >
             Consultas
@@ -63,7 +65,7 @@
 
           {/* botão para medicamentos */}
           <button
-            className="home-idoso-link"
+            className="notificacao-idoso-link"
             onClick={() => navigate("/medicamentos-idoso")}
           >
             Medicamentos
@@ -71,7 +73,7 @@
 
           {/* botão de página de doenças */}
           <button
-            className="home-idoso-link"
+            className="notificacao-idoso-link"
             onClick={() => navigate("/doencas-idoso")}
           >
             Doenças
@@ -79,7 +81,7 @@
 
           {/* botão de notificação */}
           <button
-            className="home-idoso-icone-btn"
+            className="notificacao-idoso-icone-btn"
             aria-label="Notificações"
           >
             <i className="bi bi-bell-fill"></i>
@@ -87,7 +89,7 @@
 
           {/* botão de sair */}
         <button
-          className="home-idoso-icone-btn"
+          className="notificacao-idoso-icone-btn"
           aria-label="Sair"
           onClick={() => navigate("/sair")}
         >
@@ -113,14 +115,14 @@
           {error && <p>Não foi possível carregar as notificações.</p>}
 
           {!loading && !error && notificacoes.length === 0 && (
-            <div className="home-idoso-vazio">
+            <div className="notificacao-idoso-vazio">
               <img
                 src={logoImg}
                 alt="Dia a Dia Vovôs"
-                className="home-idoso-vazio-logo"
+                className="notificacao-idoso-vazio-logo"
               />
 
-              <p className="home-idoso-vazio-texto">
+              <p className="notificacao-idoso-vazio-texto">
                 Nenhuma notificação no momento
               </p>
             </div>
@@ -129,34 +131,34 @@
           {!loading &&
             !error &&
             notificacoes.map((notificacao) => (
-              <div className="consulta-card" key={notificacao.id}>
-                <h2 className="consulta-card-titulo">Solicitação de cuidador</h2>
+              <div className="notificacao-card" key={notificacao.id}>
+                <h2 className="notificacao-card-titulo">Solicitação de cuidador</h2>
 
-                <div className="consulta-card-info">
-                  <p className="consulta-card-label">
+                <div className="notificacao-card-info">
+                  <p className="notificacao-card-label">
                     Status:{" "}
-                    <span className="consulta-card-valor">
+                    <span className="notificacao-card-valor">
                       {formatarStatus(notificacao.status)}
                     </span>
                   </p>
 
-                  <p className="consulta-card-label">
+                  <p className="notificacao-card-label">
                     Contato de emergência:{" "}
-                    <span className="consulta-card-valor">
+                    <span className="notificacao-card-valor">
                       {notificacao.contato_emergencia || "Não informado"}
                     </span>
                   </p>
 
-                  <p className="consulta-card-label">
+                  <p className="notificacao-card-label">
                     Expira em:{" "}
-                    <span className="consulta-card-valor">
+                    <span className="notificacao-card-valor">
                       {formatarData(notificacao.expira_em)}
                     </span>
                   </p>
                 </div>
 
                 {notificacao.status === "pendente" && (
-                  <div className="consulta-card-acoes">
+                  <div className="notificacao-card-acoes">
                     <button
                       className="notificacao-btn-aceitar"
                       onClick={() => aceitar(notificacao.id)}

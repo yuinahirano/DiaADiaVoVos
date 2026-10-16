@@ -51,7 +51,7 @@ export default function PaginaConsultasIdoso() {
         </button>
 
         {/* botão de consultas - ATIVO */}
-        <button className="home-idoso-btn-ativo">Consultas</button>
+        <button className="consulta-idoso-btn-ativo">Consultas</button>
 
         {/* botão de medicamentos */}
         <button

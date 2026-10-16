@@ -71,7 +71,7 @@ const styles = {
   borderDosagem: {
     fontSize: '18px',
     color: '#000000',
-    backgroundColor: '#FFE866',
+    backgroundColor: '#c9aee6',
     padding: '10px',
     borderRadius: '20px'
   },
