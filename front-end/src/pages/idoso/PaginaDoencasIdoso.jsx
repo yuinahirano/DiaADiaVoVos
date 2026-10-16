@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useDoencas } from "../../hooks/useDoencas";
+import { useIdosoLogado } from "../../hooks/useIdosoLogado";
 import logoImg from "../../assets/logo_DiaADia.png";
-import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import DoencasListIdoso from "../../components/doencas/DoencaListIdoso";
 
 // estilizações
@@ -14,39 +14,28 @@ import "../../App.css";
 
 export default function PaginaDoencasIdoso() {
   const { user } = useContext(AuthContext);
-  //const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { doencas, loading, error, deleteDoenca } = useDoencas(user?.id);
   const navigate = useNavigate();
-  //const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
+
+  // id da tabela "idoso" (e não o id do usuário)
+  const { idosoId, loading: loadingIdoso } = useIdosoLogado();
+  const { doencas, loading: loadingDoencas, error } = useDoencas(idosoId);
+
+  const loading = loadingIdoso || loadingDoencas;
   const nomeIdoso = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
-
-  //botão de deletar
-  const handleDelete = (id) => {
-    if (deleteDoenca) {
-      deleteDoenca(id);
-    } else {
-      console.log("Deletar doença:", id);
-    }
-  };
-
-  //botao de editar
-  const handleEdit = (doenca) => {
-    console.log("Editar doença:", doenca);
-    // Exemplo: navigate(`/editar-doenca/${doenca.id}`);
-  };
 
   return (
     <div className="home-idoso-container">
       {/* barra de navegação */}
       <header className="home-idoso-header">
-
-{/* saudação */}
+        {/* saudação */}
         <h1 className="home-idoso-titulo">Olá, {nomeIdoso}</h1>
 
         {/* botão da home */}
-        <button className="home-idoso-icone-btn" 
-        aria-label="Início"
-        onClick={() => navigate("/home-idoso")}>
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Início"
+          onClick={() => navigate("/home-idoso")}
+        >
           <i className="bi bi-house-door-fill"></i>
         </button>
 
@@ -66,7 +55,7 @@ export default function PaginaDoencasIdoso() {
           Medicamentos
         </button>
 
-        {/* botão de doenças */}
+        {/* botão de doenças - ATIVO */}
         <button className="home-idoso-btn-ativo">Doenças</button>
 
         {/* botão de notificação */}
@@ -92,7 +81,7 @@ export default function PaginaDoencasIdoso() {
       <div className="home-idoso-doencas">
         {loading && <p>Carregando doenças...</p>}
 
-        {error && <p>Não foi possível carregar as doenças.</p>}
+        {!loading && error && <p>Não foi possível carregar as doenças.</p>}
 
         {!loading && !error && doencas.length === 0 && (
           <div className="home-idoso-vazio">
@@ -105,28 +94,10 @@ export default function PaginaDoencasIdoso() {
           </div>
         )}
 
-        {/* chamando os componentes com a listagem */}
         {!loading && !error && doencas.length > 0 && (
-          <DoencasListIdoso
-            doencas={doencas}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-          />
+          <DoencasListIdoso doencas={doencas} />
         )}
-
       </div>
     </div>
   );
 }
-
-//outras estilizações
-const styles = {
-  backButton: {
-    backgroundColor: "#FFE866",
-    color: "#000000",
-  },
-  notifyButton: {
-    backgroundColor: "#FFE866",
-    color: "#000000",
-  },
-};
