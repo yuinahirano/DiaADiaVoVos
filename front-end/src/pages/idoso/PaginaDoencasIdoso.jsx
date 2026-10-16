@@ -7,9 +7,7 @@ import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import DoencasListIdoso from "../../components/doencas/DoencaListIdoso";
 
 // estilizações
-import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
-import "../../components/styles/Consultas.css";
 import "../../App.css";
 
 export default function PaginaDoencasIdoso() {
@@ -67,7 +65,7 @@ export default function PaginaDoencasIdoso() {
         </button>
 
         {/* botão de doenças */}
-        <button className="home-idoso-btn-ativo">Doenças</button>
+        <button className="doenca-idoso-btn-ativo">Doenças</button>
 
         {/* botão de notificação */}
         <button

@@ -1,0 +1,220 @@
+/* container principal */
+.medicamento-idoso-container {
+  min-height: 100vh;
+  background-color: #eaf1fd;
+  padding: 24px;
+}
+
+/* cabeçalho */
+.medicamento-idoso-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background-color: #ffffff;
+  border-radius: 50px;
+  padding: 16px 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* saudação do idoso */
+.medicamento-idoso-titulo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  margin-right: auto;
+}
+
+/* botão de HOME, NOTIFICAÇÃO e SAIR */
+.medicamento-idoso-icone-btn {
+  background-color: #c9aee6;
+  color: #000000;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+/* botão aitvo */
+.medicamento-idoso-btn-ativo {
+  background-color: #c9aee6;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* outros botões (CONSULTAS e DOENÇAS) */
+.medicamento-idoso-link {
+  background: none;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.home-idoso-menu {
+  display: grid;
+  /* Cria colunas de tamanho fixo ou dinâmico ajustadas à esquerda */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+  gap: 32px;
+  margin-top: 48px;
+  
+  width: 100%;
+  max-width: 900px; /* Ajuste essa largura máxima para limitar o tamanho do bloco */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-idoso-menu-card {
+  border: none;
+  border-radius: 24px;
+  width: 280px;
+  height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.home-idoso-menu-card:hover {
+  transform: scale(1.03);
+}
+
+.home-idoso-menu-card i {
+  font-size: 4.5rem;
+}
+
+.home-idoso-menu-card span {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.home-idoso-btn-ativo {
+  background-color: #c9aee6;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.home-idoso-icone-btn-ativo {
+  background-color: #333;
+}
+
+.consultas-container {
+  min-height: 100vh;
+  background-color: #eaf1fd;
+  padding: 24px;
+}
+
+/* espaçamento dos cards e barra denavegação */
+.medicamento-idoso-consultas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 40px;
+}
+
+/* card que aparece quando não possui medicamentos cadastrados */
+.medicamento-idoso-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 48px 24px;
+  margin-top: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* logo que aparece no card vazio */
+.medicamento-idoso-vazio-logo {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 16px;
+  opacity: 0.85;
+}
+
+/* texto que aparece no card vazio */
+.medicamento-idoso-vazio-texto {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 24px !important; /* Aumentado para 32px e com !important para garantir o arredondamento */
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  min-height: 220px;
+  border: none !important;
+}
+
+.card-title {
+  color: #000000;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.card-label {
+  font-weight: 700;
+  margin: 0;
+  font-size: 1rem;
+  color: #000000;
+}
+
+.card-valor {
+  font-weight: 400;
+}
+
+.card-acoes {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  width: 100%;
+  margin-top: 16px;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.consultas-grid {
+  display: grid;
+  /* Cria colunas flexíveis com largura mínima de 300px que se adaptam à tela */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  width: 100%;
+  margin-top: 20px;
+}
