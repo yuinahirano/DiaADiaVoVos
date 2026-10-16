@@ -50,6 +50,17 @@ export async function lerLeituras(ip) {
   }
 }
 
+// Ping rápido: true só se o IP responder como pulseira (mesma checagem da varredura).
+export async function pulseiraOnline(ip, timeout = 2500) {
+  if (!ip) return false;
+  try {
+    const { data } = await axios.get(`http://${ip}/status`, { timeout });
+    return data?.ok === true && data?.registros !== undefined;
+  } catch {
+    return false;
+  }
+}
+
 // Avisa a pulseira que as leituras até `ate` (seq) já foram guardadas no celular.
 // Só depois disso ela apaga esses registros da flash.
 export async function confirmarLeituras(ip, ate) {

@@ -1,4 +1,3 @@
-
 import axios from 'axios';
 import { API_URL } from './config';
 import { lerJwt, salvarJwt, apagarJwt } from '../storage/auth';
@@ -7,8 +6,88 @@ import { apenasDigitos } from '../../utils/validacoes';
 // O App registra aqui o que fazer quando a sessão expira (voltar para o login)
 let aoExpirar = null;
 
+// Evita disparar o logout várias vezes quando várias requisições falham juntas
+let expirando = false;
+
 export function aoSessaoExpirar(fn) {
   aoExpirar = fn;
+}
+
+// Erros de token que a API devolve como 500 (ex.: depois de reiniciar o back).
+// Se o back passar a responder 401, isso deixa de ser necessário.
+const TOKEN_INVALIDO_NA_MENSAGEM =
+  /jwt|jsonwebtoken|expired|expirad|signature|malformed/i;
+
+// Paliativo: se o back responder 500 nessas rotas, trata como sessão caída.
+// (Um 500 real de servidor nelas também vai mandar para o login.)
+// Para desligar, deixe a lista vazia: [].
+const ROTAS_500_VIRAM_SESSAO_CAIDA = ['/usuario/me'];
+
+function textoDoErro(erro) {
+  const d = erro.response?.data;
+
+  if (typeof d === 'string') {
+    return d;
+  }
+
+  return [d?.message, d?.mensagem, d?.error, d?.erro]
+    .filter((x) => typeof x === 'string')
+    .join(' ');
+}
+
+// true quando o erro significa "o token não vale mais"
+function sessaoInvalida(erro) {
+  const status = erro.response?.status;
+
+  if (!status) {
+    return false;
+  }
+
+  const url = erro.config?.url ?? '';
+
+  // Em /leitura o 401 pode ser só o token da pulseira, então não desloga
+  if (url.startsWith('/leitura')) {
+    return false;
+  }
+
+  if (status === 401) {
+    return true;
+  }
+
+  if (status === 403 || status === 500) {
+    if (TOKEN_INVALIDO_NA_MENSAGEM.test(textoDoErro(erro))) {
+      return true;
+    }
+
+    if (
+      status === 500 &&
+      ROTAS_500_VIRAM_SESSAO_CAIDA.some((rota) => url.startsWith(rota))
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+// Limpa o token e manda para o login (mesmo caminho do botão "Sair da conta")
+async function expirarSessao() {
+  if (expirando) {
+    return;
+  }
+
+  expirando = true;
+
+  await apagarJwt();
+  aoExpirar?.();
+}
+
+// Erro marcado como "sessão expirada": as telas podem ignorar sem mostrar nada
+function erroSessaoExpirada() {
+  const e = new Error('Sessão expirada. Faça login novamente');
+  e.sessaoExpirada = true;
+
+  return e;
 }
 
 function criarInstancia() {
@@ -36,23 +115,34 @@ function criarInstancia() {
 }
 
 // Padroniza o erro: sempre um Error com mensagem legível
+// - e.status: código HTTP, quando a API respondeu
+// - e.rede: true quando não deu para falar com a API (sem conexão ou tempo esgotado)
 function traduzirErro(erro) {
   if (erro.response) {
-    const msg = erro.response.data?.message;
+    const msg = textoDoErro(erro);
 
-    return new Error(
+    const e = new Error(
       `API respondeu ${erro.response.status}${msg ? `: ${msg}` : ''}`,
     );
+    e.status = erro.response.status;
+
+    return e;
   }
 
   if (erro.code === 'ECONNABORTED') {
-    return new Error('Tempo esgotado ao falar com a API');
+    const e = new Error('Tempo esgotado ao falar com a API');
+    e.rede = true;
+
+    return e;
   }
 
   if (erro.message === 'Network Error') {
-    return new Error(
+    const e = new Error(
       `Sem conexão com a API (${erro.config?.baseURL}${erro.config?.url ?? ''}). Confira o EXPO_PUBLIC_API_URL e o Wi-Fi`,
     );
+    e.rede = true;
+
+    return e;
   }
 
   return erro;
@@ -75,7 +165,10 @@ api.interceptors.request.use(async (config) => {
   const jwt = await lerJwt();
 
   if (!jwt) {
-    throw new Error('Usuário não está logado');
+    // Sem token = sessão caída: volta para o login sem mostrar erro
+    await expirarSessao();
+
+    throw erroSessaoExpirada();
   }
 
   config.headers.Authorization = `Bearer ${jwt}`;
@@ -86,15 +179,15 @@ api.interceptors.request.use(async (config) => {
 api.interceptors.response.use(
   (resposta) => resposta,
   async (erro) => {
-    // 401 nas rotas de usuário = token vencido.
-    // Em /leitura pode ser só o token da pulseira, então não desloga.
-    const rotaDeLeitura = erro.config?.url?.startsWith('/leitura');
+    // Já é um erro nosso (ex.: lançado pelo interceptor de request)
+    if (erro?.sessaoExpirada) {
+      throw erro;
+    }
 
-    if (erro.response?.status === 401 && !rotaDeLeitura) {
-      await apagarJwt();
-      aoExpirar?.();
+    if (sessaoInvalida(erro)) {
+      await expirarSessao();
 
-      throw new Error('Sessão expirada. Faça login novamente');
+      throw erroSessaoExpirada();
     }
 
     throw traduzirErro(erro);
@@ -207,12 +300,33 @@ export async function perfilDoUsuarioLogado() {
   return null;
 }
 
+// Servidor acordando ou rede instável: o login tenta de novo sozinho.
+// Credencial errada (400/401/403/404) nunca é repetida.
+const STATUS_LOGIN_TENTAR_DE_NOVO = [502, 503, 504];
+const TENTATIVAS_LOGIN = 2;
+const ESPERA_LOGIN_MS = 1500;
+
+const esperar = (ms) => new Promise((resolver) => setTimeout(resolver, ms));
+
+async function postarLogin(email, senha) {
+  for (let tentativa = 1; ; tentativa += 1) {
+    try {
+      return await apiPublica.post('/usuario/login', { email, senha });
+    } catch (e) {
+      const vale = e.rede || STATUS_LOGIN_TENTAR_DE_NOVO.includes(e.status);
+
+      if (!vale || tentativa >= TENTATIVAS_LOGIN) {
+        throw e;
+      }
+
+      await esperar(ESPERA_LOGIN_MS);
+    }
+  }
+}
+
 // Faz login e guarda o JWT
 export async function login(email, senha) {
-  const { data } = await apiPublica.post('/usuario/login', {
-    email,
-    senha,
-  });
+  const { data } = await postarLogin(email, senha);
 
   const token = extrairToken(data);
 
@@ -228,6 +342,9 @@ export async function login(email, senha) {
   }
 
   await salvarJwt(token);
+
+  // Sessão nova: libera o aviso de expiração para a próxima vez
+  expirando = false;
 
   return token;
 }

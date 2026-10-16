@@ -48,13 +48,20 @@ export function AuthProvider({ children }) {
     } catch (e) {
       setUser(null);
       setPerfil(null);
-      setErro(e?.message || 'Não foi possível carregar o perfil.');
+
+      // Sessão expirada: o api.js já mandou para o login, não mostra erro
+      setErro(
+        e?.sessaoExpirada
+          ? ''
+          : e?.message || 'Não foi possível carregar o perfil.',
+      );
     } finally {
       setCarregando(false);
     }
   }, []);
 
   useEffect(() => {
+    // Chamado pelo api.js quando o token cai (mesmo efeito do botão "Sair da conta")
     aoSessaoExpirar(() => {
       setLogado(false);
       setPerfil(null);
