@@ -4,15 +4,13 @@ import { PulseiraRepository } from "../repository/pulseira.repository";
 
 const repo = new PulseiraRepository();
 
-// NOVO: gera o token do dispositivo (usado no POST /pulseira)
-// O controller lê o token em req.deviceToken e repassa ao service
 export function gerarDeviceTokenMiddleware(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    (req as any).deviceToken = randomBytes(32).toString("hex"); // 64 caracteres
+    (req as any).deviceToken = randomBytes(32).toString("hex");
     next();
   } catch (error) {
     console.error(error);

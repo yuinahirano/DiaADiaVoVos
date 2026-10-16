@@ -14,6 +14,14 @@ export class ConsultaRepository {
     return rows;
   }
 
+  async selecionarPorIdIdoso(idIdoso: string): Promise<IConsulta[]> {
+    const sql =
+      "SELECT * FROM consulta WHERE id_idoso=? ORDER BY data ASC, horario ASC;";
+    const values = [idIdoso];
+    const [rows] = await db.execute<IConsulta[]>(sql, values);
+    return rows;
+  }
+
   async criar(dados: Omit<IConsulta, "id">): Promise<ResultSetHeader> {
     const sql = `INSERT INTO consulta 
             (nome_medico, horario, local_consulta, id_idoso, data, descricao)  

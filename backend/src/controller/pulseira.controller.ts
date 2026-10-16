@@ -26,7 +26,6 @@ export class PulseiraController {
     }
   };
 
-  // NOVO: GET /pulseira/usuario/:idUsuario
   // O app lê o id de dentro do token e pede só as pulseiras desse usuário
   selecionarPorUsuario = async (req: Request, res: Response) => {
     try {
@@ -116,7 +115,7 @@ export class PulseiraController {
     }
   };
 
-  // NOVO: GET /pulseira/:id/leituras
+
   leituras = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);

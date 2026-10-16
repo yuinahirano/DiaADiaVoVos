@@ -13,11 +13,16 @@ export class EnderecoService {
     return await this._repository.selecionarPorId(id);
   }
 
+  async selecionarPorUsuario(idUsuario: string) {
+    return await this._repository.selecionarPorUsuario(idUsuario);
+  }
+
 async criar(
   numero: number,
   complemento: string,
   cep: string,
   idUsuario: string,
+  nome?: string,
 ) {
   const dadosCep = await ConsultaCep.consultar(cep);
 
@@ -33,6 +38,7 @@ async criar(
   );
 
   return await this._repository.criar({
+    nome: nome?.trim() || null,
     logradouro: endereco.Logradouro,
     numero: endereco.Numero,
     complemento: endereco.Complemento ?? "",
@@ -50,6 +56,7 @@ async editar(
   complemento: string,
   cep: string,
   idUsuario: string,
+  nome?: string,
 ) {
   const dadosCep = await ConsultaCep.consultar(cep);
 
@@ -65,6 +72,7 @@ async editar(
   );
 
   return await this._repository.editar(id, {
+    nome: nome?.trim() || null,
     logradouro: endereco.Logradouro,
     numero: endereco.Numero,
     complemento: endereco.Complemento ?? "",

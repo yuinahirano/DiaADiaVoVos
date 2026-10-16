@@ -23,11 +23,24 @@ export class EnderecoController{
       return res.status(500).json({ message: "Ocorreu um erro no servidor", errorMessage: message });
     }
   };
+
+  // GET /enderecos/usuario/:idUsuario -> endereços do usuário (idoso)
+  selecionarPorUsuario = async (req: Request, res: Response) => {
+    try {
+      const idUsuario = String(req.params.idUsuario);
+      const result = await this._service.selecionarPorUsuario(idUsuario);
+      return res.status(200).json({ result });
+    } catch (error) {
+      console.error(error);
+      const message = error instanceof Error ? error.message : "Erro desconhecido";
+      return res.status(500).json({ message: "Ocorreu um erro no servidor", errorMessage: message });
+    }
+  };
       
 criar = async (req: Request, res: Response) => {
   try {
-    const {numero, complemento, cep, idUsuario} = req.body;
-        const novo = await this._service.criar(numero, complemento, cep, idUsuario)
+    const {numero, complemento, cep, idUsuario, nome} = req.body;
+        const novo = await this._service.criar(numero, complemento, cep, idUsuario, nome)
         res.status(201).json({ novo })
     } catch (error: unknown) {
       console.error(error);
@@ -39,8 +52,8 @@ criar = async (req: Request, res: Response) => {
  editar = async (req: Request, res: Response) => {
     try{
         const id = String(req.params.id);
-        const {numero, complemento, cep, idUsuario}= req.body
-        const novo = await this._service.editar(id, numero, complemento, cep, idUsuario )
+        const {numero, complemento, cep, idUsuario, nome}= req.body
+        const novo = await this._service.editar(id, numero, complemento, cep, idUsuario, nome)
         res.status(201).json({ novo })
     } catch (error: unknown) {
       console.error(error);

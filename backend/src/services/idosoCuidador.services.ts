@@ -18,12 +18,23 @@ export class IdosoCuidadorService {
     return await this._repository.selecionarPorId(id);
   }
 
+  async selecionarIdososPorCuidador(idCuidador: string) {
+    return await this._repository.selecionarIdososPorCuidador(idCuidador);
+  }
+
   async criar(idIdoso: string, idCuidador: string, telefoneEmergencia: string) {
     const idosoCuidador = IdosoCuidador.criar(
       idIdoso,
       idCuidador,
       telefoneEmergencia,
     );
+    const existente = await this._repository.selecionarPorIdosoECuidador(
+      idosoCuidador.IdIdoso,
+      idosoCuidador.IdCuidador,
+    );
+    if (existente.length > 0)
+      throw new Error("Esse idoso já está vinculado a esse cuidador");
+
     return await this._repository.criar({
       idIdoso: idosoCuidador.IdIdoso,
       idCuidador: idosoCuidador.IdCuidador,
@@ -50,6 +61,13 @@ export class IdosoCuidadorService {
       idCuidador,
       telefoneEmergencia,
     );
+
+    const duplicados = await this._repository.selecionarPorIdosoECuidador(
+      idosoCuidador.IdIdoso,
+      idosoCuidador.IdCuidador,
+    );
+    if (duplicados.some((relacao) => String(relacao.id) !== String(id)))
+      throw new Error("Esse idoso já está vinculado a esse cuidador");
 
     return await this._repository.editar(id, {
       idIdoso: idosoCuidador.IdIdoso,

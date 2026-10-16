@@ -5,6 +5,16 @@ import { hashSenha, compararSenha } from "../config/bcrypt.config";
 import { CpfUtils } from "../utils/validarCpf.utils";
 import jwt from "jsonwebtoken";
 
+const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
+
+export class AppError extends Error {
+  constructor(message: string, public status: number = 400) {
+    super(message);
+    this.name = "AppError";
+    Object.setPrototypeOf(this, AppError.prototype);
+  }
+}
+
 export class UsuarioService {
   constructor(private _repository = new UsuarioRepository()) {}
 
@@ -21,9 +31,16 @@ export class UsuarioService {
   }
 
   selecionarPorToken = async (token: string) => {
-  const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
-  return this.selecionarPorId(decoded.id);
-};
+    let decoded: { id: string };
+
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { id: string };
+    } catch {
+      throw new AppError("Token inválido ou expirado", 401);
+    }
+
+    return this.selecionarPorId(decoded.id);
+  };
 
   async criar(
     nome: string,
@@ -33,15 +50,23 @@ export class UsuarioService {
     dataNascimento: string,
     estadoCivil: EstadoCivil
   ) {
-    const cpfExistente = await this._repository.selecionarPorCpf(cpf);
+    const cpfLimpo = CpfUtils.limpar(cpf);
+    const cpfExistente = await this._repository.selecionarPorCpf(cpfLimpo);
     if (cpfExistente.length > 0)
-      throw new Error("CPF já cadastrado");
+      throw new AppError("CPF já cadastrado", 409);
 
     const emailExistente = await this._repository.selecionarPorEmail(email);
     if (emailExistente.length > 0)
-      throw new Error("Email já cadastrado");
+      throw new AppError("Email já cadastrado", 409);
 
-    const usuario = Usuario.criar(nome, cpf, email, senha, dataNascimento, estadoCivil);
+    let usuario: Usuario;
+
+    try {
+      usuario = Usuario.criar(nome, cpf, email, senha, dataNascimento, estadoCivil);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Dados inválidos";
+      throw new AppError(message, 400);
+    }
 
     const senhaHash = await hashSenha(senha);
     usuario.definirSenhaHash(senhaHash);
@@ -75,9 +100,16 @@ export class UsuarioService {
   ) {
     const usuarioExistente = await this._repository.selecionarPorId(id);
     if (usuarioExistente.length === 0)
-      throw new Error("Usuário não encontrado");
+      throw new AppError("Usuário não encontrado", 404);
 
-    const usuario = Usuario.editar(nome, cpf, email, senha, dataNascimento, estadoCivil, id);
+    let usuario: Usuario;
+
+    try {
+      usuario = Usuario.editar(nome, cpf, email, senha, dataNascimento, estadoCivil, id);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Dados inválidos";
+      throw new AppError(message, 400);
+    }
 
     const senhaHash = await hashSenha(senha);
     usuario.definirSenhaHash(senhaHash);
@@ -95,19 +127,25 @@ export class UsuarioService {
   async deletar(id: string) {
     const usuarioExistente = await this._repository.selecionarPorId(id);
     if (usuarioExistente.length === 0)
-      throw new Error("Usuário não encontrado");
+      throw new AppError("Usuário não encontrado", 404);
 
     return await this._repository.deletar(id);
   }
 
   async login(email: string, senha: string) {
-    const [usuario] = await this._repository.selecionarPorEmail(email);
+    if (!email || !senha)
+      throw new AppError("Informe e-mail e senha", 400);
+
+    if (!EMAIL_REGEX.test(String(email).trim()))
+      throw new AppError("Digite um e-mail válido", 400);
+
+    const [usuario] = await this._repository.selecionarPorEmail(String(email).trim());
     if (!usuario)
-      throw new Error("Email ou senha inválidos");
+      throw new AppError("Email ou senha inválidos", 401);
 
     const senhaValida = await compararSenha(senha, usuario.senha);
     if (!senhaValida)
-      throw new Error("Email ou senha inválidos");
+      throw new AppError("Email ou senha inválidos", 401);
 
     const token = jwt.sign(
       { id: usuario.id, email: usuario.email },

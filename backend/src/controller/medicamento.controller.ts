@@ -62,7 +62,6 @@ criar = async (req: Request, res: Response) => {
     try {
       const id = String(req.params.id);
       const { nome, dosagem, horario, frequencia, observacoes, idIdoso } = req.body;
-      console.log(nome, dosagem, horario, frequencia, observacoes, idIdoso, id);
       const editado = await this._service.editar(
   nome, dosagem, horario, frequencia, idIdoso, observacoes, id
 );

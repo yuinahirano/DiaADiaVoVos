@@ -16,6 +16,10 @@ export class ConsultaService {
     return await this._repository.selecionarPorId(id);
   }
 
+  async selecionarPorIdIdoso(idIdoso: string) {
+    return await this._repository.selecionarPorIdIdoso(idIdoso);
+  }
+
   async criar(
     nomeMedico: string,
     horario: string,

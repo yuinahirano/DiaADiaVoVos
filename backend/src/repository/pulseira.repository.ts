@@ -16,9 +16,6 @@ export class PulseiraRepository {
     return rows;
   }
 
-  // NOVO: pulseiras do usuário (id da tabela usuario) como cuidador ou como idoso.
-  // pulseira.id_cuidador e pulseira.id_idoso apontam para cuidador.id e idoso.id,
-  // por isso o JOIN até usuario (id_usuario) antes de comparar.
   async selecionarPorUsuario(idUsuario: string): Promise<IPulseira[]> {
     const sql = `
       SELECT DISTINCT p.id,
@@ -49,16 +46,12 @@ export class PulseiraRepository {
     return rows;
   }
 
-  // Uso interno (middleware do dispositivo): precisa do SELECT * por causa do token
   async selecionarPorToken(token: string): Promise<IPulseira[]> {
     const sql = "SELECT * FROM pulseira WHERE device_token=?;";
     const [rows] = await db.execute<IPulseira[]>(sql, [token]);
     return rows;
   }
 
-  // Confere se o usuário logado é o cuidador ou o idoso dessa pulseira.
-  // pulseira.id_cuidador e pulseira.id_idoso apontam para cuidador.id e idoso.id,
-  // por isso o JOIN até usuario (id_usuario) antes de comparar.
   async usuarioTemAcesso(idPulseira: string, idUsuario: string): Promise<boolean> {
     const sql = `
       SELECT p.id
@@ -75,8 +68,6 @@ export class PulseiraRepository {
     return rows.length > 0;
   }
 
-  // NOVO: leituras de uma pulseira, da mais recente para a mais antiga (até 500).
-  // O horário sai como texto UTC (com "Z"), assim o fuso do servidor não desloca a hora.
   async selecionarLeituras(idPulseira: string): Promise<RowDataPacket[]> {
     const sql = `
       SELECT DATE_FORMAT(medido_em, '%Y-%m-%dT%H:%i:%sZ') AS medidoEm, bpm, spo2
@@ -101,8 +92,6 @@ export class PulseiraRepository {
     return rows;
   }
 
-  // UNIFICADO (criar + vincular): cria a pulseira já vinculada,
-  // gravando device_token e vinculada_em no mesmo INSERT
   async criar(
     dados: Omit<IPulseira, "id" | "deviceToken" | "vinculadaEm">,
     token: string,
@@ -121,7 +110,6 @@ export class PulseiraRepository {
     return rows;
   }
 
-  // O PUT (editar) não mexe no intervalo: ele só muda por aqui
   async editar(
     id: string,
     dados: Omit<IPulseira, "id">,

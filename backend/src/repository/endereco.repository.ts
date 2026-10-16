@@ -2,6 +2,8 @@ import { db } from "../database/connection.database";
 import { IEndereco } from "../models/endereco.model";
 import { ResultSetHeader } from "mysql2";
 
+type DadosEndereco = Omit<IEndereco, "id"> & { nome?: string | null };
+
 export class EnderecoRepository {
   async selecionarTodos(): Promise<IEndereco[]> {
     const [rows] = await db.execute<IEndereco[]>("SELECT * FROM enderecos;");
@@ -14,11 +16,18 @@ export class EnderecoRepository {
     return rows;
   }
 
-  async criar(dados: Omit<IEndereco, "id">): Promise<ResultSetHeader> {
+  async selecionarPorUsuario(idUsuario: string): Promise<IEndereco[]> {
+    const sql = "SELECT * FROM enderecos WHERE id_usuario=?;";
+    const [rows] = await db.execute<IEndereco[]>(sql, [idUsuario]);
+    return rows;
+  }
+
+  async criar(dados: DadosEndereco): Promise<ResultSetHeader> {
     const sql = `INSERT INTO enderecos 
-      (logradouro, numero, complemento, bairro, cidade, UF, CEP, id_usuario)  
-        VALUES (?,?,?,?,?,?,?,?);`;
+      (nome, logradouro, numero, complemento, bairro, cidade, UF, CEP, id_usuario)  
+        VALUES (?,?,?,?,?,?,?,?,?);`;
     const values = [
+      dados.nome ?? null,
       dados.logradouro,
       dados.numero,
       dados.complemento,
@@ -32,7 +41,7 @@ export class EnderecoRepository {
     return rows;
   }
 
-  async editar(id: string, dados: Omit<IEndereco, "id">): Promise<ResultSetHeader> {
+  async editar(id: string, dados: DadosEndereco): Promise<ResultSetHeader> {
     console.log(     dados.logradouro,
       dados.numero,
       dados.complemento,
@@ -43,9 +52,10 @@ export class EnderecoRepository {
       id,);
     
     const sql = `UPDATE enderecos SET 
-      logradouro=?, numero=?, complemento=?, bairro=?, cidade=?, UF=?, CEP=?
+      nome=?, logradouro=?, numero=?, complemento=?, bairro=?, cidade=?, UF=?, CEP=?
         WHERE id=?;`;
     const values = [
+      dados.nome ?? null,
       dados.logradouro,
       dados.numero,
       dados.complemento,
