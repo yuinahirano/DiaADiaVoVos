@@ -20,7 +20,9 @@ export function useAddMedicamento(medicamentoEditando) {
 
   const emEdicao = Boolean(medicamentoEditando);
 
-  // Preenche o formulário quando abrir em modo edição (ou limpa quando for criar)
+  // Preenche o formulário em modo edição.
+  // Em modo cadastro, já preenche o idoso com o idoso selecionado na home do cuidador
+  // (o select do idoso está desabilitado, então o usuário não consegue escolher).
   useEffect(() => {
     if (medicamentoEditando) {
       setFormData({
@@ -32,7 +34,10 @@ export function useAddMedicamento(medicamentoEditando) {
         idIdoso: medicamentoEditando.id_idoso ?? medicamentoEditando.idIdoso ?? ''
       });
     } else {
-      setFormData(formVazio);
+      setFormData({
+        ...formVazio,
+        idIdoso: localStorage.getItem("idosoSelecionadoId") || ''
+      });
     }
   }, [medicamentoEditando]);
 
@@ -52,7 +57,7 @@ export function useAddMedicamento(medicamentoEditando) {
       }
 
       setLoading(true);
-      setErro(false);
+      setErro(null);
 
       try {
         if (emEdicao) {
