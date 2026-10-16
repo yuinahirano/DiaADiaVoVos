@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // Páginas públicas
+import PaginaSobre from './pages/PaginaSobre';
 import PaginaLogin from './pages/PaginaLogin';
 import PaginaCadastro from './pages/PaginaCadastro';
 import PaginaTipoUsuario from './pages/PaginaTipoUsuario';
@@ -36,8 +37,15 @@ function App() {
               ROTAS PÚBLICAS
           ========================== */}
 
+          {/* Tela Inicial (Sobre) */}
           <Route
             path="/"
+            element={<PaginaSobre />}
+          />
+
+          {/* Tela de Login */}
+          <Route
+            path="/login"
             element={<PaginaLogin />}
           />
 
@@ -85,10 +93,12 @@ function App() {
               path="/medicamentos-idoso"
               element={<PaginaMedicamentosIdoso />}
             />
+
             <Route
               path="/notificacoes-idoso"
               element={<PaginaNotificacoesIdoso />}
             />
+
             <Route
               path="/consultas-idoso"
               element={<PaginaConsultasIdoso />}
@@ -141,8 +151,6 @@ function App() {
             <Route path='/medicamentos' element={<PaginaMedicamentos />} />
           </Route>
 
-          {/* Redireciona qualquer rota desconhecida de volta para o Login */}
-          <Route path='*' element={<Navigate to="/" replace />} />
           {/* =========================
               ROTA DESCONHECIDA
           ========================== */}
