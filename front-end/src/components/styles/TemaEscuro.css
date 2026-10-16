@@ -1,0 +1,274 @@
+/* ===========================================================
+   VARIÁVEIS DE COR
+   =========================================================== */
+:root {
+  --bg-page: #eaf0fb;
+  --bg-surface: #ffffff;
+  --bg-input: #ffffff;
+  --text: #111111;
+  --text-muted: #555555;
+  --border: #dddddd;
+}
+
+body.dark {
+  --bg-page: #121212;
+  --bg-surface: #292929;
+  --bg-input: #2a2a2a;
+  --text: #ffffff;
+  --text-muted: #bbbbbb;
+  --border: #444444;
+}
+
+/* Transição suave ao trocar de tema */
+body,
+.home-idoso-container,
+.home-idoso-header,
+.card {
+  transition: background-color 0.3s ease, color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* ===========================================================
+   FUNDO GERAL E CONTAINERS DE PÁGINA
+   =========================================================== */
+body.dark {
+  background-color: var(--bg-page) !important;
+  color: var(--text) !important;
+}
+
+body.dark .home-idoso-container,
+body.dark .consultas-container,
+body.dark .doencas-container {
+  background-color: var(--bg-page) !important;
+  color: var(--text) !important;
+}
+
+/* Faixas/áreas centrais que tinham fundo azul-claro (home do cuidador etc.) */
+body.dark main,
+body.dark .home-cuidador-grid-retangulos,
+body.dark .vincular-cuidador-wrapper,
+body.dark .sair-wrapper {
+  background-color: transparent !important;
+}
+
+/* Wrappers com fundo inline (PaginaDadosCuidador) */
+body.dark [style*="background-color: rgb(235, 243, 255)"] {
+  background-color: var(--bg-page) !important;
+}
+
+/* ===========================================================
+   HEADER
+   =========================================================== */
+body.dark .home-idoso-header {
+  background-color: var(--bg-surface) !important;
+  color: var(--text) !important;
+}
+
+body.dark .home-idoso-titulo {
+  color: var(--text) !important;
+}
+
+/* Abas inativas do header (Doenças, Consultas, Medicamentos...) */
+body.dark .home-idoso-link {
+  color: var(--text) !important;
+}
+
+/* ===========================================================
+   CARDS E SUPERFÍCIES (classes dos CSS)
+   =========================================================== */
+body.dark .card,
+body.dark .bg-light,
+body.dark .bg-white,
+body.dark .list-group-item,
+body.dark .table,
+body.dark .modal-content,
+body.dark .dropdown-menu,
+body.dark .doenca-card,
+body.dark .consulta-card,
+body.dark .home-idoso-vazio,
+body.dark .vincular-cuidador-card,
+body.dark .sair-card,
+body.dark .home-cuidador-vazio-card {
+  background-color: var(--bg-surface) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+body.dark .home-idoso-vazio-texto,
+body.dark .doenca-card-titulo,
+body.dark .doenca-card-label,
+body.dark .doenca-card-valor,
+body.dark .consulta-card-titulo,
+body.dark .consulta-card-label,
+body.dark .consulta-card-valor,
+body.dark .card-title,
+body.dark .card-label,
+body.dark .card-valor,
+body.dark .vincular-cuidador-titulo,
+body.dark .vincular-cuidador-label,
+body.dark .sair-card-titulo {
+  color: var(--text) !important;
+}
+
+body.dark .sair-card-subtitulo {
+  color: var(--text-muted) !important;
+}
+
+/* Botão "Permanecer" da tela de sair */
+body.dark .sair-btn-permanecer {
+  background-color: transparent !important;
+  color: var(--text) !important;
+  border-color: var(--text) !important;
+}
+
+/* ===========================================================
+   ESTILOS INLINE DOS .JSX (modais, registro de saúde, etc.)
+   O React gera: style="background-color: rgb(255, 255, 255)"
+   =========================================================== */
+
+/* Fundos brancos inline: cards dos modais, cards do registro de saúde */
+body.dark [style*="background-color: rgb(255, 255, 255)"] {
+  background-color: var(--bg-surface) !important;
+  color: var(--text) !important;
+}
+
+/* Textos pretos inline (títulos, labels) */
+body.dark [style*="color: rgb(0, 0, 0)"],
+body.dark [style*="color: rgb(51, 51, 51)"],
+body.dark [style*="color: rgb(68, 68, 68)"] {
+  color: var(--text) !important;
+}
+
+/* Inputs dos modais (fundo azul-claro inline) */
+body.dark [style*="background-color: rgb(228, 236, 242)"] {
+  background-color: var(--bg-input) !important;
+  color: var(--text) !important;
+  border-color: #666 !important;
+}
+
+/* Botão "Cancelar" dos modais */
+body.dark [style*="background-color: rgb(225, 232, 236)"] {
+  background-color: #3a3a3a !important;
+  color: var(--text) !important;
+}
+
+/* ===========================================================
+   FORMULÁRIOS
+   =========================================================== */
+body.dark .form-control,
+body.dark .form-select,
+body.dark input:not([type="checkbox"]),
+body.dark textarea,
+body.dark select,
+body.dark .vincular-cuidador-input {
+  background-color: var(--bg-input) !important;
+  color: var(--text) !important;
+  border-color: #555 !important;
+  color-scheme: dark; /* calendário e relógio dos campos date/time ficam escuros */
+}
+
+body.dark ::placeholder {
+  color: #aaaaaa !important;
+}
+
+/* ===========================================================
+   TEXTOS
+   =========================================================== */
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark h5,
+body.dark h6,
+body.dark p,
+body.dark span,
+body.dark strong,
+body.dark label,
+body.dark li,
+body.dark td,
+body.dark th,
+body.dark a:not(.btn) {
+  color: var(--text) !important;
+}
+
+/* ===========================================================
+   ELEMENTOS COLORIDOS: mantêm texto/ícone ESCURO
+   (precisa vir depois da regra de textos)
+   =========================================================== */
+body.dark .home-idoso-icone-btn,
+body.dark .home-idoso-icone-btn i,
+body.dark .home-idoso-btn-ativo,
+body.dark .home-cuidador-btn-add-novo,
+body.dark .vincular-cuidador-btn,
+body.dark .vincular-cuidador-erro,
+body.dark .home-cuidador-card-retangulo,
+body.dark .home-cuidador-card-retangulo span,
+body.dark .landing-btn-primary,
+body.dark .sair-btn-sair,
+body.dark .notificacao-btn-aceitar,
+body.dark .notificacao-btn-recusar,
+body.dark .notificacoes-btn-limpar,
+body.dark [style*="background-color: rgb(255, 232, 102)"],
+body.dark [style*="background-color: rgb(255, 232, 102)"] span,
+body.dark [style*="background-color: rgb(255, 235, 96)"],
+body.dark [style*="background-color: rgb(255, 77, 77)"] {
+  color: #121212 !important;
+}
+
+/* Mensagens de erro/sucesso mantêm suas cores */
+body.dark .vincular-cuidador-erro {
+  color: #ff7b7b !important;
+}
+
+body.dark .vincular-cuidador-sucesso {
+  color: #6fdc8c !important;
+}
+
+/* Botão de confirmar exclusão (vermelho) mantém texto branco */
+body.dark [style*="background-color: rgb(255, 77, 77)"] {
+  color: #ffffff !important;
+}
+
+/* ===========================================================
+   TOGGLE SWITCH
+   =========================================================== */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 56px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 34px;
+  background-color: #cccccc;
+  transition: 0.3s;
+  padding: 3px;
+  display: flex;
+  align-items: center;
+}
+
+.thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .slider {
+  background-color: #ffe866;
+}
+
+body.dark .thumb {
+  transform: translateX(26px);
+  background-color: #121212;
+}
