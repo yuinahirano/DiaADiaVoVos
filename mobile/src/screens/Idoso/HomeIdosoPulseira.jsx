@@ -8,7 +8,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { buscarPulseira } from '../../services/api/api';
@@ -48,9 +47,8 @@ function Botao({ titulo, onPress, disabled, variante = 'primario', icone }) {
 
 // Home do idoso: conectar a pulseira (uma vez) e ver as leituras dela.
 // A pulseira, depois de conectada, envia as leituras sozinha em segundo plano.
-export default function HomeIdosoPulseira() {
-  const navigation = useNavigation();
-
+// Props: onSair
+export default function HomeIdosoPulseira({ onSair }) {
   const [config, setConfig] = useState(null); // { idPulseira, deviceToken, ip }
   const [pulseira, setPulseira] = useState(null); // { id, nome } - usado em 'leituras'
   const [carregado, setCarregado] = useState(false);
@@ -110,12 +108,6 @@ export default function HomeIdosoPulseira() {
     };
   }, [config?.idPulseira, config?.ip]);
 
-  const voltar = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    }
-  };
-
   // Enquanto carrega o vínculo, mostra o esqueleto da tela
   if (!carregado) {
     return (
@@ -154,33 +146,18 @@ export default function HomeIdosoPulseira() {
     <SafeAreaView style={styles.tela}>
       <StatusBar backgroundColor={cores.fundo} barStyle="dark-content" />
 
-      <View style={styles.header}>
-        <Pressable
-          style={styles.botaoHeader}
-          accessibilityRole="button"
-          accessibilityLabel="Voltar"
-          onPress={voltar}
-        >
-          <MaterialCommunityIcons
-            name="arrow-left"
-            size={28}
-            color={cores.preto}
-          />
-        </Pressable>
-
-        <View style={styles.tituloContainer}>
+      <ScrollView
+        contentContainerStyle={styles.conteudo}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.header}>
           <Text style={styles.titulo}>Minha pulseira</Text>
 
           <Text style={styles.subtitulo}>
             Acompanhe sua pulseira e sua saúde
           </Text>
         </View>
-      </View>
 
-      <ScrollView
-        contentContainerStyle={styles.conteudo}
-        showsVerticalScrollIndicator={false}
-      >
         {config ? (
           <View style={[styles.card, { backgroundColor: cores.rosa }]}>
             <View style={styles.cardTopo}>
@@ -234,6 +211,17 @@ export default function HomeIdosoPulseira() {
           variante="destaque"
           onPress={() => setTela('conectar')}
         />
+
+        {onSair ? (
+          <View style={styles.sair}>
+            <Botao
+              titulo="Sair da conta"
+              icone="logout"
+              variante="contorno"
+              onPress={onSair}
+            />
+          </View>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -264,31 +252,15 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: cores.fundo,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    marginBottom: 8,
-  },
-  botaoHeader: {
-    width: 46,
-    height: 46,
-    borderRadius: 23,
-    backgroundColor: cores.branco,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  tituloContainer: {
-    flex: 1,
-  },
   conteudo: {
     flexGrow: 1,
     paddingHorizontal: 16,
-    paddingTop: 12,
+    paddingTop: 20,
     paddingBottom: 24,
     gap: 16,
+  },
+  header: {
+    marginBottom: 8,
   },
   titulo: {
     fontSize: 30,
@@ -329,6 +301,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 27,
     color: cores.preto,
+  },
+  sair: {
+    marginTop: 8,
   },
   botao: {
     minHeight: 68,

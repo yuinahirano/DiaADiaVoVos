@@ -5,31 +5,45 @@ import {
   Text,
   Pressable,
   ActivityIndicator,
+  Image,
   StyleSheet,
 } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AuthProvider, useAuth } from './src/contexts/AuthContext';
+import { TemaProvider, useTema } from './src/contexts/TemaContext';
+import { IdosoSelecionadoProvider } from './src/contexts/IdosoSelecionadoContext';
 
 // Telas públicas
 import Login from './src/screens/Login/Login';
-import Cadastro from './src/screens/Cadastro/Cadastro';
+import Cadastro from './src/screens/cadastro/cadastro';
 
 // Cadastro de perfil
 import {
   EscolherPerfil,
   DadosIdoso,
   DadosCuidador,
-} from './src/screens/Cadastro/EtapaPerfil';
+} from './src/screens/cadastro/EtapaPerfil';
 
 // Pulseiras
 import PulseiraCuidador from './src/screens/Cuidador/PulseiraCuidador';
 import PulseiraIdoso from './src/screens/Idoso/PulseiraIdoso';
 
+// Telas do cuidador
+import HomeCuidador from './src/screens/Cuidador/HomeCuidador';
+import DetalhesIdoso from './src/screens/Cuidador/DetalhesIdoso';
+import ListaIdoso from './src/screens/Cuidador/ListaIdoso';
+import PerfilIdoso from './src/screens/Cuidador/Lista/PerfilIdoso';
+
 // Telas do idoso
 import HomeIdoso from './src/screens/Idoso/HomeIdoso';
 import HomeIdosoPulseira from './src/screens/Idoso/HomeIdosoPulseira';
+import DoencasIdoso from './src/screens/Idoso/DoencasIdoso';
+import MedicamentosIdoso from './src/screens/Idoso/MedicamentosIdoso';
+import ConsultasIdoso from './src/screens/Idoso/ConsultasIdoso';
+import NotificacoesIdoso from './src/screens/Idoso/NotificacoesIdoso';
+import MeusDados from './src/screens/Idoso/DadosIdoso';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,38 +55,6 @@ function TelaLogin({ navigation }) {
       onLogin={aoLogar}
       onCadastro={() => navigation.navigate('Cadastro')}
     />
-  );
-}
-
-function TelaCadastro({ navigation }) {
-  return (
-    <Cadastro
-      onCadastro={(dados) =>
-        navigation.navigate('ProximaEtapa', { nome: dados?.nome })
-      }
-    />
-  );
-}
-
-function TelaProximaEtapa({ navigation, route }) {
-  const nome = route.params?.nome;
-
-  return (
-    <View style={styles.centro}>
-      <Text style={styles.titulo}>Conta criada!</Text>
-
-      <Text style={styles.texto}>
-        {nome ? `${nome}, ` : ''}a próxima etapa do cadastro entra aqui.
-      </Text>
-
-      <Pressable
-        style={styles.botao}
-        onPress={() => navigation.navigate('Login')}
-        accessibilityRole="button"
-      >
-        <Text style={styles.botaoTexto}>Ir para o login</Text>
-      </Pressable>
-    </View>
   );
 }
 
@@ -136,11 +118,18 @@ function TelaSemPerfil() {
   );
 }
 
-// Os dois perfis utilizam a nova tela inicial
+// Home do idoso
 function TelaHomePrincipal(props) {
   const { sair } = useAuth();
 
   return <HomeIdoso {...props} onLogout={sair} />;
+}
+
+// Home do cuidador (lista de idosos vinculados + configurações)
+function TelaHomeCuidador(props) {
+  const { sair } = useAuth();
+
+  return <HomeCuidador {...props} onLogout={sair} />;
 }
 
 // Tela Saúde: HomeIdosoPulseira
@@ -180,18 +169,35 @@ function TelaDestinoIdoso({ navigation, route }) {
   );
 }
 
-function Rotas() {
+// Tela mostrada enquanto o app carrega a sessão: logo + indicador
+function TelaCarregando() {
+  return (
+    <View style={styles.carregando}>
+      <Image
+        source={require('./assets/logo.png')}
+        style={styles.logo}
+        resizeMode="contain"
+        accessibilityLabel="Logo do aplicativo"
+      />
+
+      <ActivityIndicator size="large" color="#000000" />
+    </View>
+  );
+}
+
+// "fundo" vem da Raiz: tema escolhido para o cuidador, azul claro para o resto
+function Rotas({ fundo }) {
   const { carregando, logado, perfil, erro } = useAuth();
 
   if (carregando) {
-    return <ActivityIndicator style={{ flex: 1 }} />;
+    return <TelaCarregando />;
   }
 
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: '#EAF1FF' },
+        contentStyle: { backgroundColor: fundo },
       }}
       initialRouteName={
         !logado
@@ -206,11 +212,8 @@ function Rotas() {
       {!logado ? (
         <>
           <Stack.Screen name="Login" component={TelaLogin} />
-          <Stack.Screen name="Cadastro" component={TelaCadastro} />
-          <Stack.Screen
-            name="ProximaEtapa"
-            component={TelaProximaEtapa}
-          />
+          {/* O próprio Cadastro leva direto para o Login depois de criar a conta */}
+          <Stack.Screen name="Cadastro" component={Cadastro} />
         </>
       ) : erro ? (
         <Stack.Screen name="SemPerfil" component={TelaSemPerfil} />
@@ -230,7 +233,19 @@ function Rotas() {
         <>
           <Stack.Screen
             name="HomePrincipal"
-            component={TelaHomePrincipal}
+            component={TelaHomeCuidador}
+          />
+          <Stack.Screen
+            name="DetalhesIdoso"
+            component={DetalhesIdoso}
+          />
+          <Stack.Screen
+            name="ListaIdoso"
+            component={ListaIdoso}
+          />
+          <Stack.Screen
+            name="PerfilIdoso"
+            component={PerfilIdoso}
           />
           <Stack.Screen
             name="HomeIdosoPulseira"
@@ -246,10 +261,6 @@ function Rotas() {
           />
           <Stack.Screen
             name="MedicamentosIdoso"
-            component={TelaDestinoIdoso}
-          />
-          <Stack.Screen
-            name="DoencasIdoso"
             component={TelaDestinoIdoso}
           />
           <Stack.Screen
@@ -273,19 +284,25 @@ function Rotas() {
           />
           <Stack.Screen
             name="ConsultasIdoso"
-            component={TelaDestinoIdoso}
+            component={ConsultasIdoso}
           />
           <Stack.Screen
             name="MedicamentosIdoso"
-            component={TelaDestinoIdoso}
+            component={MedicamentosIdoso}
           />
+          {/* Somente idosos acessam a tela de doenças */}
           <Stack.Screen
             name="DoencasIdoso"
-            component={TelaDestinoIdoso}
+            component={DoencasIdoso}
           />
           <Stack.Screen
             name="NotificacoesIdoso"
-            component={TelaDestinoIdoso}
+            component={NotificacoesIdoso}
+          />
+          {/* Dados pessoais do próprio idoso (só visualização) */}
+          <Stack.Screen
+            name="MeusDados"
+            component={MeusDados}
           />
         </>
       )}
@@ -293,18 +310,38 @@ function Rotas() {
   );
 }
 
+// Decide as cores do app: só o cuidador usa o tema claro/escuro
+function Raiz() {
+  const { perfil } = useAuth();
+  const { cores } = useTema();
+
+  const usaTema = perfil === 'cuidador';
+  const fundo = usaTema ? cores.fundo : '#EAF1FF';
+  const barStyle = usaTema ? cores.statusBar : 'dark-content';
+
+  return (
+    <View
+      style={[
+        styles.app,
+        { paddingTop: StatusBar.currentHeight ?? 0, backgroundColor: fundo },
+      ]}
+    >
+      <StatusBar backgroundColor={fundo} barStyle={barStyle} />
+      <NavigationContainer>
+        <Rotas fundo={fundo} />
+      </NavigationContainer>
+    </View>
+  );
+}
+
 export default function App() {
   return (
     <AuthProvider>
-      <View style={styles.app}>
-        <StatusBar
-          backgroundColor="#EAF1FF"
-          barStyle="dark-content"
-        />
-        <NavigationContainer>
-          <Rotas />
-        </NavigationContainer>
-      </View>
+      <TemaProvider>
+        <IdosoSelecionadoProvider>
+          <Raiz />
+        </IdosoSelecionadoProvider>
+      </TemaProvider>
     </AuthProvider>
   );
 }
@@ -312,8 +349,17 @@ export default function App() {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight ?? 0,
+  },
+  carregando: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 28,
     backgroundColor: '#EAF1FF',
+  },
+  logo: {
+    width: 200,
+    height: 200,
   },
   centro: {
     flex: 1,
