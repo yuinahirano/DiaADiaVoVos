@@ -92,6 +92,11 @@ function App() {
               path="/configuracoes"
               element={<PaginaConfiguracao />}
             />
+
+            <Route
+              path="/vincular-cuidador"
+              element={<PaginaVincularCuidador />}
+            />
           </Route>
           </Route>
 
