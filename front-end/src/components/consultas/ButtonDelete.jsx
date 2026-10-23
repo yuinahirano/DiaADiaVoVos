@@ -1,6 +1,7 @@
 export default function ButtonDelete({ onClick }) {
   return (
     <button
+      type="button"
       style={styles.btnDelete}
       onClick={onClick}
       aria-label="Excluir"

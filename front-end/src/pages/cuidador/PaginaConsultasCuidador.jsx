@@ -5,6 +5,7 @@ import { useConsultas } from "../../hooks/useConsultas";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import logoImg from "../../assets/logo_DiaADia.png";
 import CadastrarConsulta from "./PaginaAddConsulta";
+import { deleteConsulta } from "../../service/idosoApi";
 
 //estilizações
 import "../../components/styles/HomeIdoso.css";
@@ -28,6 +29,7 @@ export default function PaginaConsultas() {
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
   const [consultaEditando, setConsultaEditando] = useState(null);
 
   const handleAbrirCadastro = () => {
@@ -43,10 +45,20 @@ export default function PaginaConsultas() {
   const handleFecharModal = () => {
     setIsModalOpen(false);
     setConsultaEditando(null);
-    refetch();}
+    refetch();
+  };
   // // Handlers para exclusão e edição de consultas
   const handleDelete = (id) => {
-    console.log("Deletar consulta:", id);
+    try {
+      deleteConsulta(id);
+
+      refetch();
+
+      setSucesso(true);
+    } catch (erro) {
+      console.error("Erro ao excluir consulta:", erro);
+      alert("Não foi possível excluir a consulta. Tente novamente.");
+    }
   };
 
   // const handleEdit = (consulta) => {
@@ -84,11 +96,11 @@ export default function PaginaConsultas() {
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos")}
-          >
+        >
           Medicamentos
         </button>
 
-          {/* botão de registro de saúde */}
+        {/* botão de registro de saúde */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/registro-saude")}
@@ -142,12 +154,12 @@ export default function PaginaConsultas() {
 
         {/* chamando os componentes com a listagem */}
         {!loading && !error && consultas.length > 0 && (
-        <ConsultasList
-          consultas={consultas}
-          formatarData={formatarData}
-          onDelete={handleDelete}
-          onEdit={handleAbrirEdicao}
-        />
+          <ConsultasList
+            consultas={consultas}
+            formatarData={formatarData}
+            onDelete={handleDelete}
+            onEdit={handleAbrirEdicao}
+          />
         )}
       </div>
 
@@ -157,6 +169,24 @@ export default function PaginaConsultas() {
         onClose={handleFecharModal}
         consultaEditando={consultaEditando}
       />
+
+      {/* MODAL DE SUCESSO */}
+      {sucesso && (
+        <div style={styles.innerModalOverlay}>
+          <div style={styles.modalContent}>
+            <h2 style={styles.modalTitle}>Sucesso!</h2>
+
+            <p style={styles.modalText}>A consulta foi excluída com sucesso.</p>
+
+            <button
+              onClick={() => setSucesso(false)}
+              style={styles.modalButton}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -195,5 +225,51 @@ const styles = {
     fontSize: "20px",
     fontWeight: "bold",
     lineHeight: "1",
+  },
+  innerModalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+  },
+
+  modalContent: {
+    backgroundColor: "#FFFFFF",
+    padding: "32px",
+    borderRadius: "24px",
+    width: "90%",
+    maxWidth: "400px",
+    textAlign: "center",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.12)",
+  },
+
+  modalTitle: {
+    fontSize: "24px",
+    fontWeight: "700",
+    marginBottom: "16px",
+    color: "#333333",
+  },
+
+  modalText: {
+    fontSize: "16px",
+    color: "#555555",
+    marginBottom: "24px",
+  },
+
+  modalButton: {
+    backgroundColor: "#FFE866",
+    color: "#000000",
+    border: "none",
+    borderRadius: "20px",
+    padding: "12px 32px",
+    fontSize: "16px",
+    fontWeight: "600",
+    cursor: "pointer",
   },
 };

@@ -7,9 +7,9 @@ import DoencasList from "../../components/doencas/DoencaList";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarDoenca from "./PaginaAddDoenca";
 
-import "../../components/styles/HomeIdoso.css";
+// import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
-import "../../components/styles/Consultas.css";
+// import "../../components/styles/Consultas.css";
 
 export default function PaginaDoencas() {
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
