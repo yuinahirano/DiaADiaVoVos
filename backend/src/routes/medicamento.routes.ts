@@ -7,10 +7,12 @@ const medicamentoRoutes = Router();
 const medicamentoController = new MedicamentoController();
 
 medicamentoRoutes.get("/medicamento", (req, res) => medicamentoController.selecionar(req, res));
+medicamentoRoutes.get("/medicamento/pendentes", (req, res) => medicamentoController.selecionarPendentes(req, res));
 medicamentoRoutes.get("/medicamento/idosos/:idIdoso", (req, res) => medicamentoController.selecionarPorIdoso(req, res));
 medicamentoRoutes.get("/medicamento/:id", (req, res) => medicamentoController.selecionar(req, res));
 
 medicamentoRoutes.post("/medicamento", authMiddleware, requireCuidador, (req, res) => medicamentoController.criar(req, res));
+medicamentoRoutes.post("/medicamento/:id/dose", authMiddleware, (req, res) => medicamentoController.registrarDose(req, res));
 medicamentoRoutes.put("/medicamento/:id", authMiddleware, requireCuidador, (req, res) => medicamentoController.editar(req, res));
 medicamentoRoutes.delete("/medicamento/:id", authMiddleware, requireCuidador, (req, res) => medicamentoController.deletar(req, res));
 
