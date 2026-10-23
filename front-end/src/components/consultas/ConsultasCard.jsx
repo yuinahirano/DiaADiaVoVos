@@ -127,9 +127,11 @@ const styles = {
     backgroundImage: iconeCheck,
   },
   buttonContainer: {
-    alignSelf: "flex-end",
-    marginTop: "auto",
-    display: "flex",
-    gap: "10px",
-  },
+  display: "flex",
+  width: "100%",
+  gap: "12px",
+  marginTop: "auto",
+  paddingTop: "16px",
+  boxSizing: "border-box",
+},
 };

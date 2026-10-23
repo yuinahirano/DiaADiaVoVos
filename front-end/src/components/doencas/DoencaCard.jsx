@@ -24,15 +24,17 @@ export default function DoencaCard({ condicao, onDelete, onEdit }) {
 // Estilos baseados no design fornecido
 const styles = {
   card: {
-    backgroundColor: '#ffffff',
-    borderRadius: '28px', // Cantos bastante arredondados como na imagem
-    padding: '24px',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '16px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
-    minHeight: '220px',
-  },
+  backgroundColor: "#ffffff",
+  borderRadius: "28px",
+  padding: "24px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "16px",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
+  minHeight: "330px",
+  height: "100%",
+  boxSizing: "border-box",
+},
   cardTitle: {
     color: '#000000',
     fontSize: '28px',
@@ -53,9 +55,9 @@ const styles = {
     lineHeight: '1.4',
   },
   buttonContainer: {
-    alignSelf: 'flex-end',
-    marginTop: 'auto',
-    display: 'flex',
-    gap: '10px',
-  },
+  display: "flex",
+  width: "100%",
+  gap: "12px",
+  marginTop: "auto",
+},
 };

@@ -83,14 +83,15 @@
 
 .card {
   background-color: #ffffff;
-  border-radius: 24px !important; /* Aumentado para 32px e com !important para garantir o arredondamento */
+  border-radius: 28px;
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  min-height: 220px;
-  border: none !important;
+  min-height: 330px;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .card-title {
