@@ -51,7 +51,7 @@ export default function PaginaDoencas() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
-          onClick={() => navigate("/home-cuidador")}
+          onClick={() => navigate("/notificacoes-cuidador")}
           style={styles.backButton}
         >
           <i className="bi bi-chevron-left"></i>
@@ -122,13 +122,17 @@ export default function PaginaDoencas() {
         {error && <p>Não foi possível carregar as doenças.</p>}
 
         {!loading && !error && doencas.length === 0 && (
-          <div className="home-idoso-vazio">
-            <img
-              src={logoImg}
-              alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
-            />
-            <p className="home-idoso-vazio-texto">Nenhuma doença cadastrada</p>
+          <div className="home-idoso-consultas">
+            <div className="home-idoso-vazio">
+              <img
+                src={logoImg}
+                alt="Dia a Dia Vovôs"
+                className="home-idoso-vazio-logo"
+              />
+              <p className="home-idoso-vazio-texto">
+                Nenhuma doença cadastrada
+              </p>
+            </div>
           </div>
         )}
 

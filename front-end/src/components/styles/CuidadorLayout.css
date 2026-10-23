@@ -1,0 +1,50 @@
+/* Layout compartilhado das telas do cuidador
+   (Doenças, Consultas, Medicamentos, Registro Saúde, Notificações) */
+
+/* página vira coluna para a área de conteúdo ocupar o espaço restante */
+.cuidador-pagina {
+  display: flex;
+  flex-direction: column;
+}
+
+/* linha do botão "Adicionar ..." */
+.cuidador-acoes {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+/* área de conteúdo, logo abaixo do header */
+.cuidador-conteudo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 24px;
+}
+
+/* quando não há lista (carregando / erro / vazio): centraliza no meio da área */
+.cuidador-conteudo--centro {
+  justify-content: center;
+}
+
+/* grade ÚNICA de cards: mesmo tamanho mínimo e mesmo espaçamento em todas as telas */
+.cuidador-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+/* card vazio centralizado (sobrescreve o margin-top: 40px do Consultas.css) */
+.cuidador-conteudo .home-idoso-vazio {
+  margin: 0 auto;
+}
+
+.cuidador-mensagem {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}

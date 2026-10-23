@@ -272,3 +272,9 @@ body.dark .thumb {
   transform: translateX(26px);
   background-color: #121212;
 }
+
+/* Texto em negrito dentro de caixas amarelas inline (ex.: Dosagem do medicamento)
+   precisa continuar escuro no tema escuro */
+body.dark [style*="background-color: rgb(255, 232, 102)"] strong {
+  color: #121212 !important;
+}

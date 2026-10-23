@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
+import { deleteConsulta } from "../../service/idosoApi";
 import logoImg from "../../assets/logo_DiaADia.png";
 import CadastrarConsulta from "./PaginaAddConsulta";
 
@@ -29,6 +30,8 @@ export default function PaginaConsultas() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [consultaEditando, setConsultaEditando] = useState(null);
+  const [idParaDeletar, setIdParaDeletar] = useState(null);
+  const [excluindo, setExcluindo] = useState(false);
 
   const handleAbrirCadastro = () => {
     setConsultaEditando(null);
@@ -43,15 +46,30 @@ export default function PaginaConsultas() {
   const handleFecharModal = () => {
     setIsModalOpen(false);
     setConsultaEditando(null);
-    refetch();}
-  // // Handlers para exclusão e edição de consultas
-  const handleDelete = (id) => {
-    console.log("Deletar consulta:", id);
+    refetch();
   };
 
-  // const handleEdit = (consulta) => {
-  //   console.log("Editar consulta:", consulta);
-  // };
+  // abre a confirmação de exclusão
+  const handleDelete = (id) => {
+    setIdParaDeletar(id);
+  };
+
+  // confirma e exclui de verdade
+  const handleConfirmarDeletar = async () => {
+    if (!idParaDeletar || excluindo) return;
+
+    setExcluindo(true);
+    try {
+      await deleteConsulta(idParaDeletar);
+      setIdParaDeletar(null);
+      refetch();
+    } catch (erro) {
+      console.error("Erro ao excluir consulta:", erro);
+      alert("Não foi possível excluir a consulta. Tente novamente.");
+    } finally {
+      setExcluindo(false);
+    }
+  };
 
   return (
     <div className="consultas-container">
@@ -84,11 +102,11 @@ export default function PaginaConsultas() {
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos")}
-          >
+        >
           Medicamentos
         </button>
 
-          {/* botão de registro de saúde */}
+        {/* botão de registro de saúde */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/registro-saude")}
@@ -100,7 +118,7 @@ export default function PaginaConsultas() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
+          onClick={() => navigate("/notificacoes-cuidador")}
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
@@ -142,12 +160,12 @@ export default function PaginaConsultas() {
 
         {/* chamando os componentes com a listagem */}
         {!loading && !error && consultas.length > 0 && (
-        <ConsultasList
-          consultas={consultas}
-          formatarData={formatarData}
-          onDelete={handleDelete}
-          onEdit={handleAbrirEdicao}
-        />
+          <ConsultasList
+            consultas={consultas}
+            formatarData={formatarData}
+            onDelete={handleDelete}
+            onEdit={handleAbrirEdicao}
+          />
         )}
       </div>
 
@@ -157,6 +175,32 @@ export default function PaginaConsultas() {
         onClose={handleFecharModal}
         consultaEditando={consultaEditando}
       />
+
+      {/* confirmação de exclusão */}
+      {idParaDeletar && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalBox}>
+            <h3>Tem certeza que deseja excluir?</h3>
+            <p>Esta ação não poderá ser desfeita.</p>
+            <div style={styles.modalButtons}>
+              <button
+                style={styles.cancelBtn}
+                onClick={() => setIdParaDeletar(null)}
+                disabled={excluindo}
+              >
+                Cancelar
+              </button>
+              <button
+                style={styles.confirmBtn}
+                onClick={handleConfirmarDeletar}
+                disabled={excluindo}
+              >
+                {excluindo ? "Excluindo..." : "Sim, excluir"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -195,5 +239,46 @@ const styles = {
     fontSize: "20px",
     fontWeight: "bold",
     lineHeight: "1",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  },
+  modalBox: {
+    backgroundColor: "#ffffff",
+    padding: "30px",
+    borderRadius: "20px",
+    textAlign: "center",
+    maxWidth: "400px",
+    width: "90%",
+  },
+  modalButtons: {
+    display: "flex",
+    justifyContent: "space-around",
+    marginTop: "20px",
+  },
+  cancelBtn: {
+    padding: "10px 20px",
+    borderRadius: "10px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    cursor: "pointer",
+  },
+  confirmBtn: {
+    padding: "10px 20px",
+    borderRadius: "10px",
+    border: "none",
+    backgroundColor: "#ff4d4d",
+    color: "#fff",
+    fontWeight: "bold",
+    cursor: "pointer",
   },
 };

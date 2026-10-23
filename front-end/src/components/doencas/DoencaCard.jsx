@@ -25,7 +25,7 @@ export default function DoencaCard({ condicao, onDelete, onEdit }) {
 const styles = {
   card: {
     backgroundColor: '#ffffff',
-    borderRadius: '28px', // Cantos bastante arredondados como na imagem
+    borderRadius: '24px',
     padding: '24px',
     display: 'flex',
     flexDirection: 'column',
