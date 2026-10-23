@@ -1,11 +1,26 @@
+import { useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAddConsulta } from '../../hooks/useAddConsulta';
 import { useIdososDoCuidador } from '../../hooks/useIdososDoCuidador';
+import { useIdosoSelecionado } from '../../hooks/useIdosoSelecionado';
 
-export default function CadastrarConsulta({
-    isOpen,
-    onClose,
-    consultaEditando = null
-}) {
+//estilizações (as mesmas da página de consultas, para manter o fundo)
+import '../../components/styles/HomeIdoso.css';
+import '../../components/styles/Doencas.css';
+import '../../components/styles/Consultas.css';
+
+export default function CadastrarConsulta() {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // Nome do idoso para o cabeçalho
+    const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
+    const nomeIdoso = loadingIdoso ? 'Carregando...' : idoso?.nome || 'Idoso';
+
+    // Na edição, a consulta chega pelo state da navegação
+    const consultaEditando = location.state?.consulta ?? null;
+    const isRotaEdicao = location.pathname === '/consultas/editar';
+
     const {
         formData,
         handleChange,
@@ -24,7 +39,14 @@ export default function CadastrarConsulta({
         erro: erroIdosos
     } = useIdososDoCuidador();
 
-    if (!isOpen) return null;
+    // Se der F5 na tela de edição, o state se perde: volta para a lista
+    useEffect(() => {
+        if (isRotaEdicao && !consultaEditando) {
+            navigate('/consultas', { replace: true });
+        }
+    }, [isRotaEdicao, consultaEditando, navigate]);
+
+    const voltarParaLista = () => navigate('/consultas');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,7 +55,7 @@ export default function CadastrarConsulta({
 
     const handleConfirmModal = () => {
         setSucesso(false);
-        onClose();
+        voltarParaLista();
     };
 
     const handleErrorModal = () => {
@@ -41,7 +63,74 @@ export default function CadastrarConsulta({
     };
 
     return (
-        <div style={styles.modalOverlay}>
+        <div className="consultas-container">
+            <header className="home-idoso-header">
+              {/* botão de voltar */}
+              <button
+                className="home-idoso-icone-btn"
+                aria-label="Voltar"
+                onClick={() => navigate(-1)}
+                style={styles.backButton}
+              >
+                <i className="bi bi-chevron-left"></i>
+              </button>
+
+              {/* saudacao */}
+              <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
+
+              {/* barra de navegação e seus botões */}
+              <button
+                className="home-idoso-link"
+                onClick={() => navigate("/doencas")}
+              >
+                Doenças
+              </button>
+
+              {/* botão de consultas */}
+              <button
+                className="home-idoso-btn-ativo"
+                onClick={() => navigate("/consultas")}
+              >
+                Consulta
+              </button>
+
+              {/* botão de medicamentos */}
+              <button
+                className="home-idoso-link"
+                onClick={() => navigate("/medicamentos")}
+              >
+                Medicamentos
+              </button>
+
+              {/* botão de registro de saúde */}
+              <button
+                className="home-idoso-link"
+                onClick={() => navigate("/registro-saude")}
+              >
+                Registro Saúde
+              </button>
+
+              {/* botão de notificação */}
+              <button
+                className="home-idoso-icone-btn"
+                aria-label="Notificações"
+                onClick={() => navigate("/notificacoes-idoso")}
+                style={styles.notifyButton}
+              >
+                <i className="bi bi-bell"></i>
+              </button>
+
+              {/* botão de sair */}
+              <button
+                className="home-idoso-icone-btn"
+                aria-label="Sair"
+                onClick={() => navigate("/sair")}
+              >
+                <i className="bi bi-box-arrow-right"></i>
+              </button>
+            </header>
+
+            <div style={styles.page}>
             <div style={styles.card}>
 
                 <h1 style={styles.title}>
@@ -52,10 +141,7 @@ export default function CadastrarConsulta({
 
                     {/* IDOSO */}
                     <div style={styles.inputGroup}>
-                        <label
-                            style={styles.label}
-                            htmlFor="idIdoso"
-                        >
+                        <label style={styles.label} htmlFor="idIdoso">
                             Idoso:
                         </label>
 
@@ -75,10 +161,7 @@ export default function CadastrarConsulta({
                             </option>
 
                             {idosos.map((idoso) => (
-                                <option
-                                    key={idoso.id}
-                                    value={idoso.id}
-                                >
+                                <option key={idoso.id} value={idoso.id}>
                                     {idoso.nome}
                                 </option>
                             ))}
@@ -93,10 +176,7 @@ export default function CadastrarConsulta({
 
                     {/* MÉDICO */}
                     <div style={styles.inputGroup}>
-                        <label
-                            style={styles.label}
-                            htmlFor="nomeMedico"
-                        >
+                        <label style={styles.label} htmlFor="nomeMedico">
                             Médico:
                         </label>
 
@@ -113,10 +193,7 @@ export default function CadastrarConsulta({
 
                     {/* LOCAL */}
                     <div style={styles.inputGroup}>
-                        <label
-                            style={styles.label}
-                            htmlFor="localConsulta"
-                        >
+                        <label style={styles.label} htmlFor="localConsulta">
                             Local:
                         </label>
 
@@ -133,10 +210,7 @@ export default function CadastrarConsulta({
 
                     {/* DATA */}
                     <div style={styles.inputGroup}>
-                        <label
-                            style={styles.label}
-                            htmlFor="data"
-                        >
+                        <label style={styles.label} htmlFor="data">
                             Data:
                         </label>
 
@@ -153,10 +227,7 @@ export default function CadastrarConsulta({
 
                     {/* HORÁRIO */}
                     <div style={styles.inputGroup}>
-                        <label
-                            style={styles.label}
-                            htmlFor="horario"
-                        >
+                        <label style={styles.label} htmlFor="horario">
                             Horário:
                         </label>
 
@@ -173,10 +244,7 @@ export default function CadastrarConsulta({
 
                     {/* OBSERVAÇÕES */}
                     <div style={styles.inputGroup}>
-                        <label
-                            style={styles.label}
-                            htmlFor="descricao"
-                        >
+                        <label style={styles.label} htmlFor="descricao">
                             Observações:
                         </label>
 
@@ -192,10 +260,9 @@ export default function CadastrarConsulta({
 
                     {/* BOTÕES */}
                     <div style={styles.buttonRow}>
-
                         <button
                             type="button"
-                            onClick={onClose}
+                            onClick={voltarParaLista}
                             style={styles.cancelButton}
                             disabled={loading}
                         >
@@ -215,20 +282,17 @@ export default function CadastrarConsulta({
                                         : 'Cadastrar'
                                 )}
                         </button>
-
                     </div>
 
                 </form>
             </div>
+            </div>
 
-            {/* MODAL DE SUCESSO */}
+            {/* POPUP DE SUCESSO */}
             {sucesso && (
                 <div style={styles.innerModalOverlay}>
                     <div style={styles.modalContent}>
-
-                        <h2 style={styles.modalTitle}>
-                            Sucesso!
-                        </h2>
+                        <h2 style={styles.modalTitle}>Sucesso!</h2>
 
                         <p style={styles.modalText}>
                             {emEdicao
@@ -242,23 +306,17 @@ export default function CadastrarConsulta({
                         >
                             OK
                         </button>
-
                     </div>
                 </div>
             )}
 
-            {/* MODAL DE ERRO */}
+            {/* POPUP DE ERRO */}
             {erro && (
                 <div style={styles.innerModalOverlay}>
                     <div style={styles.modalContent}>
+                        <h2 style={styles.modalTitle}>Erro</h2>
 
-                        <h2 style={styles.modalTitle}>
-                            Erro
-                        </h2>
-
-                        <p style={styles.modalText}>
-                            {erro}
-                        </p>
+                        <p style={styles.modalText}>{erro}</p>
 
                         <button
                             onClick={handleErrorModal}
@@ -266,7 +324,6 @@ export default function CadastrarConsulta({
                         >
                             OK
                         </button>
-
                     </div>
                 </div>
             )}
@@ -275,30 +332,31 @@ export default function CadastrarConsulta({
 }
 
 const styles = {
-    modalOverlay: {
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backButton: {
+      backgroundColor: "#FFE866",
+      color: "#000000",
+    },
+    notifyButton: {
+      backgroundColor: "#FFE866",
+      color: "#000000",
+    },
+    // Antes: overlay escuro fixo. Agora: container normal da página
+    page: {
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000,
-        padding: '20px',
+        alignItems: 'flex-start',
+        width: '100%',
+        padding: '30px 0',
+        boxSizing: 'border-box'
     },
 
+    // Sem maxHeight/overflowY: a rolagem é a da própria página
     card: {
         backgroundColor: '#FFFFFF',
         borderRadius: '28px',
         padding: '30px 40px',
         width: '100%',
-        maxHeight: '600px',
-        maxWidth: '500px',
-        overflowY: 'auto',
+        maxWidth: '600px',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
         boxSizing: 'border-box'
     },

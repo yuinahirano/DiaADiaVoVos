@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
@@ -24,7 +24,7 @@ function formatarData(data) {
 export default function PaginaConsultas() {
   const { user } = useContext(AuthContext);
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { consultas, loading, error, refetch } = useConsultas(idoso?.id);
+  const { consultas, loading, error } = useConsultas(idoso?.id);
   const navigate = useNavigate();
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
@@ -33,13 +33,11 @@ export default function PaginaConsultas() {
   const [consultaEditando, setConsultaEditando] = useState(null);
 
   const handleAbrirCadastro = () => {
-    setConsultaEditando(null);
-    setIsModalOpen(true);
+    navigate("/consultas/nova");
   };
 
   const handleAbrirEdicao = (consulta) => {
-    setConsultaEditando(consulta);
-    setIsModalOpen(true);
+    navigate("/consultas/editar", { state: { consulta } });
   };
 
   const handleFecharModal = () => {
@@ -60,10 +58,6 @@ export default function PaginaConsultas() {
       alert("Não foi possível excluir a consulta. Tente novamente.");
     }
   };
-
-  // const handleEdit = (consulta) => {
-  //   console.log("Editar consulta:", consulta);
-  // };
 
   return (
     <div className="consultas-container">
