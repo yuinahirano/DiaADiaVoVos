@@ -1,10 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import logoImg from "../../assets/logo_DiaADia.png";
-import CadastrarConsulta from "./PaginaAddConsulta";
 
 //estilizações
 import "../../components/styles/HomeIdoso.css";
@@ -23,35 +22,23 @@ function formatarData(data) {
 export default function PaginaConsultas() {
   const { user } = useContext(AuthContext);
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { consultas, loading, error, refetch } = useConsultas(idoso?.id);
+  const { consultas, loading, error } = useConsultas(idoso?.id);
   const navigate = useNavigate();
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [consultaEditando, setConsultaEditando] = useState(null);
-
+  // Agora navegam para a página em vez de abrir a modal
   const handleAbrirCadastro = () => {
-    setConsultaEditando(null);
-    setIsModalOpen(true);
+    navigate("/consultas/nova");
   };
 
   const handleAbrirEdicao = (consulta) => {
-    setConsultaEditando(consulta);
-    setIsModalOpen(true);
+    navigate("/consultas/editar", { state: { consulta } });
   };
 
-  const handleFecharModal = () => {
-    setIsModalOpen(false);
-    setConsultaEditando(null);
-    refetch();}
-  // // Handlers para exclusão e edição de consultas
+  // Handler para exclusão de consultas
   const handleDelete = (id) => {
     console.log("Deletar consulta:", id);
   };
-
-  // const handleEdit = (consulta) => {
-  //   console.log("Editar consulta:", consulta);
-  // };
 
   return (
     <div className="consultas-container">
@@ -84,11 +71,11 @@ export default function PaginaConsultas() {
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos")}
-          >
+        >
           Medicamentos
         </button>
 
-          {/* botão de registro de saúde */}
+        {/* botão de registro de saúde */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/registro-saude")}
@@ -142,21 +129,14 @@ export default function PaginaConsultas() {
 
         {/* chamando os componentes com a listagem */}
         {!loading && !error && consultas.length > 0 && (
-        <ConsultasList
-          consultas={consultas}
-          formatarData={formatarData}
-          onDelete={handleDelete}
-          onEdit={handleAbrirEdicao}
-        />
+          <ConsultasList
+            consultas={consultas}
+            formatarData={formatarData}
+            onDelete={handleDelete}
+            onEdit={handleAbrirEdicao}
+          />
         )}
       </div>
-
-      {/* modal de cadastro/edição */}
-      <CadastrarConsulta
-        isOpen={isModalOpen}
-        onClose={handleFecharModal}
-        consultaEditando={consultaEditando}
-      />
     </div>
   );
 }

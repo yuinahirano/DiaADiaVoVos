@@ -20,6 +20,7 @@ import PaginaVincularCuidador from './pages/cuidador/PaginaVincularCuidador';
 import PaginaMedicamentos from './pages/cuidador/PaginaMedicamentos';
 import PaginaRegistroSaude from './pages/cuidador/PaginaRegistroSaude';
 import PaginaConsultas from './pages/cuidador/PaginaConsultasCuidador';
+import PaginaAddConsulta from './pages/cuidador/PaginaAddConsulta';
 import PaginaDoencas from './pages/cuidador/PaginaDoencasCuidador';
 import PaginaConfiguracao from './pages/cuidador/PaginaConfiguracao';
 
@@ -71,6 +72,17 @@ function App() {
             <Route
               path="/consultas"
               element={<PaginaConsultas />}
+            />
+
+            {/* NOVAS: cadastro e edição de consulta */}
+            <Route
+              path="/consultas/nova"
+              element={<PaginaAddConsulta />}
+            />
+
+            <Route
+              path="/consultas/editar"
+              element={<PaginaAddConsulta />}
             />
 
             <Route
