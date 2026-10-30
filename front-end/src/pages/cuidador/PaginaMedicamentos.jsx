@@ -1,53 +1,85 @@
-import { useState } from "react";
+
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 import MedicamentosList from "../../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
-import CadastrarMedicamento from "./PaginaAddMedicamento";
-import PaginaHomeCuidador from "../../pages/cuidador/PaginaHomeCuidador";
+import { AuthContext } from "../../contexts/AuthContext";
 import logoImg from "../../assets/logo_DiaADia.png";
 
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
 
-export default function MedicationPage() {
+export default function PaginaMedicamentos() {
   const navigate = useNavigate();
+
   const { medicamentos, loading, deletarMedicamento, error } =
     useMedicamentos();
-  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [medicamentoEditando, setMedicamentoEditando] = useState(null);
-  const [idParaDeletar, setIdParaDeletar] = useState(null);
 
-  const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
+  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
+
+  const auth = useContext(AuthContext);
+  const logout = auth?.logout;
+
+  const [idParaDeletar, setIdParaDeletar] = useState(null);
+  const [excluindo, setExcluindo] = useState(false);
+  const [erroExclusao, setErroExclusao] = useState("");
+
+  const nomeIdoso = loadingIdoso
+    ? "Carregando..."
+    : idoso?.nome || "Idoso";
 
   const handleAbrirConfirmacao = (id) => {
+    setErroExclusao("");
     setIdParaDeletar(id);
   };
 
   const handleConfirmarDeletar = async () => {
-    if (idParaDeletar) {
+    if (idParaDeletar == null || excluindo) return;
+
+    try {
+      setExcluindo(true);
+      setErroExclusao("");
+
       await deletarMedicamento(idParaDeletar);
+
       setIdParaDeletar(null);
+    } catch (erro) {
+      console.error("Erro ao excluir medicamento:", erro);
+      setErroExclusao("Não foi possível excluir o medicamento. Tente novamente.");
+    } finally {
+      setExcluindo(false);
     }
   };
 
-  const handleAbrirEdicao = (medicamento) => {
-    setMedicamentoEditando(medicamento);
-    setIsModalOpen(true);
+  const handleAbrirCadastro = () => {
+    navigate("/medicamentos/novo");
   };
 
-  const handleFecharModal = () => {
-    setIsModalOpen(false);
-    setMedicamentoEditando(null);
+  const handleAbrirEdicao = (medicamento) => {
+    navigate("/medicamentos/editar", {
+      state: { medicamento },
+    });
+  };
+
+  const handleSair = async () => {
+    if (typeof logout === "function") {
+      await logout();
+      navigate("/login", { replace: true });
+      return;
+    }
+
+    // Se o contexto não disponibilizar logout, não simula uma saída.
+    navigate("/login", { replace: true });
   };
 
   return (
     <div className="home-idoso-container">
       <header className="home-idoso-header">
-        {/* botão de voltar */}
         <button
+          type="button"
           className="home-idoso-icone-btn"
           aria-label="Voltar"
           onClick={() => navigate("/home-cuidador")}
@@ -56,86 +88,90 @@ export default function MedicationPage() {
           <i className="bi bi-chevron-left"></i>
         </button>
 
-        {/* saudacao */}
         <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
 
-        {/* barra de navegação e seus botoões */}
         <button
+          type="button"
           className="home-idoso-link"
           onClick={() => navigate("/doencas")}
         >
           Doenças
         </button>
 
-        {/* botão de consultas */}
         <button
+          type="button"
           className="home-idoso-link"
           onClick={() => navigate("/consultas")}
         >
           Consultas
         </button>
 
-        {/* botão de medicamentos */}
-        <button className="home-idoso-btn-ativo">Medicamentos</button>
-
-        {/* botão de registro de saúde */}
         <button
+          type="button"
+          className="home-idoso-btn-ativo"
+          aria-current="page"
+        >
+          Medicamentos
+        </button>
+
+        <button
+          type="button"
           className="home-idoso-link"
           onClick={() => navigate("/registro-saude")}
         >
           Registro Saúde
         </button>
 
-        {/* botão de notificação */}
         <button
+          type="button"
           className="home-idoso-icone-btn"
           aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
+          onClick={() => navigate("/notificacoes")}
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
         </button>
 
-        {/* botão de sair */}
         <button
+          type="button"
           className="home-idoso-icone-btn"
           aria-label="Sair"
-          onClick={() => navigate("/sair")}
+          onClick={handleSair}
         >
           <i className="bi bi-box-arrow-right"></i>
         </button>
       </header>
 
-      {/* adicionar medicamento */}
       <div style={styles.actionRow}>
         <button
+          type="button"
           style={styles.addButton}
-          onClick={() => {
-            setMedicamentoEditando(null);
-            setIsModalOpen(true);
-          }}
+          onClick={handleAbrirCadastro}
         >
           <span style={styles.addIcon}>+</span>
           Adicionar medicamento
         </button>
       </div>
 
-      {/* lista de medicamentos da página */}
       <main className="home-idoso-doencas">
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p>
         ) : (
           <MedicamentosList
-            medicamentos={medicamentos}
+            medicamentos={medicamentos || []}
             onDelete={handleAbrirConfirmacao}
             onEdit={handleAbrirEdicao}
           />
         )}
       </main>
 
-      {error && <p>Não foi possível carregar os medicamentos.</p>}
+      {error && (
+        <p role="alert" style={styles.errorText}>
+          Não foi possível carregar os medicamentos.
+        </p>
+      )}
 
-      {!loading && !error && medicamentos.length === 0 && (
+      {!loading && !error && (medicamentos || []).length === 0 && (
         <div className="medicamento-idoso-vazio">
           <img
             src={logoImg}
@@ -149,31 +185,48 @@ export default function MedicationPage() {
         </div>
       )}
 
-      {/* modal para cadastro */}
-      <CadastrarMedicamento
-        isOpen={isModalOpen}
-        onClose={handleFecharModal}
-        medicamentoEditando={medicamentoEditando}
-      />
-
-      {/* deletar medicamento */}
-      {idParaDeletar && (
+      {idParaDeletar != null && (
         <div style={styles.modalOverlay}>
-          <div style={styles.modalBox}>
-            <h3>Tem certeza que deseja excluir?</h3>
+          <div
+            style={styles.modalBox}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="titulo-confirmacao"
+          >
+            <h3 id="titulo-confirmacao">
+              Tem certeza que deseja excluir?
+            </h3>
+
             <p>Esta ação não poderá ser desfeita.</p>
+
+            {erroExclusao && (
+              <p role="alert" style={styles.errorText}>
+                {erroExclusao}
+              </p>
+            )}
+
             <div style={styles.modalButtons}>
               <button
+                type="button"
                 style={styles.cancelBtn}
-                onClick={() => setIdParaDeletar(null)}
+                onClick={() => {
+                  if (!excluindo) {
+                    setIdParaDeletar(null);
+                    setErroExclusao("");
+                  }
+                }}
+                disabled={excluindo}
               >
                 Cancelar
               </button>
+
               <button
+                type="button"
                 style={styles.confirmBtn}
                 onClick={handleConfirmarDeletar}
+                disabled={excluindo}
               >
-                Sim, excluir
+                {excluindo ? "Excluindo..." : "Sim, excluir"}
               </button>
             </div>
           </div>
@@ -184,68 +237,22 @@ export default function MedicationPage() {
 }
 
 const styles = {
-  container: {
-    backgroundColor: "#EBF3FF",
-    minHeight: "100vh",
-    padding: "40px 60px",
-    fontFamily: "Arial, sans-serif",
-  },
-  header: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: "50px",
-    padding: "10px 30px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "40px",
-  },
-  titleSection: {
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
-  },
   backButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
   },
+
   notifyButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
   },
-  title: {
-    fontSize: "32px",
-    fontWeight: "bold",
-    margin: 0,
-  },
-  nav: {
-    display: "flex",
-    gap: "20px",
-    alignItems: "center",
-  },
-  activeTab: {
-    backgroundColor: "#FFE866",
-    border: "none",
-    borderRadius: "25px",
-    padding: "8px 25px",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    outline: "none",
-  },
-  inactiveNav: {
-    backgroundColor: "transparent",
-    border: "none",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    color: "#000000",
-    outline: "none",
-  },
+
   actionRow: {
     display: "flex",
     justifyContent: "flex-end",
     marginTop: "25px",
   },
+
   addButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
@@ -261,21 +268,25 @@ const styles = {
     boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
     outline: "none",
   },
+
   addIcon: {
     fontSize: "20px",
     fontWeight: "bold",
     lineHeight: "1",
   },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-    gap: "50px",
-  },
+
   loadingText: {
     fontSize: "18px",
     fontWeight: "bold",
     color: "#333",
   },
+
+  errorText: {
+    color: "#b42318",
+    fontWeight: "bold",
+    marginTop: "12px",
+  },
+
   modalOverlay: {
     position: "fixed",
     top: 0,
@@ -288,6 +299,7 @@ const styles = {
     justifyContent: "center",
     zIndex: 1000,
   },
+
   modalBox: {
     backgroundColor: "#ffffff",
     padding: "30px",
@@ -296,11 +308,14 @@ const styles = {
     maxWidth: "400px",
     width: "90%",
   },
+
   modalButtons: {
     display: "flex",
     justifyContent: "space-around",
+    gap: "12px",
     marginTop: "20px",
   },
+
   cancelBtn: {
     padding: "10px 20px",
     borderRadius: "10px",
@@ -308,6 +323,7 @@ const styles = {
     backgroundColor: "#fff",
     cursor: "pointer",
   },
+
   confirmBtn: {
     padding: "10px 20px",
     borderRadius: "10px",

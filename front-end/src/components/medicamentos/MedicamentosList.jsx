@@ -1,6 +1,11 @@
+
 import MedicationCard from "./MedicamentosCard";
 
-export default function MedicamentosList({ medicamentos, onDelete, onEdit }) {
+export default function MedicamentosList({
+  medicamentos,
+  onDelete,
+  onEdit,
+}) {
   return (
     <div style={styles.listGrid}>
       {medicamentos?.map((medicamento) => (
@@ -17,9 +22,9 @@ export default function MedicamentosList({ medicamentos, onDelete, onEdit }) {
 
 const styles = {
   listGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr', // Força 2 colunas iguais lado a lado
-    gap: '15px', // Espaçamento grande entre os dois cards
-    width: '100%'
-  }
+    display: "grid",
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    gap: "15px",
+    width: "100%",
+  },
 };

@@ -1,11 +1,16 @@
+
 import ButtonDelete from "./BotaoDeletar";
 import ButtonEdit from "./BotaoEditar";
 
-export default function MedicationCard({ medicamento, onDelete, onEdit }) {
+export default function MedicationCard({
+  medicamento,
+  onDelete,
+  onEdit,
+}) {
   if (!medicamento) return null;
 
   const formatarHorario = (horario) =>
-    horario ? horario.slice(0, 5) : "Não informado";
+    horario ? String(horario).slice(0, 5) : "Não informado";
 
   const frequencia =
     medicamento.tipoFrequencia === "vezes_por_dia"
@@ -14,11 +19,34 @@ export default function MedicationCard({ medicamento, onDelete, onEdit }) {
             ? "vez por dia"
             : "vezes por dia"
         }`
-      : medicamento.tipoFrequencia;
+      : medicamento.tipoFrequencia === "intervalo_horas"
+      ? `A cada ${medicamento.valorFrequencia} ${
+          Number(medicamento.valorFrequencia) === 1
+            ? "hora"
+            : "horas"
+        }`
+      : "Não informado";
+
+  const status = medicamento.status
+    ? medicamento.status.toUpperCase()
+    : "Não informado";
+
+  const intervalo =
+    medicamento.intervaloMinutos != null
+      ? `${medicamento.intervaloMinutos} minutos (${
+          medicamento.intervaloMinutos / 60
+        } ${
+          medicamento.intervaloMinutos / 60 === 1
+            ? "hora"
+            : "horas"
+        })`
+      : "Não informado";
 
   return (
     <div style={styles.card}>
-      <h2 style={styles.cardTitle}>{medicamento.nome?.toUpperCase()}</h2>
+      <h2 style={styles.cardTitle}>
+        {medicamento.nome?.toUpperCase()}
+      </h2>
 
       <div style={styles.borderDosagem}>
         <strong>Dosagem:</strong> {medicamento.dosagem}
@@ -27,17 +55,23 @@ export default function MedicationCard({ medicamento, onDelete, onEdit }) {
       <div style={styles.infoGrid}>
         <div style={styles.infoCard}>
           <strong>Horário atual</strong>
-          <span>{formatarHorario(medicamento.horario)}</span>
+          <span>
+            {formatarHorario(medicamento.horario)}
+          </span>
         </div>
 
         <div style={styles.infoCard}>
           <strong>Próximo horário</strong>
-          <span>{formatarHorario(medicamento.proximoHorario)}</span>
+          <span>
+            {formatarHorario(medicamento.proximoHorario)}
+          </span>
         </div>
 
         <div style={styles.infoCard}>
           <strong>Última dose</strong>
-          <span>{formatarHorario(medicamento.ultimaDose)}</span>
+          <span>
+            {formatarHorario(medicamento.ultimaDose)}
+          </span>
         </div>
 
         <div style={styles.infoCard}>
@@ -49,18 +83,12 @@ export default function MedicationCard({ medicamento, onDelete, onEdit }) {
       <div style={styles.extraGrid}>
         <div style={styles.extraCard}>
           <strong>Intervalo</strong>
-          <span>
-            {medicamento.intervaloMinutos != null
-              ? `${medicamento.intervaloMinutos} minutos (${medicamento.intervaloMinutos / 60} ${
-                  medicamento.intervaloMinutos / 60 === 1 ? "hora" : "horas"
-                })`
-              : "Não informado"}
-          </span>
+          <span>{intervalo}</span>
         </div>
 
         <div style={styles.extraCard}>
           <strong>Status</strong>
-          <span>{medicamento.status.toUpperCase() || "Não informado"}</span>
+          <span>{status}</span>
         </div>
 
         {medicamento.observacoes && (
@@ -72,8 +100,13 @@ export default function MedicationCard({ medicamento, onDelete, onEdit }) {
       </div>
 
       <div style={styles.buttonContainer}>
-        <ButtonEdit onClick={() => onEdit(medicamento)} />
-        <ButtonDelete onClick={() => onDelete(medicamento.id)} />
+        <ButtonEdit
+          onClick={() => onEdit(medicamento)}
+        />
+
+        <ButtonDelete
+          onClick={() => onDelete(medicamento.id)}
+        />
       </div>
     </div>
   );
