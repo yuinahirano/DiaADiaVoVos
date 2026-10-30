@@ -4,12 +4,11 @@ import MedicamentosList from "../../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
-import PaginaHomeCuidador from '../../pages/cuidador/PaginaHomeCuidador';
+import PaginaHomeCuidador from "../../pages/cuidador/PaginaHomeCuidador";
 
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
-
 
 export default function MedicationPage() {
   const navigate = useNavigate();
@@ -51,13 +50,12 @@ export default function MedicationPage() {
           aria-label="Voltar"
           onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
-          >
+        >
           <i className="bi bi-chevron-left"></i>
         </button>
 
         {/* saudacao */}
         <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
-
 
         {/* barra de navegação e seus botoões */}
         <button
@@ -132,6 +130,19 @@ export default function MedicationPage() {
           />
         )}
       </main>
+
+      {error && <p>Não foi possível carregar as consultas.</p>}
+
+      {!loading && !error && consultas.length === 0 && (
+        <div className="medicamento-idoso-vazio">
+          <img
+            src={logoImg}
+            alt="Dia a Dia Vovôs"
+            className="cmedicamento-idoso-vazio-logo"
+          />
+          <p className="medicamento-idoso-vazio-texto">Nenhuma consulta marcada</p>
+        </div>
+      )}
 
       {/* modal para cadastro */}
       <CadastrarMedicamento

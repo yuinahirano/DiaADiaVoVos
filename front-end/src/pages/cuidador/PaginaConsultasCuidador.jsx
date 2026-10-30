@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useConsultas } from "../../hooks/useConsultas";
@@ -24,7 +24,7 @@ function formatarData(data) {
 export default function PaginaConsultas() {
   const { user } = useContext(AuthContext);
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { consultas, loading, error } = useConsultas(idoso?.id);
+  const { consultas, loading, error, refetch } = useConsultas(idoso?.id);
   const navigate = useNavigate();
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
@@ -47,17 +47,16 @@ export default function PaginaConsultas() {
   };
   // // Handlers para exclusão e edição de consultas
   const handleDelete = (id) => {
-    try {
-      deleteConsulta(id);
-
+  deleteConsulta(id)
+    .then(() => {
       refetch();
-
       setSucesso(true);
-    } catch (erro) {
+    })
+    .catch((erro) => {
       console.error("Erro ao excluir consulta:", erro);
       alert("Não foi possível excluir a consulta. Tente novamente.");
-    }
-  };
+    });
+};
 
   return (
     <div className="consultas-container">
@@ -136,13 +135,13 @@ export default function PaginaConsultas() {
         {error && <p>Não foi possível carregar as consultas.</p>}
 
         {!loading && !error && consultas.length === 0 && (
-          <div className="home-idoso-vazio">
+          <div className="consulta-idoso-vazio">
             <img
               src={logoImg}
               alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
+              className="consulta-idoso-vazio-logo"
             />
-            <p className="home-idoso-vazio-texto">Nenhuma consulta marcada</p>
+            <p className="consulta-idoso-vazio-texto">Nenhuma consulta marcada</p>
           </div>
         )}
 
@@ -156,13 +155,6 @@ export default function PaginaConsultas() {
           />
         )}
       </div>
-
-      {/* modal de cadastro/edição */}
-      <CadastrarConsulta
-        isOpen={isModalOpen}
-        onClose={handleFecharModal}
-        consultaEditando={consultaEditando}
-      />
 
       {/* MODAL DE SUCESSO */}
       {sucesso && (

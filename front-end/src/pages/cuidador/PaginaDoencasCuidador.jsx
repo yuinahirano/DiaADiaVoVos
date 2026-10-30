@@ -116,19 +116,19 @@ export default function PaginaDoencas() {
       </div>
 
       {/* corpo */}
-      <div className="home-idoso-doencas">
+      <div className="doenca-idoso-doencas">
         {loading && <p>Carregando doenças...</p>}
 
         {error && <p>Não foi possível carregar as doenças.</p>}
 
         {!loading && !error && doencas.length === 0 && (
-          <div className="home-idoso-vazio">
+          <div className="doenca-idoso-vazio">
             <img
               src={logoImg}
               alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
+              className="doenca-idoso-vazio-logo"
             />
-            <p className="home-idoso-vazio-texto">Nenhuma doença cadastrada</p>
+            <p className="doenca-idoso-vazio-texto">Nenhuma doença cadastrada</p>
           </div>
         )}
 

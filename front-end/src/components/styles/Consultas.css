@@ -189,3 +189,37 @@
     font-size: 14px;
   }
 }
+
+
+/* card vazio */
+.consulta-idoso-vazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 24px;
+  padding: 48px 24px;
+  margin-top: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* logo do card vazio */
+.consulta-idoso-vazio-logo {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  margin-bottom: 16px;
+  opacity: 0.85;
+}
+
+/* texto do card vazio */
+.consulta-idoso-vazio-texto {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
