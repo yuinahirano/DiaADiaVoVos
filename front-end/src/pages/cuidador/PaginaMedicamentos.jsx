@@ -5,6 +5,7 @@ import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
 import PaginaHomeCuidador from "../../pages/cuidador/PaginaHomeCuidador";
+import logoImg from "../../assets/logo_DiaADia.png";
 
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
@@ -12,7 +13,8 @@ import "../../components/styles/Consultas.css";
 
 export default function MedicationPage() {
   const navigate = useNavigate();
-  const { medicamentos, loading, deletarMedicamento } = useMedicamentos();
+  const { medicamentos, loading, deletarMedicamento, error } =
+    useMedicamentos();
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicamentoEditando, setMedicamentoEditando] = useState(null);
@@ -131,16 +133,19 @@ export default function MedicationPage() {
         )}
       </main>
 
-      {error && <p>Não foi possível carregar as consultas.</p>}
+      {error && <p>Não foi possível carregar os medicamentos.</p>}
 
-      {!loading && !error && consultas.length === 0 && (
+      {!loading && !error && medicamentos.length === 0 && (
         <div className="medicamento-idoso-vazio">
           <img
             src={logoImg}
             alt="Dia a Dia Vovôs"
-            className="cmedicamento-idoso-vazio-logo"
+            className="medicamento-idoso-vazio-logo"
           />
-          <p className="medicamento-idoso-vazio-texto">Nenhuma consulta marcada</p>
+
+          <p className="medicamento-idoso-vazio-texto">
+            Nenhum medicamento cadastrado
+          </p>
         </div>
       )}
 
