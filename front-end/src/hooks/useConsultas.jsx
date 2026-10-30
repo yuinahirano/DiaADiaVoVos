@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getConsultas } from "../service/idosoApi";
 
 export function useConsultas(idosoId) {
@@ -6,7 +6,8 @@ export function useConsultas(idosoId) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const carregarConsultas = useCallback(async () => {
+  const refetch = useCallback(async () => {
+    // Se não houver ID do idoso passado, encerra o carregamento
     if (!idosoId) {
       setConsultas([]);
       setLoading(false);
@@ -19,6 +20,7 @@ export function useConsultas(idosoId) {
 
       const todasConsultas = await getConsultas();
 
+      // Filtra comparando os IDs como String para evitar incompatibilidade entre número/texto
       const consultasDoIdoso = todasConsultas.filter(
         (consulta) => String(consulta.id_idoso) === String(idosoId)
       );
@@ -32,9 +34,10 @@ export function useConsultas(idosoId) {
     }
   }, [idosoId]);
 
+  // Executa novamente quando o idosoId mudar
   useEffect(() => {
-    carregarConsultas();
-  }, [carregarConsultas]);
+    refetch();
+  }, [refetch]);
 
-  return { consultas, loading, error, refetch: carregarConsultas };
+  return { consultas, loading, error, refetch };
 }

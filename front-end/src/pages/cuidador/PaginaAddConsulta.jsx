@@ -218,7 +218,7 @@ export default function CadastrarConsulta() {
                             id="data"
                             name="data"
                             type="date"
-                            value={formData.data}
+                            value={formData.data ? String(formData.data).slice(0, 10) : ''}
                             onChange={handleChange}
                             style={styles.input}
                             required

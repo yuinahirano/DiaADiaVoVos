@@ -51,7 +51,7 @@ export default function PaginaDoencas() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
-          onClick={() => navigate("/home-cuidador")}
+          onClick={() => navigate("/notificacoes-cuidador")}
           style={styles.backButton}
         >
           <i className="bi bi-chevron-left"></i>

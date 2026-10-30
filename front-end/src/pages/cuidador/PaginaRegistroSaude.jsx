@@ -1,72 +1,96 @@
-import { useNavigate } from "react-router-dom";  
-import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";  
-import { useRegistroSaude } from "../../hooks/useRegistroSaude";  
-import logoImg from "../../assets/logo_DiaADia.png"; 
-import PaginaHomeCuidador from '../../pages/cuidador/PaginaHomeCuidador'; 
+import { useNavigate } from "react-router-dom";
+import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
+import { useRegistroSaude } from "../../hooks/useRegistroSaude";
+import logoImg from "../../assets/logo_DiaADia.png";
 
-//estilizações
+// Estilizações
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
 
-function formatarData(dataIso) {  
-  if (!dataIso) return "dd/MM/AAAA";  
-  
-  const data = new Date(dataIso);  
-  if (isNaN(data.getTime())) return "dd/MM/AAAA";  
-  
-  return data.toLocaleDateString("pt-BR", {  
-    day: "2-digit",  
-    month: "2-digit",  
-    year: "numeric",  
-  });  
-}  
-  
-function formatarPeso(peso) {  
-  if (peso === null || peso === undefined || peso === "") return "--";  
-  const numero = Number(peso);  
-  if (isNaN(numero)) return "--";  
-  return `${numero.toFixed(2).replace(".", ",")}kg`;  
-}  
-  
-function formatarFrequencia(valor) {  
-  if (valor === null || valor === undefined || valor === "") return "--";  
-  return `${Number(valor)} bpm`;  
-}  
-  
-function formatarSaturacao(valor) {  
-  if (valor === null || valor === undefined || valor === "") return "--";  
-  return `${Number(valor)}%`;  
-}  
-  
-export default function PaginaRegistroSaude() {  
-  const navigate = useNavigate();  
-  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();  
-  const { registro, loading: loadingRegistro, erro } = useRegistroSaude();  
-  
-  const nomeIdoso = loadingIdoso ? "Carregando..." : (idoso?.nome || "Idoso");  
-  const loading = loadingIdoso || loadingRegistro;  
-  
-  return (  
-    <div  className="home-idoso-container">  
+// Formata a data
+function formatarData(dataIso) {
+  if (!dataIso) return "dd/MM/AAAA";
 
-    {/* barra de navegação */}
-      <header className="home-idoso-header"> 
-          {/* botão de voltar */}
+  const data = new Date(dataIso);
+
+  if (isNaN(data.getTime())) return "dd/MM/AAAA";
+
+  return data.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  });
+}
+
+// Formata o peso
+function formatarPeso(peso) {
+  if (peso === null || peso === undefined || peso === "") {
+    return "--";
+  }
+
+  const numero = Number(peso);
+
+  if (isNaN(numero)) return "--";
+
+  return `${numero.toFixed(2).replace(".", ",")} kg`;
+}
+
+// Formata a frequência cardíaca
+function formatarFrequencia(valor) {
+  if (valor === null || valor === undefined || valor === "") {
+    return "--";
+  }
+
+  return `${Number(valor)} bpm`;
+}
+
+// Formata a saturação do sangue
+function formatarSaturacao(valor) {
+  if (valor === null || valor === undefined || valor === "") {
+    return "--";
+  }
+
+  return `${Number(valor)}%`;
+}
+
+export default function PaginaRegistroSaude() {
+  const navigate = useNavigate();
+
+  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
+
+  const {
+    registro,
+    loading: loadingRegistro,
+    erro,
+  } = useRegistroSaude();
+
+  const nomeIdoso = loadingIdoso
+    ? "Carregando..."
+    : idoso?.nome || "Idoso";
+
+  const loading = loadingIdoso || loadingRegistro;
+
+  return (
+    <div className="home-idoso-container">
+      {/* BARRA DE NAVEGAÇÃO */}
+      <header className="home-idoso-header">
+        {/* Botão de voltar */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
           onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
-          >
+        >
           <i className="bi bi-chevron-left"></i>
         </button>
 
-        {/* saudacao */}
-        <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
+        {/* Nome do idoso */}
+        <h1 className="home-idoso-titulo">
+          {nomeIdoso}
+        </h1>
 
-
-        {/* barra de navegação e seus botoões */}
+        {/* Botão de doenças */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/doencas")}
@@ -74,7 +98,7 @@ export default function PaginaRegistroSaude() {
           Doenças
         </button>
 
-        {/* botão de consultas */}
+        {/* Botão de consultas */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/consultas")}
@@ -82,18 +106,20 @@ export default function PaginaRegistroSaude() {
           Consultas
         </button>
 
-        {/* botão de medicamentos */}
+        {/* Botão de medicamentos */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos")}
-          >
+        >
           Medicamentos
         </button>
 
-          {/* botão de registro saúde */}
-        <button className="home-idoso-btn-ativo">Registro Saúde</button>
+        {/* Botão de registro de saúde */}
+        <button className="home-idoso-btn-ativo">
+          Registro Saúde
+        </button>
 
-        {/* botão de notificação */}
+        {/* Botão de notificações */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
@@ -103,7 +129,7 @@ export default function PaginaRegistroSaude() {
           <i className="bi bi-bell"></i>
         </button>
 
-        {/* botão de sair */}
+        {/* Botão de sair */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Sair"
@@ -111,186 +137,186 @@ export default function PaginaRegistroSaude() {
         >
           <i className="bi bi-box-arrow-right"></i>
         </button>
-      </header>  
-  
-      <main className="home-idoso-doencas">  
-        {loading && (  
-          <p style={styles.loadingText}>Carregando registro de saúde...</p>  
-        )}  
-  
-        {!loading && erro && (  
-          <p style={styles.loadingText}>{erro}</p>  
-        )}  
-  
-        {!loading && !erro && !registro && (  
-          <div style={styles.vazioCard}>  
-            <img  
-              src={logoImg}  
-              alt="Dia a Dia Vovôs"  
-              style={styles.vazioLogo}  
-            />  
-            <p style={styles.vazioTexto}>  
-              Nenhum registro de<br />saúde cadastrado  
-            </p>  
-          </div>  
-        )}  
-  
-        {!loading && !erro && registro && (  
-          <div style={styles.grid}>  
-            <div style={styles.card}>  
-              <h2 style={styles.cardTitulo}>Frequência Cardíaca</h2>  
-              <p style={styles.cardValor}>  
-                {formatarFrequencia(registro.frequenciaCardiaca)}  
-              </p>  
-            </div>  
-  
-            <div style={styles.card}>  
-              <h2 style={styles.cardTitulo}>Saturação do Sangue</h2>  
-              <p style={styles.cardValor}>  
-                {formatarSaturacao(registro.saturacaoSangue)}  
-              </p>  
-            </div>  
-  
-            <div style={styles.card}>  
-              <h2 style={styles.cardTitulo}>Peso</h2>  
-              <p style={styles.cardValor}>{formatarPeso(registro.peso)}</p>  
-            </div>  
-  
-            <div style={styles.card}>  
-              <h2 style={styles.cardTitulo}>Data de Cadastro</h2>  
-              <p style={styles.cardValor}>  
-                {formatarData(registro.dataRegistro)}  
-              </p>  
-            </div>  
-          </div>  
-        )}  
-      </main>  
-    </div>  
-  );  
-}  
-  
-const styles = {  
-  container: {  
-    backgroundColor: '#EBF3FF',  
-    minHeight: '100vh',  
-    padding: '40px 60px',  
-    fontFamily: 'Arial, sans-serif',  
-    display: 'flex',  
-    flexDirection: 'column'  
-  },  
-  header: {  
-    backgroundColor: '#FFFFFF',  
-    borderRadius: '50px',  
-    padding: '10px 30px',  
-    display: 'flex',  
-    justifyContent: 'space-between',  
-    alignItems: 'center',  
-    marginBottom: '40px'  
-  },  
-  titleSection: {  
-    display: 'flex',  
-    alignItems: 'center',  
-    gap: '15px'  
-  },  
+      </header>
+
+      {/* CONTEÚDO DA PÁGINA */}
+      <main style={styles.mainVazio}>
+        {/* Carregamento */}
+        {loading && (
+          <p style={styles.loadingText}>
+            Carregando registro de saúde...
+          </p>
+        )}
+
+        {/* Mensagem de erro */}
+        {!loading && erro && (
+          <p style={styles.loadingText}>
+            {erro}
+          </p>
+        )}
+
+        {/* CARD QUANDO NÃO EXISTE REGISTRO */}
+        {!loading && !erro && !registro && (
+          <div style={styles.vazioCard}>
+            <img
+              src={logoImg}
+              alt="Dia a Dia Vovôs"
+              style={styles.vazioLogo}
+            />
+
+            <p style={styles.vazioTexto}>
+              Nenhum registro de
+              <br />
+              saúde cadastrado
+            </p>
+          </div>
+        )}
+
+        {/* CARDS COM OS DADOS DE SAÚDE */}
+        {!loading && !erro && registro && (
+          <div style={styles.grid}>
+            <div style={styles.card}>
+              <h2 style={styles.cardTitulo}>
+                Frequência Cardíaca
+              </h2>
+
+              <p style={styles.cardValor}>
+                {formatarFrequencia(registro.frequenciaCardiaca)}
+              </p>
+            </div>
+
+            <div style={styles.card}>
+              <h2 style={styles.cardTitulo}>
+                Saturação do Sangue
+              </h2>
+
+              <p style={styles.cardValor}>
+                {formatarSaturacao(registro.saturacaoSangue)}
+              </p>
+            </div>
+
+            <div style={styles.card}>
+              <h2 style={styles.cardTitulo}>
+                Peso
+              </h2>
+
+              <p style={styles.cardValor}>
+                {formatarPeso(registro.peso)}
+              </p>
+            </div>
+
+            <div style={styles.card}>
+              <h2 style={styles.cardTitulo}>
+                Data de Cadastro
+              </h2>
+
+              <p style={styles.cardValor}>
+                {formatarData(registro.dataRegistro)}
+              </p>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+const styles = {
+  // Botão de voltar
   backButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
   },
+
+  // Botão de notificações
   notifyButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
   },
-  title: {  
-    fontSize: '32px',  
-    fontWeight: 'bold',  
-    margin: 0  
-  },  
-  nav: {  
-    display: 'flex',  
-    gap: '20px',  
-    alignItems: 'center'  
-  },  
-  activeTab: {  
-    backgroundColor: '#FFE866',  
-    border: 'none',  
-    borderRadius: '25px',  
-    padding: '8px 25px',  
-    fontSize: '16px',  
-    fontWeight: 'bold',  
-    cursor: 'pointer',  
-    outline: 'none'  
-  },  
-  inactiveNav: {  
-    backgroundColor: 'transparent',  
-    border: 'none',  
-    fontSize: '16px',  
-    fontWeight: 'bold',  
-    cursor: 'pointer',  
-    color: '#000000',  
-    outline: 'none'  
-  },  
-  mainContent: {  
-    display: 'flex',  
-    justifyContent: 'center',  
-    alignItems: 'center',  
-    flex: 1  
-  },  
-  grid: {  
-    display: 'grid',  
-    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',  
-    gap: '30px',  
-    width: '100%'  
-  },  
-  card: {  
-    backgroundColor: '#FFFFFF',  
-    borderRadius: '24px',  
-    padding: '30px',  
-    textAlign: 'center',  
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)'  
-  },  
-  cardTitulo: {  
-    fontSize: '20px',  
-    fontWeight: 'bold',  
-    color: '#000000',  
-    margin: '0 0 12px 0'  
-  },  
-  cardValor: {  
-    fontSize: '22px',  
-    fontWeight: 'bold',  
-    color: '#000000',  
-    margin: 0  
-  },  
-  loadingText: {  
-    fontSize: '18px',  
-    fontWeight: 'bold',  
-    color: '#333',  
-    textAlign: 'center'  
-  },  
-  vazioCard: {  
-    backgroundColor: '#FFFFFF',  
-    borderRadius: '24px',  
-    width: '420px',  
-    height: '280px',  
-    display: 'flex',  
-    flexDirection: 'column',  
-    alignItems: 'center',  
-    justifyContent: 'center',  
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',  
-    margin: '0 auto',  
-    boxSizing: 'border-box',  
-    padding: '20px'  
-  },  
-  vazioLogo: {  
-    width: '110px',  
-    height: 'auto',  
-    marginBottom: '20px'  
-  },  
-  vazioTexto: {  
-    fontSize: '20px',  
-    fontWeight: 'bold',  
-    color: '#000000',  
-    margin: 0,  
-    textAlign: 'center',  
-    lineHeight: '1.3'  
-  }  
+
+  // Área principal: centraliza o conteúdo
+  mainVazio: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    minHeight: "calc(100vh - 153px)",
+    width: "100%",
+    boxSizing: "border-box",
+    padding: "20px",
+  },
+
+  // Grade dos registros de saúde
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gap: "30px",
+    width: "100%",
+  },
+
+  // Cards com os dados de saúde
+  card: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: "24px",
+    padding: "30px",
+    textAlign: "center",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+  },
+
+  // Títulos dos cards
+  cardTitulo: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    color: "#000000",
+    margin: "0 0 12px 0",
+  },
+
+  // Valores dos registros
+  cardValor: {
+    fontSize: "22px",
+    fontWeight: "bold",
+    color: "#000000",
+    margin: 0,
+  },
+
+  // Texto de carregamento e erro
+  loadingText: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#333333",
+    textAlign: "center",
+  },
+
+  // Card exibido quando não há registro
+  vazioCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: "36px",
+    width: "420px",
+    minHeight: "280px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
+    boxSizing: "border-box",
+    padding: "30px",
+    textAlign: "center",
+    maxWidth: "100%",
+  },
+
+  // Logo do card vazio
+  vazioLogo: {
+    width: "110px",
+    height: "auto",
+    marginBottom: "20px",
+  },
+
+  // Mensagem do card vazio
+  vazioTexto: {
+    fontSize: "20px",
+    fontWeight: "bold",
+    color: "#000000",
+    margin: 0,
+    textAlign: "center",
+    lineHeight: "1.3",
+  },
 };

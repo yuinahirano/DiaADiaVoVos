@@ -24,6 +24,7 @@ import PaginaAddConsulta from './pages/cuidador/PaginaAddConsulta';
 import PaginaDoencas from './pages/cuidador/PaginaDoencasCuidador';
 import PaginaConfiguracao from './pages/cuidador/PaginaConfiguracao';
 import MedicationPage from './pages/cuidador/PaginaMedicamentos';
+import PaginaNotificacoesCuidador from './pages/cuidador/PaginaNotificacoesCuidador';
 
 // Páginas do idoso
 import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
@@ -109,6 +110,11 @@ function App() {
             <Route
               path="/vincular-cuidador"
               element={<PaginaVincularCuidador />}
+            />
+
+            <Route
+              path="/notificacoes-cuidador"
+              element={<PaginaNotificacoesCuidador />}
             />
           </Route>
           </Route>

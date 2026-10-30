@@ -1,9 +1,12 @@
 import MedicationCard from "./MedicamentosCard";
+import "../styles/CuidadorLayout.css";
 
 export default function MedicamentosList({ medicamentos, onDelete, onEdit }) {
+  if (!medicamentos || medicamentos.length === 0) return null;
+
   return (
-    <div style={styles.listGrid}>
-      {medicamentos?.map((medicamento) => (
+    <div className="cuidador-grid">
+      {medicamentos.map((medicamento) => (
         <MedicationCard
           key={medicamento.id}
           medicamento={medicamento}
@@ -14,12 +17,3 @@ export default function MedicamentosList({ medicamentos, onDelete, onEdit }) {
     </div>
   );
 }
-
-const styles = {
-  listGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr', // Força 2 colunas iguais lado a lado
-    gap: '15px', // Espaçamento grande entre os dois cards
-    width: '100%'
-  }
-};

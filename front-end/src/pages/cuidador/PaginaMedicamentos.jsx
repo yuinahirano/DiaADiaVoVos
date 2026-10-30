@@ -90,7 +90,7 @@ export default function MedicationPage() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
+          onClick={() => navigate("/notificacoes-cuidador")}
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
@@ -121,9 +121,20 @@ export default function MedicationPage() {
       </div>
 
       {/* lista de medicamentos da página */}
-      <main className="home-idoso-doencas">
+      <main className="home-idoso-consultas">
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p>
+        ) : !medicamentos || medicamentos.length === 0 ? (
+          <div className="home-idoso-vazio">
+            <img
+              src={logoImg}
+              alt="Dia a Dia Vovôs"
+              className="home-idoso-vazio-logo"
+            />
+            <p className="home-idoso-vazio-texto">
+              Nenhum medicamento registrado
+            </p>
+          </div>
         ) : (
           <MedicamentosList
             medicamentos={medicamentos}
@@ -184,26 +195,6 @@ export default function MedicationPage() {
 }
 
 const styles = {
-  container: {
-    backgroundColor: "#EBF3FF",
-    minHeight: "100vh",
-    padding: "40px 60px",
-    fontFamily: "Arial, sans-serif",
-  },
-  header: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: "50px",
-    padding: "10px 30px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "40px",
-  },
-  titleSection: {
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
-  },
   backButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
@@ -211,35 +202,6 @@ const styles = {
   notifyButton: {
     backgroundColor: "#FFE866",
     color: "#000000",
-  },
-  title: {
-    fontSize: "32px",
-    fontWeight: "bold",
-    margin: 0,
-  },
-  nav: {
-    display: "flex",
-    gap: "20px",
-    alignItems: "center",
-  },
-  activeTab: {
-    backgroundColor: "#FFE866",
-    border: "none",
-    borderRadius: "25px",
-    padding: "8px 25px",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    outline: "none",
-  },
-  inactiveNav: {
-    backgroundColor: "transparent",
-    border: "none",
-    fontSize: "16px",
-    fontWeight: "bold",
-    cursor: "pointer",
-    color: "#000000",
-    outline: "none",
   },
   actionRow: {
     display: "flex",
@@ -265,11 +227,6 @@ const styles = {
     fontSize: "20px",
     fontWeight: "bold",
     lineHeight: "1",
-  },
-  grid: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
-    gap: "50px",
   },
   loadingText: {
     fontSize: "18px",

@@ -24,17 +24,15 @@ export default function DoencaCard({ condicao, onDelete, onEdit }) {
 // Estilos baseados no design fornecido
 const styles = {
   card: {
-  backgroundColor: "#ffffff",
-  borderRadius: "28px",
-  padding: "24px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "16px",
-  boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-  minHeight: "330px",
-  height: "100%",
-  boxSizing: "border-box",
-},
+    backgroundColor: '#ffffff',
+    borderRadius: '24px',
+    padding: '24px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.05)',
+    minHeight: '220px',
+  },
   cardTitle: {
     color: '#000000',
     fontSize: '28px',
