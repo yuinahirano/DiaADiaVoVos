@@ -23,6 +23,7 @@ import PaginaConsultas from './pages/cuidador/PaginaConsultasCuidador';
 import PaginaAddConsulta from './pages/cuidador/PaginaAddConsulta';
 import PaginaDoencas from './pages/cuidador/PaginaDoencasCuidador';
 import PaginaConfiguracao from './pages/cuidador/PaginaConfiguracao';
+import MedicationPage from './pages/cuidador/PaginaMedicamentos';
 
 // Páginas do idoso
 import PaginaDadosIdoso from './pages/idoso/PaginaDadosIdoso';
@@ -86,8 +87,8 @@ function App() {
             />
 
             <Route
-              path="/medicamentos"
-              element={<PaginaMedicamentos />}
+              path="/medicamentos-cuidador"
+              element={<MedicationPage />}
             />
 
             <Route

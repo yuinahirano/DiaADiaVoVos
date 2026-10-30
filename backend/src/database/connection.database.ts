@@ -3,13 +3,6 @@ import mysql, { Pool, PoolOptions } from 'mysql2/promise';
 
 type Ambiente = 'local' | 'tidb';
 
-// Lê uma variável com prefixo do ambiente, ex.: LOCAL_DB_HOST ou TIDB_DB_HOST
-function variavel(prefixo: string, nome: string): string {
-    const valor = process.env[`${prefixo}_${nome}`];
-    if (!valor) throw new Error(`Variável ${prefixo}_${nome} não definida no .env`);
-    return valor;
-}
-
 class Database {
     private static instance: Database;
     private pool!: Pool;
@@ -17,54 +10,136 @@ class Database {
     public static getInstance(): Database {
         if (!Database.instance) {
             Database.instance = new Database();
-            Database.instance.createPool();
         }
+
         return Database.instance;
     }
 
     private configuracao(ambiente: Ambiente): PoolOptions {
-        const prefixo = ambiente.toUpperCase(); // LOCAL ou TIDB
+        const prefixo = ambiente.toUpperCase();
 
-        const base: PoolOptions = {
-            host: variavel(prefixo, 'DB_HOST'),
-            user: variavel(prefixo, 'DB_USER'),
-            password: variavel(prefixo, 'DB_PASSWORD'),
-            database: variavel(prefixo, 'DB_DATABASE'),
-            port: Number(variavel(prefixo, 'DB_PORT')),
+        const variavel = (nome: string): string => {
+            const valor = process.env[`${prefixo}_DB_${nome}`];
+
+            if (!valor) {
+                throw new Error(
+                    `Variável ${prefixo}_DB_${nome} não definida no .env`
+                );
+            }
+
+            return valor;
+        };
+
+        const config: PoolOptions = {
+            host: variavel('HOST'),
+            user: variavel('USER'),
+            password: variavel('PASSWORD'),
+            database: variavel('DATABASE'),
+            port: Number(variavel('PORT')),
             waitForConnections: true,
             queueLimit: 0,
+            connectionLimit: ambiente === 'tidb' ? 10 : 100,
+            connectTimeout: 10000,
         };
 
         if (ambiente === 'tidb') {
-            return {
-                ...base,
-                // TiDB Cloud exige conexão criptografada (TLS)
-                ssl: { minVersion: 'TLSv1.2', rejectUnauthorized: true },
-                connectTimeout: 20000,
-                // O plano gratuito do TiDB tem limite de conexões
-                connectionLimit: 10,
+            config.ssl = {
+                minVersion: 'TLSv1.2',
+                rejectUnauthorized: true,
             };
         }
 
-        return {
-            ...base,
-            connectionLimit: 100,
-        };
+        return config;
     }
 
-    private createPool(): void {
-        const ambiente = (process.env.DB_AMBIENTE ?? 'local').toLowerCase();
-        if (ambiente !== 'local' && ambiente !== 'tidb')
-            throw new Error("DB_AMBIENTE deve ser 'local' ou 'tidb'");
+    private async testarConexao(pool: Pool): Promise<void> {
+        const conexao = await pool.getConnection();
 
-        const config = this.configuracao(ambiente);
-        console.log(`Banco: ${ambiente} -> ${config.host}:${config.port}/${config.database}`);
-        this.pool = mysql.createPool(config);
+        try {
+            await conexao.query('SELECT 1');
+        } finally {
+            conexao.release();
+        }
+    }
+
+    public async conectar(): Promise<Pool> {
+        // 1. Tenta conectar ao TiDB primeiro.
+        try {
+            console.log('Tentando conectar ao TiDB Cloud...');
+
+            const poolTiDB = mysql.createPool(
+                this.configuracao('tidb')
+            );
+
+            try {
+                await this.testarConexao(poolTiDB);
+
+                this.pool = poolTiDB;
+
+                console.log('Conectado ao TiDB Cloud com sucesso!');
+
+                return this.pool;
+            } catch (erro) {
+                await poolTiDB.end();
+                throw erro;
+            }
+        } catch (erro) {
+            console.error(
+                'Não foi possível conectar ao TiDB Cloud.'
+            );
+
+            console.error(
+                erro instanceof Error ? erro.message : erro
+            );
+        }
+
+        // 2. Se o TiDB falhar, tenta o banco local.
+        try {
+            console.log('Tentando conectar ao banco local...');
+
+            const poolLocal = mysql.createPool(
+                this.configuracao('local')
+            );
+
+            try {
+                await this.testarConexao(poolLocal);
+
+                this.pool = poolLocal;
+
+                console.log('Conectado ao banco local com sucesso!');
+
+                return this.pool;
+            } catch (erro) {
+                await poolLocal.end();
+                throw erro;
+            }
+        } catch (erro) {
+            console.error(
+                'Não foi possível conectar ao banco local.'
+            );
+
+            throw new Error(
+                'Falha ao conectar ao TiDB Cloud e ao banco local.'
+            );
+        }
     }
 
     public getPool(): Pool {
+        if (!this.pool) {
+            throw new Error(
+                'Banco de dados não inicializado. Chame conectar() primeiro.'
+            );
+        }
+
         return this.pool;
     }
 }
 
-export const db = Database.getInstance().getPool();
+export const database = Database.getInstance();
+
+// Será preenchido depois que a conexão for testada.
+export let db: Pool;
+
+export async function inicializarBanco(): Promise<void> {
+    db = await database.conectar();
+}

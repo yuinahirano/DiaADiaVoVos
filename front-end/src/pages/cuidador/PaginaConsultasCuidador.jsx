@@ -65,7 +65,7 @@ export default function PaginaConsultas() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/home-cuidador")}
           style={styles.backButton}
         >
           <i className="bi bi-chevron-left"></i>
@@ -88,7 +88,7 @@ export default function PaginaConsultas() {
         {/* botão de medicamentos */}
         <button
           className="home-idoso-link"
-          onClick={() => navigate("/medicamentos")}
+          onClick={() => navigate("/medicamentos-cuidador")}
         >
           Medicamentos
         </button>
