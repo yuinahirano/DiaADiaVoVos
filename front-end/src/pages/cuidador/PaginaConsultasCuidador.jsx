@@ -5,7 +5,6 @@ import { useConsultas } from "../../hooks/useConsultas";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import { deleteConsulta } from "../../service/idosoApi";
 import logoImg from "../../assets/logo_DiaADia.png";
-import CadastrarConsulta from "./PaginaAddConsulta";
 
 // Estilizações
 import "../../components/styles/HomeIdoso.css";
@@ -32,12 +31,16 @@ export default function PaginaConsultas() {
 
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
 
+  // BUG 1 e 2 corrigidos: passa "ready" (!loadingIdoso) para o hook
+  // e combina os dois loadings num só, igual fizemos em useDoencas/PaginaDoencas
   const {
     consultas,
-    loading,
+    loading: loadingConsultas,
     error,
     refetch,
-  } = useConsultas(idoso?.id);
+  } = useConsultas(idoso?.id, !loadingIdoso);
+
+  const loading = loadingIdoso || loadingConsultas;
 
   const navigate = useNavigate();
 
@@ -45,29 +48,19 @@ export default function PaginaConsultas() {
     ? "Carregando..."
     : idoso?.nome || "Idoso";
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [sucesso, setSucesso] = useState(false);
-  const [consultaEditando, setConsultaEditando] = useState(null);
   const [idParaDeletar, setIdParaDeletar] = useState(null);
   const [excluindo, setExcluindo] = useState(false);
 
-  // Abre a página de cadastro
+  // Cadastro e edição agora são páginas próprias (rotas), não modal
   const handleAbrirCadastro = () => {
     navigate("/consultas/nova");
   };
 
-  // Abre a página de edição
   const handleAbrirEdicao = (consulta) => {
     navigate("/consultas/editar", {
       state: { consulta },
     });
-  };
-
-  // Fecha o modal de cadastro/edição
-  const handleFecharModal = () => {
-    setIsModalOpen(false);
-    setConsultaEditando(null);
-    refetch();
   };
 
   // Abre a confirmação de exclusão
@@ -169,7 +162,7 @@ export default function PaginaConsultas() {
       <div className="home-idoso-consultas">
         {loading && <p>Carregando consultas...</p>}
 
-        {error && (
+        {!loading && error && (
           <p>Não foi possível carregar as consultas.</p>
         )}
 
@@ -197,7 +190,7 @@ export default function PaginaConsultas() {
         )}
       </div>
 
-      {/* MODAL DE SUCESSO */}
+      {/* MODAL DE SUCESSO (exclusão) */}
       {sucesso && (
         <div style={styles.innerModalOverlay}>
           <div style={styles.modalContent}>
@@ -218,13 +211,6 @@ export default function PaginaConsultas() {
           </div>
         </div>
       )}
-
-      {/* MODAL DE CADASTRO/EDIÇÃO */}
-      <CadastrarConsulta
-        isOpen={isModalOpen}
-        onClose={handleFecharModal}
-        consultaEditando={consultaEditando}
-      />
 
       {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO */}
       {idParaDeletar != null && (

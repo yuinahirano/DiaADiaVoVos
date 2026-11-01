@@ -4,21 +4,39 @@ import MedicamentosList from "../../components/medicamentos/MedicamentosList";
 import { useMedicamentos } from "../../hooks/useMedicamentos";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarMedicamento from "./PaginaAddMedicamento";
-import PaginaHomeCuidador from "../../pages/cuidador/PaginaHomeCuidador";
 import logoImg from "../../assets/logo_DiaADia.png";
 
 import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
 import "../../components/styles/Consultas.css";
 
+// BUG corrigido: import não usado de PaginaHomeCuidador foi removido
+// (importava a página inteira de Home do cuidador sem necessidade,
+// risco de import circular).
+
 export default function MedicationPage() {
   const navigate = useNavigate();
-  const { medicamentos, loading, deletarMedicamento, error } =
-    useMedicamentos();
   const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
+
+  // BUG corrigido: useMedicamentos() era chamado sem idoso?.id, então
+  // provavelmente trazia medicamentos de todos os idosos do cuidador,
+  // não só do idoso selecionado. Se o hook ainda não aceitar esses
+  // parâmetros, precisa do mesmo ajuste feito em useDoencas (ver
+  // conversa anterior) para aceitar idosoId e ready.
+  const {
+    medicamentos,
+    loading: loadingMedicamentos,
+    deletarMedicamento,
+    error,
+    refetch,
+  } = useMedicamentos(idoso?.id, !loadingIdoso);
+
+  const loading = loadingIdoso || loadingMedicamentos;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [medicamentoEditando, setMedicamentoEditando] = useState(null);
   const [idParaDeletar, setIdParaDeletar] = useState(null);
+  const [excluindo, setExcluindo] = useState(false);
 
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
@@ -26,10 +44,20 @@ export default function MedicationPage() {
     setIdParaDeletar(id);
   };
 
+  // BUG corrigido: não tinha trava contra duplo clique nem tratamento
+  // de erro - se a exclusão falhasse, o modal fechava calado.
   const handleConfirmarDeletar = async () => {
-    if (idParaDeletar) {
+    if (!idParaDeletar || excluindo) return;
+
+    setExcluindo(true);
+
+    try {
       await deletarMedicamento(idParaDeletar);
       setIdParaDeletar(null);
+    } catch (erro) {
+      console.error("Erro ao excluir medicamento:", erro);
+    } finally {
+      setExcluindo(false);
     }
   };
 
@@ -38,9 +66,13 @@ export default function MedicationPage() {
     setIsModalOpen(true);
   };
 
+  // BUG corrigido: fechar o modal não recarregava a lista; um
+  // medicamento recém cadastrado ou editado só aparecia atualizado
+  // depois de recarregar a página inteira.
   const handleFecharModal = () => {
     setIsModalOpen(false);
     setMedicamentoEditando(null);
+    refetch?.();
   };
 
   return (
@@ -59,7 +91,7 @@ export default function MedicationPage() {
         {/* saudacao */}
         <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
 
-        {/* barra de navegação e seus botoões */}
+        {/* barra de navegação e seus botões */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/doencas")}
@@ -121,10 +153,18 @@ export default function MedicationPage() {
       </div>
 
       {/* lista de medicamentos da página */}
+      {/* BUG corrigido: o bloco de "vazio" estava duplicado (uma vez
+          dentro do <main>, outra vez solto logo depois dele) e o
+          <p> de erro não tinha guarda de loading. Agora é um único
+          bloco de condições, mutuamente exclusivas. */}
       <main className="home-idoso-consultas">
-        {loading ? (
-          <p style={styles.loadingText}>Carregando medicamentos...</p>
-        ) : !medicamentos || medicamentos.length === 0 ? (
+        {loading && <p style={styles.loadingText}>Carregando medicamentos...</p>}
+
+        {!loading && error && (
+          <p>Não foi possível carregar os medicamentos.</p>
+        )}
+
+        {!loading && !error && (!medicamentos || medicamentos.length === 0) && (
           <div className="home-idoso-vazio">
             <img
               src={logoImg}
@@ -132,10 +172,12 @@ export default function MedicationPage() {
               className="home-idoso-vazio-logo"
             />
             <p className="home-idoso-vazio-texto">
-              Nenhum medicamento registrado
+              Nenhum medicamento cadastrado
             </p>
           </div>
-        ) : (
+        )}
+
+        {!loading && !error && medicamentos && medicamentos.length > 0 && (
           <MedicamentosList
             medicamentos={medicamentos}
             onDelete={handleAbrirConfirmacao}
@@ -143,22 +185,6 @@ export default function MedicationPage() {
           />
         )}
       </main>
-
-      {error && <p>Não foi possível carregar os medicamentos.</p>}
-
-      {!loading && !error && medicamentos.length === 0 && (
-        <div className="medicamento-idoso-vazio">
-          <img
-            src={logoImg}
-            alt="Dia a Dia Vovôs"
-            className="medicamento-idoso-vazio-logo"
-          />
-
-          <p className="medicamento-idoso-vazio-texto">
-            Nenhum medicamento cadastrado
-          </p>
-        </div>
-      )}
 
       {/* modal para cadastro */}
       <CadastrarMedicamento
@@ -168,7 +194,7 @@ export default function MedicationPage() {
       />
 
       {/* deletar medicamento */}
-      {idParaDeletar && (
+      {idParaDeletar != null && (
         <div style={styles.modalOverlay}>
           <div style={styles.modalBox}>
             <h3>Tem certeza que deseja excluir?</h3>
@@ -177,14 +203,16 @@ export default function MedicationPage() {
               <button
                 style={styles.cancelBtn}
                 onClick={() => setIdParaDeletar(null)}
+                disabled={excluindo}
               >
                 Cancelar
               </button>
               <button
                 style={styles.confirmBtn}
                 onClick={handleConfirmarDeletar}
+                disabled={excluindo}
               >
-                Sim, excluir
+                {excluindo ? "Excluindo..." : "Sim, excluir"}
               </button>
             </div>
           </div>
