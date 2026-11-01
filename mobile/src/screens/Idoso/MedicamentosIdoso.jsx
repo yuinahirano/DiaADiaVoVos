@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
+  ActivityIndicator,
   FlatList,
   Pressable,
   RefreshControl,
@@ -16,7 +17,11 @@ import {
   SkeletonLista,
   SkeletonTela,
 } from '../../components/Skeleton';
-import { listarMedicamentosDoIdoso } from '../../services/api/apiIdoso';
+import AlertaModal, { CORES_ALERTA } from '../../components/AlertaModal';
+import {
+  listarMedicamentosDoIdoso,
+  registrarDoseMedicamento,
+} from '../../services/api/apiIdoso';
 
 // "10:00:00" -> "10:00"
 function formatarHorario(horario) {
@@ -28,6 +33,50 @@ function formatarHorario(horario) {
 
   return texto;
 }
+
+// Data/hora do banco -> "dd/mm HH:MM"
+function formatarDataHora(valor) {
+  if (!valor) return '';
+
+  const data = new Date(valor);
+  if (Number.isNaN(data.getTime())) return '';
+
+  const dia = String(data.getDate()).padStart(2, '0');
+  const mes = String(data.getMonth() + 1).padStart(2, '0');
+  const hora = String(data.getHours()).padStart(2, '0');
+  const min = String(data.getMinutes()).padStart(2, '0');
+
+  return `${dia}/${mes} ${hora}:${min}`;
+}
+
+// tipoFrequencia + valorFrequencia -> texto legível
+function formatarFrequencia(tipoFrequencia, valorFrequencia) {
+  const valor = Number(valorFrequencia);
+
+  if (!valor) return '—';
+
+  if (tipoFrequencia === 'vezes_por_dia') {
+    return valor === 1 ? '1 vez ao dia' : `${valor} vezes ao dia`;
+  }
+
+  if (tipoFrequencia === 'intervalo_horas') {
+    return valor === 1 ? 'A cada 1 hora' : `A cada ${valor} horas`;
+  }
+
+  return '—';
+}
+
+const ROTULO_STATUS = {
+  ativo: 'Ativo',
+  pausado: 'Pausado',
+  finalizado: 'Finalizado',
+};
+
+const COR_STATUS = {
+  ativo: 'rgba(255, 255, 255, 0.65)',
+  pausado: 'rgba(255, 221, 120, 0.75)',
+  finalizado: 'rgba(200, 200, 200, 0.75)',
+};
 
 function Campo({ icone, rotulo, valor }) {
   return (
@@ -49,6 +98,16 @@ export default function MedicamentosIdoso() {
   const [carregando, setCarregando] = useState(true);
   const [atualizando, setAtualizando] = useState(false);
   const [erro, setErro] = useState('');
+  // id do medicamento cujo "Tomei" está em andamento (desabilita só aquele botão)
+  const [registrandoId, setRegistrandoId] = useState(null);
+  // ids cuja dose já foi confirmada nesta sessão: o botão "Tomei" some para
+  // eles e só volta a mudar quando o cuidador alterar o status do remédio.
+  const [doseConfirmada, setDoseConfirmada] = useState({});
+
+  // Config do AlertaModal (no lugar do Alert nativo)
+  const [alerta, setAlerta] = useState({ visivel: false });
+
+  const fecharAlerta = () => setAlerta({ visivel: false });
 
   const carregar = useCallback(async (puxando = false) => {
     setErro('');
@@ -74,6 +133,66 @@ export default function MedicamentosIdoso() {
     carregar();
   }, [carregar]);
 
+  // Marca a dose como tomada: chama o back, atualiza só aquele card na lista
+  // e esconde o botão "Tomei" dele — só o cuidador pode mudar depois disso.
+  const registrarDose = useCallback(async (item) => {
+    setRegistrandoId(item.id);
+
+    try {
+      const resultado = await registrarDoseMedicamento(item.id);
+
+      const ultimaDose = resultado?.ultimaDose ?? resultado?.result?.ultimaDose;
+      const proximoHorario =
+        resultado?.proximoHorario ?? resultado?.result?.proximoHorario;
+
+      setMedicamentos((lista) =>
+        lista.map((m) =>
+          m.id === item.id
+            ? {
+                ...m,
+                ultimaDose: ultimaDose ?? new Date().toISOString(),
+                proximoHorario: proximoHorario ?? m.proximoHorario,
+              }
+            : m,
+        ),
+      );
+
+      setDoseConfirmada((atual) => ({ ...atual, [item.id]: true }));
+      setAlerta({ visivel: false });
+    } catch (e) {
+      setAlerta({
+        visivel: true,
+        icone: 'alert-circle-outline',
+        corIcone: CORES_ALERTA.vermelho,
+        titulo: 'Não foi possível registrar',
+        mensagem: e?.message || 'Tente novamente em instantes.',
+        botoes: [
+          { texto: 'OK', estilo: 'neutro', onPress: fecharAlerta },
+        ],
+      });
+    } finally {
+      setRegistrandoId(null);
+    }
+  }, []);
+
+  const confirmarDose = (item) => {
+    setAlerta({
+      visivel: true,
+      icone: 'pill',
+      corIcone: CORES_ALERTA.azul,
+      titulo: 'Registrar dose',
+      mensagem: `Confirma que tomou ${item.nome} agora?`,
+      botoes: [
+        { texto: 'Cancelar', estilo: 'neutro', onPress: fecharAlerta },
+        {
+          texto: 'Confirmar',
+          estilo: 'principal',
+          onPress: () => registrarDose(item),
+        },
+      ],
+    });
+  };
+
   const voltar = () => {
     if (navigation.canGoBack()) {
       navigation.goBack();
@@ -90,6 +209,19 @@ export default function MedicamentosIdoso() {
         </View>
 
         <Text style={styles.cardTitulo}>{item.nome}</Text>
+
+        {item.status ? (
+          <View
+            style={[
+              styles.selo,
+              { backgroundColor: COR_STATUS[item.status] ?? COR_STATUS.ativo },
+            ]}
+          >
+            <Text style={styles.seloTexto}>
+              {ROTULO_STATUS[item.status] ?? item.status}
+            </Text>
+          </View>
+        ) : null}
       </View>
 
       <View style={styles.campos}>
@@ -104,7 +236,19 @@ export default function MedicamentosIdoso() {
         <Campo
           icone="repeat"
           rotulo="Frequência"
-          valor={item.frequencia}
+          valor={formatarFrequencia(item.tipoFrequencia, item.valorFrequencia)}
+        />
+
+        <Campo
+          icone="clock-alert-outline"
+          rotulo="Próxima dose"
+          valor={formatarDataHora(item.proximoHorario)}
+        />
+
+        <Campo
+          icone="clock-check-outline"
+          rotulo="Última dose"
+          valor={formatarDataHora(item.ultimaDose) || 'Ainda não tomada'}
         />
       </View>
 
@@ -121,6 +265,32 @@ export default function MedicamentosIdoso() {
 
           <Text style={styles.campoValor}>{item.observacoes}</Text>
         </View>
+      ) : null}
+
+      {item.status === 'ativo' && !doseConfirmada[item.id] ? (
+        <Pressable
+          style={({ pressed }) => [
+            styles.botaoTomei,
+            (pressed || registrandoId === item.id) && styles.botaoTomeiPressionado,
+          ]}
+          accessibilityRole="button"
+          accessibilityLabel={`Registrar dose de ${item.nome}`}
+          disabled={registrandoId === item.id}
+          onPress={() => confirmarDose(item)}
+        >
+          {registrandoId === item.id ? (
+            <ActivityIndicator color="#000000" />
+          ) : (
+            <>
+              <MaterialCommunityIcons
+                name="check-circle-outline"
+                size={22}
+                color="#000000"
+              />
+              <Text style={styles.botaoTomeiTexto}>Tomei</Text>
+            </>
+          )}
+        </Pressable>
       ) : null}
     </View>
   );
@@ -222,6 +392,16 @@ export default function MedicamentosIdoso() {
           />
         }
       />
+
+      <AlertaModal
+        visivel={alerta.visivel}
+        icone={alerta.icone}
+        corIcone={alerta.corIcone}
+        titulo={alerta.titulo}
+        mensagem={alerta.mensagem}
+        botoes={alerta.botoes}
+        aoFechar={fecharAlerta}
+      />
     </SafeAreaView>
   );
 }
@@ -303,6 +483,18 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 
+  selo: {
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+  },
+
+  seloTexto: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#000000',
+  },
+
   // Cada campo ocupa metade da linha (ou a linha toda se não couber)
   // e o texto quebra dentro dele, então nada se sobrepõe.
   campos: {
@@ -348,6 +540,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 10,
     marginTop: 10,
+  },
+
+  botaoTomei: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 18,
+    paddingVertical: 13,
+    marginTop: 16,
+  },
+
+  botaoTomeiPressionado: {
+    opacity: 0.75,
+  },
+
+  botaoTomeiTexto: {
+    color: '#000000',
+    fontSize: 17,
+    fontWeight: 'bold',
   },
 
   estado: {
