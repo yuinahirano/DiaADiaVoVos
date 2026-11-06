@@ -50,6 +50,15 @@ export default function PaginaConsultasIdoso() {
           <i className="bi bi-house-door-fill"></i>
         </button>
 
+        
+        {/* botão de página de doenças */}
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas-idoso")}
+        >
+          Doenças
+        </button>
+
         {/* botão de consultas - ATIVO */}
         <button className="consulta-idoso-btn-ativo">Consultas</button>
 
@@ -59,14 +68,6 @@ export default function PaginaConsultasIdoso() {
           onClick={() => navigate("/medicamentos-idoso")}
         >
           Medicamentos
-        </button>
-
-        {/* botão de página de doenças */}
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/doencas-idoso")}
-        >
-          Doenças
         </button>
 
         {/* botão de notificações */}

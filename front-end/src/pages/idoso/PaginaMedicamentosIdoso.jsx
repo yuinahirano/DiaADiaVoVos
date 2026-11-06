@@ -18,11 +18,10 @@ export default function PaginaMedicamentosIdoso() {
     <div className="medicamento-idoso-container">
       {/* barra de navegação */}
       <header className="medicamento-idoso-header">
-
         {/* saudação */}
         <h1 className="medicamento-idoso-titulo">Olá, {primeiroNome}</h1>
 
-{/* botão de home */}
+        {/* botão de home */}
         <button
           className="medicamento-idoso-icone-btn"
           aria-label="Início"
@@ -30,19 +29,8 @@ export default function PaginaMedicamentosIdoso() {
         >
           <i className="bi bi-house-door-fill"></i>
         </button>
-
-{/* botão de consultas */}
-        <button
-          className="medicamento-idoso-link"
-          onClick={() => navigate("/consultas-idoso")}
-        >
-          Consultas
-        </button>
-
-{/* botão de medicamentos - ATIVO */}
-        <button className="medicamento-idoso-btn-ativo">Medicamentos</button>
-
-{/* botão de doenças */}
+        
+        {/* botão de doenças */}
         <button
           className="medicamento-idoso-link"
           onClick={() => navigate("/doencas-idoso")}
@@ -50,7 +38,18 @@ export default function PaginaMedicamentosIdoso() {
           Doenças
         </button>
 
-{/* botão de notificações */}
+        {/* botão de consultas */}
+        <button
+          className="medicamento-idoso-link"
+          onClick={() => navigate("/consultas-idoso")}
+        >
+          Consultas
+        </button>
+
+        {/* botão de medicamentos - ATIVO */}
+        <button className="medicamento-idoso-btn-ativo">Medicamentos</button>
+
+        {/* botão de notificações */}
         <button
           className="medicamento-idoso-icone-btn"
           aria-label="Notificações"
@@ -67,7 +66,6 @@ export default function PaginaMedicamentosIdoso() {
         >
           <i className="bi bi-box-arrow-right"></i>
         </button>
-        
       </header>
 
       <div className="medicamento-idoso-consultas">
@@ -88,8 +86,8 @@ export default function PaginaMedicamentosIdoso() {
           </div>
         )}
         {!loading && !error && medicamentos.length > 0 && (
-    <MedicamentosListIdoso medicamentos={medicamentos} />
-  )}
+          <MedicamentosListIdoso medicamentos={medicamentos} />
+        )}
       </div>
     </div>
   );

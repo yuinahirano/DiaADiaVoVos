@@ -223,3 +223,13 @@
   color: #1a1a1a;
   margin: 0;
 }
+
+/* botão aitvo */
+.consulta-idoso-btn-ativo {
+  background-color: #FFE866;
+  border: none;
+  border-radius: 24px;
+  padding: 10px 24px;
+  font-weight: 700;
+  font-size: 1rem;
+}

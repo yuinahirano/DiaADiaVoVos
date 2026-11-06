@@ -1,42 +1,82 @@
+
 import React from "react";
+import {
+  Clock,
+  Stethoscope,
+  CalendarDays,
+  MapPin,
+  FileText
+} from "lucide-react";
 
 import "../../components/styles/Consultas.css";
 
 export default function ConsultaCardIdoso({ consulta, formatarData }) {
   if (!consulta) return null;
 
-  const dataFormatada = formatarData ? formatarData(consulta.data) : consulta.data;
-  const horarioFormatado = consulta.horario ? consulta.horario.slice(0, 5) : "";
+  const dataFormatada = formatarData
+    ? formatarData(consulta.data)
+    : consulta.data;
+
+  const horarioFormatado = consulta.horario
+    ? consulta.horario.slice(0, 5)
+    : "Não informado";
 
   return (
-    <div className="card">
-      <h2 className="card-title">{consulta.nome_medico}</h2>
+    <div className="consulta-card consulta-card-idoso">
 
-      <div className="card-info">
+      {/* Horário e ícone */}
+      <div className="consulta-card-topo">
+        <div className="consulta-horario">
+          <Clock size={27} />
+          <span>{horarioFormatado}</span>
+        </div>
+
+        <div className="consulta-icone-medico">
+          <Stethoscope size={42} strokeWidth={1.6} />
+        </div>
+      </div>
+
+      {/* Nome do médico */}
+      <h2 className="consulta-card-titulo">
+        {consulta.nome_medico}
+      </h2>
+
+      {/* Informações da consulta */}
+      <div className="consulta-detalhes">
+
         {dataFormatada && (
-          <p className="card-label">
-            Data:{" "}
-            <span className="card-valor">{dataFormatada}</span>
-          </p>
+          <div className="consulta-detalhe">
+            <CalendarDays size={22} />
+
+            <div>
+              <strong>Data</strong>
+              <span>{dataFormatada}</span>
+            </div>
+          </div>
         )}
 
-        <p className="card-label">
-          Horário:{" "}
-          <span className="card-valor">{horarioFormatado}</span>
-        </p>
+        <div className="consulta-detalhe">
+          <MapPin size={22} />
 
-        <p className="card-label">
-          Local:{" "}
-          <span className="card-valor">{consulta.local_consulta}</span>
-        </p>
+          <div>
+            <strong>Local</strong>
+            <span>{consulta.local_consulta || "Não informado"}</span>
+          </div>
+        </div>
 
         {consulta.descricao && (
-          <p className="card-label">
-            Descrição:{" "}
-            <span className="card-valor">{consulta.descricao}</span>
-          </p>
+          <div className="consulta-detalhe consulta-descricao">
+            <FileText size={22} />
+
+            <div>
+              <strong>Descrição</strong>
+              <span>{consulta.descricao}</span>
+            </div>
+          </div>
         )}
+
       </div>
+
     </div>
   );
 }

@@ -35,6 +35,9 @@ export default function PaginaDoencasIdoso() {
         onClick={() => navigate("/home-idoso")}>
           <i className="bi bi-house-door-fill"></i>
         </button>
+        
+        {/* botão de doenças */}
+        <button className="doenca-idoso-btn-ativo">Doenças</button>
 
         {/* botão de consultas */}
         <button
@@ -51,9 +54,6 @@ export default function PaginaDoencasIdoso() {
         >
           Medicamentos
         </button>
-
-        {/* botão de doenças */}
-        <button className="doenca-idoso-btn-ativo">Doenças</button>
 
         {/* botão de notificação */}
         <button
