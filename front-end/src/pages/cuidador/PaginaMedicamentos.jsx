@@ -165,13 +165,13 @@ export default function MedicationPage() {
         )}
 
         {!loading && !error && (!medicamentos || medicamentos.length === 0) && (
-          <div className="home-idoso-vazio">
+          <div className="medicamento-idoso-vazio">
             <img
               src={logoImg}
               alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
+              className="medicamento-idoso-vazio-logo"
             />
-            <p className="home-idoso-vazio-texto">
+            <p className="medicamento-idoso-vazio-texto">
               Nenhum medicamento cadastrado
             </p>
           </div>
