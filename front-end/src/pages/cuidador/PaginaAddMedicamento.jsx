@@ -1,5 +1,9 @@
 import { useEffect } from 'react';
-import { useAddMedicamento } from '../../hooks/useAddMed';
+import {
+    useAddMedicamento,
+    OPCOES_VEZES_POR_DIA,
+    OPCOES_INTERVALO_HORAS
+} from '../../hooks/useAddMed';
 import { useIdososDoCuidador } from '../../hooks/useIdososDoCuidador';
 
 export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEditando = null }) {
@@ -16,6 +20,7 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
     } = useAddMedicamento(medicamentoEditando);
 
     const { idosos, loading: loadingIdosos, erro: erroIdosos } = useIdososDoCuidador();
+
     useEffect(() => {
         if (!emEdicao && idosos.length === 1 && !formData.idIdoso) {
             handleChange({ target: { name: 'idIdoso', value: String(idosos[0].id) } });
@@ -37,6 +42,25 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
     const handleErrorModal = () => {
         setErro(null);
     };
+
+    // BUG corrigido: o backend exige tipoFrequencia e valorFrequencia
+    // (a tabela "medicamento" tem tipo_frequencia / valor_frequencia como
+    // NOT NULL). O formulário não enviava esses campos, então o cadastro
+    // falhava ou salvava com valores de fallback. Os campos abaixo seguem
+    // o enum TipoFrequencia do backend: "vezes_por_dia" | "intervalo_horas".
+    const tipoFrequenciaAtual = formData.tipoFrequencia || 'vezes_por_dia';
+
+    const labelValorFrequencia =
+        tipoFrequenciaAtual === 'intervalo_horas'
+            ? 'A cada quantas horas:'
+            : 'Quantas vezes por dia:';
+
+    // Opções pré-definidas, nunca texto livre: elimina o caso de
+    // mandar valorFrequencia vazio/inválido pro backend.
+    const opcoesValorFrequencia =
+        tipoFrequenciaAtual === 'intervalo_horas'
+            ? OPCOES_INTERVALO_HORAS
+            : OPCOES_VEZES_POR_DIA;
 
     return (
         <div style={styles.modalOverlay}>
@@ -110,16 +134,45 @@ export default function CadastrarMedicamento({ isOpen, onClose, medicamentoEdita
                         />
                     </div>
 
+                    {/* NOVO: campo exigido pelo backend (tipo_frequencia) */}
                     <div style={styles.inputGroup}>
-                        <label style={styles.label} htmlFor="frequencia">Frequência:</label>
-                        <input
-                            id="frequencia"
-                            name="frequencia"
-                            type="text"
-                            value={formData.frequencia}
+                        <label style={styles.label} htmlFor="tipoFrequencia">Frequência:</label>
+                        <select
+                            id="tipoFrequencia"
+                            name="tipoFrequencia"
+                            value={tipoFrequenciaAtual}
                             onChange={handleChange}
                             style={styles.input}
-                        />
+                            required
+                        >
+                            <option value="vezes_por_dia">Vezes por dia</option>
+                            <option value="intervalo_horas">A cada X horas</option>
+                        </select>
+                    </div>
+
+                    {/* NOVO: campo exigido pelo backend (valor_frequencia).
+                        Select com opções pré-definidas em vez de número
+                        livre, para nunca mandar valor vazio/inválido. */}
+                    <div style={styles.inputGroup}>
+                        <label style={styles.label} htmlFor="valorFrequencia">
+                            {labelValorFrequencia}
+                        </label>
+                        <select
+                            id="valorFrequencia"
+                            name="valorFrequencia"
+                            value={formData.valorFrequencia}
+                            onChange={handleChange}
+                            style={styles.input}
+                            required
+                        >
+                            {opcoesValorFrequencia.map((valor) => (
+                                <option key={valor} value={valor}>
+                                    {tipoFrequenciaAtual === 'intervalo_horas'
+                                        ? `A cada ${valor} horas`
+                                        : `${valor}x ao dia`}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div style={styles.inputGroup}>
@@ -220,7 +273,7 @@ const styles = {
         borderRadius: '28px',
         padding: '30px 40px',
         width: '100%',
-        maxHeight: '500px',
+        maxHeight: '600px',
         maxWidth: '500px',
         overflowY: 'auto',
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
@@ -265,11 +318,11 @@ const styles = {
         fontSize: '13px'
     },
     buttonRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '16px',
-    marginTop: '15px'
-},
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: '16px',
+        marginTop: '15px'
+    },
     cancelButton: {
         flex: 1,
         backgroundColor: '#E1E8EC',

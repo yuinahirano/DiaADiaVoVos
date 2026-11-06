@@ -1,30 +1,52 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
 import { useDoencas } from "../../hooks/useDoencas";
 import logoImg from "../../assets/logo_DiaADia.png";
-import DoencasList from "../../components/doencas/DoencaList";
 import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 import CadastrarDoenca from "./PaginaAddDoenca";
+import DoencasList from "../../components/doencas/DoencaList";
 
-// import "../../components/styles/HomeIdoso.css";
+import "../../components/styles/HomeIdoso.css";
 import "../../components/styles/Doencas.css";
-// import "../../components/styles/Consultas.css";
+import "../../components/styles/Consultas.css";
 
 export default function PaginaDoencas() {
-  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
-  const { doencas, loading, error, deleteDoenca, refetch } = useDoencas(idoso?.id);
   const navigate = useNavigate();
+  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
+
+  const {
+    doencas,
+    loading: loadingDoencas,
+    error,
+    deleteDoenca,
+    refetch,
+  } = useDoencas(idoso?.id, !loadingIdoso);
+
+  const loading = loadingIdoso || loadingDoencas;
+
   const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [doencaEditando, setDoencaEditando] = useState(null);
+  const [idParaDeletar, setIdParaDeletar] = useState(null);
+  const [excluindo, setExcluindo] = useState(false);
 
-  const handleDelete = (id) => {
-    if (deleteDoenca) {
-      deleteDoenca(id);
-    } else {
-      console.log("Deletar doença:", id);
+  const handleAbrirConfirmacao = (id) => {
+    setIdParaDeletar(id);
+  };
+
+  const handleConfirmarDeletar = async () => {
+    if (!idParaDeletar || excluindo) return;
+
+    setExcluindo(true);
+
+    try {
+      await deleteDoenca(idParaDeletar);
+      setIdParaDeletar(null);
+    } catch (erro) {
+      console.error("Erro ao excluir doença:", erro);
+    } finally {
+      setExcluindo(false);
     }
   };
 
@@ -33,21 +55,20 @@ export default function PaginaDoencas() {
     setIsModalOpen(true);
   };
 
-  const handleEdit = (doenca) => {
-    setDoencaEditando(doenca);
+  const handleEdit = (condicao) => {
+    setDoencaEditando(condicao);
     setIsModalOpen(true);
   };
 
   const handleFecharModal = () => {
     setIsModalOpen(false);
     setDoencaEditando(null);
-    refetch();
+    refetch?.();
   };
 
   return (
     <div className="home-idoso-container">
       <header className="home-idoso-header">
-        {/* botão de voltar */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Voltar"
@@ -57,13 +78,10 @@ export default function PaginaDoencas() {
           <i className="bi bi-chevron-left"></i>
         </button>
 
-        {/* saudacao */}
         <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
 
-        {/* barra de navegação e seus botões */}
         <button className="home-idoso-btn-ativo">Doenças</button>
 
-        {/* botão de consultas*/}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/consultas")}
@@ -71,7 +89,6 @@ export default function PaginaDoencas() {
           Consultas
         </button>
 
-        {/* botão de medicamento*/}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/medicamentos")}
@@ -79,7 +96,6 @@ export default function PaginaDoencas() {
           Medicamentos
         </button>
 
-        {/* botão de registro de saude */}
         <button
           className="home-idoso-link"
           onClick={() => navigate("/registro-saude")}
@@ -87,7 +103,6 @@ export default function PaginaDoencas() {
           Registro Saúde
         </button>
 
-        {/* botão de notificação */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
@@ -97,7 +112,6 @@ export default function PaginaDoencas() {
           <i className="bi bi-bell"></i>
         </button>
 
-        {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Sair"
@@ -107,7 +121,6 @@ export default function PaginaDoencas() {
         </button>
       </header>
 
-      {/* botão de adicionar doença */}
       <div style={styles.actionRow}>
         <button style={styles.addButton} onClick={handleAbrirCadastro}>
           <span style={styles.addIcon}>+</span>
@@ -115,38 +128,61 @@ export default function PaginaDoencas() {
         </button>
       </div>
 
-      {/* corpo */}
-      <div className="doenca-idoso-doencas">
-        {loading && <p>Carregando doenças...</p>}
+      <main className="home-idoso-consultas">
+        {loading && <p style={styles.loadingText}>Carregando doenças...</p>}
 
-        {error && <p>Não foi possível carregar as doenças.</p>}
+        {!loading && error && <p>Não foi possível carregar as doenças.</p>}
 
-        {!loading && !error && doencas.length === 0 && (
-          <div className="doenca-idoso-vazio">
+        {!loading && !error && (!doencas || doencas.length === 0) && (
+          <div className="home-idoso-vazio">
             <img
               src={logoImg}
               alt="Dia a Dia Vovôs"
-              className="doenca-idoso-vazio-logo"
+              className="home-idoso-vazio-logo"
             />
-            <p className="doenca-idoso-vazio-texto">Nenhuma doença cadastrada</p>
+            <p className="home-idoso-vazio-texto">Nenhuma doença cadastrada</p>
           </div>
         )}
 
-        {!loading && !error && doencas.length > 0 && (
+        {!loading && !error && doencas && doencas.length > 0 && (
           <DoencasList
             doencas={doencas}
-            onDelete={handleDelete}
+            onDelete={handleAbrirConfirmacao}
             onEdit={handleEdit}
           />
         )}
-      </div>
+      </main>
 
-      {/* modal de cadastro/edição */}
       <CadastrarDoenca
         isOpen={isModalOpen}
         onClose={handleFecharModal}
         doencaEditando={doencaEditando}
       />
+
+      {idParaDeletar != null && (
+        <div style={styles.modalOverlay}>
+          <div style={styles.modalBox}>
+            <h3>Tem certeza que deseja excluir?</h3>
+            <p>Esta ação não poderá ser desfeita.</p>
+            <div style={styles.modalButtons}>
+              <button
+                style={styles.cancelBtn}
+                onClick={() => setIdParaDeletar(null)}
+                disabled={excluindo}
+              >
+                Cancelar
+              </button>
+              <button
+                style={styles.confirmBtn}
+                onClick={handleConfirmarDeletar}
+                disabled={excluindo}
+              >
+                {excluindo ? "Excluindo..." : "Sim, excluir"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -164,7 +200,6 @@ const styles = {
     display: "flex",
     justifyContent: "flex-end",
     marginTop: "25px",
-    marginBottom: "10px",
   },
   addButton: {
     backgroundColor: "#FFE866",
@@ -185,5 +220,51 @@ const styles = {
     fontSize: "20px",
     fontWeight: "bold",
     lineHeight: "1",
+  },
+  loadingText: {
+    fontSize: "18px",
+    fontWeight: "bold",
+    color: "#333",
+  },
+  modalOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1000,
+  },
+  modalBox: {
+    backgroundColor: "#ffffff",
+    padding: "30px",
+    borderRadius: "20px",
+    textAlign: "center",
+    maxWidth: "400px",
+    width: "90%",
+  },
+  modalButtons: {
+    display: "flex",
+    justifyContent: "space-around",
+    marginTop: "20px",
+  },
+  cancelBtn: {
+    padding: "10px 20px",
+    borderRadius: "10px",
+    border: "1px solid #ccc",
+    backgroundColor: "#fff",
+    cursor: "pointer",
+  },
+  confirmBtn: {
+    padding: "10px 20px",
+    borderRadius: "10px",
+    border: "none",
+    backgroundColor: "#ff4d4d",
+    color: "#fff",
+    fontWeight: "bold",
+    cursor: "pointer",
   },
 };

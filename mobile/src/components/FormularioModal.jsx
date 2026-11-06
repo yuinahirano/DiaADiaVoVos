@@ -16,8 +16,17 @@ import { CORES_ALERTA } from './AlertaModal';
 import { useTema } from '../contexts/TemaContext';
 
 // Formulário em Modal, no mesmo estilo do AlertaModal.
-// campos: [{ chave, rotulo, placeholder, multiline, teclado, maxLength }]
+//
+// campos: [{
+//   chave, rotulo, placeholder, multiline, teclado, maxLength,
+//   somenteEditar,   // só aparece quando "editando" é true (ex.: status)
+//   Componente,      // ({ valor, aoMudar, cor, form }) => JSX
+//                     // quando presente, substitui o TextInput padrão
+//                     // (usado para chips, contador, etc. — campo clicável,
+//                     // sem teclado)
+// }]
 // valores: { [chave]: texto }   erros: { [chave]: mensagem }
+// editando: true quando é edição de um item já existente (false = criação)
 export default function FormularioModal({
   visivel,
   icone = 'pencil-outline',
@@ -27,6 +36,7 @@ export default function FormularioModal({
   valores = {},
   erros = {},
   salvando = false,
+  editando = false,
   textoConfirmar = 'Salvar',
   textoCancelar = 'Cancelar',
   aoMudar,
@@ -35,6 +45,11 @@ export default function FormularioModal({
 }) {
   const { cores } = useTema();
   const styles = useMemo(() => criarStyles(cores), [cores]);
+
+  // Campos "somenteEditar" (ex.: status) só entram na lista quando está editando
+  const camposVisiveis = campos.filter(
+    (campo) => !campo.somenteEditar || editando,
+  );
 
   return (
     <Modal
@@ -64,29 +79,42 @@ export default function FormularioModal({
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >
-            {campos.map((campo) => {
+            {camposVisiveis.map((campo) => {
               const erro = erros[campo.chave];
 
               return (
                 <View key={campo.chave} style={styles.campo}>
                   <Text style={styles.rotulo}>{campo.rotulo}</Text>
 
-                  <TextInput
-                    style={[
-                      styles.input,
-                      campo.multiline && styles.inputMultilinha,
-                      erro && styles.inputErro,
-                    ]}
-                    value={valores[campo.chave] ?? ''}
-                    onChangeText={(texto) => aoMudar(campo.chave, texto)}
-                    placeholder={campo.placeholder}
-                    placeholderTextColor={cores.textoSecundario}
-                    keyboardType={campo.teclado ?? 'default'}
-                    maxLength={campo.maxLength}
-                    multiline={!!campo.multiline}
-                    editable={!salvando}
-                    accessibilityLabel={campo.rotulo}
-                  />
+                  {campo.Componente ? (
+                    // Campo clicável (chips, contador, etc.) em vez de digitar.
+                    // Recebe o form inteiro em "form" para poder reagir a
+                    // outros campos já preenchidos (ex.: valorFrequencia
+                    // olhando o tipoFrequencia escolhido).
+                    campo.Componente({
+                      valor: valores[campo.chave],
+                      aoMudar: (novoValor) => aoMudar(campo.chave, novoValor),
+                      cor: corIcone,
+                      form: valores,
+                    })
+                  ) : (
+                    <TextInput
+                      style={[
+                        styles.input,
+                        campo.multiline && styles.inputMultilinha,
+                        erro && styles.inputErro,
+                      ]}
+                      value={valores[campo.chave] ?? ''}
+                      onChangeText={(texto) => aoMudar(campo.chave, texto)}
+                      placeholder={campo.placeholder}
+                      placeholderTextColor={cores.textoSecundario}
+                      keyboardType={campo.teclado ?? 'default'}
+                      maxLength={campo.maxLength}
+                      multiline={!!campo.multiline}
+                      editable={!salvando}
+                      accessibilityLabel={campo.rotulo}
+                    />
+                  )}
 
                   {erro ? <Text style={styles.erro}>{erro}</Text> : null}
                 </View>

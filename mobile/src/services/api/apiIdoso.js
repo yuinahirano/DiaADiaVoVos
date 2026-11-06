@@ -1,6 +1,6 @@
 import api, { idDoUsuarioLogado } from './api';
 
-// ---------- Rotas (só leitura: o idoso apenas visualiza) ----------
+// ---------- Rotas ----------
 // GET /usuario/me -> dados de quem está logado (inclui idIdoso)
 const ROTA_ME = '/usuario/me';
 
@@ -17,6 +17,10 @@ const rotaDoencasDoUsuario = (idUsuario) =>
 // GET /enderecos/usuario/:idUsuario
 const rotaEnderecosDoUsuario = (idUsuario) =>
   `/enderecos/usuario/${encodeURIComponent(idUsuario)}`;
+
+// POST /medicamento/:id/dose -> o idoso confirma que tomou a dose
+const rotaRegistrarDose = (idMedicamento) =>
+  `/medicamento/${encodeURIComponent(idMedicamento)}/dose`;
 
 // Procura a lista na resposta, não importa o formato:
 // { result: [...] }, { result: {...} }, [...] direto, etc.
@@ -197,6 +201,14 @@ export async function listarMedicamentosDoIdoso() {
   );
 
   return extrairLista(data);
+}
+
+// POST /medicamento/:id/dose -> idoso confirma que tomou a dose agora.
+// Volta { ultimaDose, proximoHorario } já calculados pelo back.
+export async function registrarDoseMedicamento(idMedicamento) {
+  const { data } = await api.post(rotaRegistrarDose(idMedicamento));
+
+  return data?.result ?? data;
 }
 
 // GET /doenca/usuario/:idUsuario -> doenças do idoso logado (mesma rota de listarMinhasDoencas)
