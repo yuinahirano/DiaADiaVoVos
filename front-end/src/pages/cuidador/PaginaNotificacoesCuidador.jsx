@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useNotificacoesCuidador } from "../../hooks/useNotificacoesCuidador";
 import logoImg from "../../assets/logo_DiaADia.png";
+import { useIdosoSelecionado } from "../../hooks/useIdosoSelecionado";
 
 //estilizações
 import "../../components/styles/HomeIdoso.css";
@@ -35,6 +36,8 @@ function formatarStatus(status) {
 export default function PaginaNotificacoesCuidador() {
   const navigate = useNavigate();
   const { notificacoes, loading, error, cancelar } = useNotificacoesCuidador();
+  const { idoso, loading: loadingIdoso } = useIdosoSelecionado();
+  const nomeIdoso = loadingIdoso ? "Carregando..." : idoso?.nome || "Idoso";
 
   const handleCancelar = async (id) => {
     try {
@@ -58,8 +61,37 @@ export default function PaginaNotificacoesCuidador() {
           <i className="bi bi-chevron-left"></i>
         </button>
 
-        {/* título */}
-        <h1 className="home-idoso-titulo">Notificações</h1>
+        {/* saudacao */}
+        <h1 className="home-idoso-titulo">{nomeIdoso}</h1>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/doencas")}
+        >
+          Doenças
+        </button>
+
+        {/* Botão de consultas */}
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/consultas")}
+        >
+          Consultas
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/medicamentos-cuidador")}
+        >
+          Medicamentos
+        </button>
+
+        <button
+          className="home-idoso-link"
+          onClick={() => navigate("/registro-saude")}
+        >
+          Registro Saúde
+        </button>
 
         {/* botão de notificação (página atual) */}
         <button

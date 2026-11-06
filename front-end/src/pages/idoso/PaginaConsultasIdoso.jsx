@@ -96,13 +96,13 @@ export default function PaginaConsultasIdoso() {
 
         {/* card quando não possui consultas */}
         {!loading && !error && consultas.length === 0 && (
-          <div className="home-idoso-vazio">
+          <div className="consulta-idoso-vazio">
             <img
               src={logoImg}
               alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
+              className="consulta-idoso-vazio-logo"
             />
-            <p className="home-idoso-vazio-texto">Nenhuma consulta marcada</p>
+            <p className="consulta-idoso-vazio-texto">Nenhuma consulta marcada</p>
           </div>
         )}
 

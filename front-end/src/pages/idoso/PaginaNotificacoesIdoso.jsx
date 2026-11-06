@@ -55,6 +55,14 @@
             <i className="bi bi-house-door-fill"></i>
           </button>
 
+          {/* botão de página de doenças */}
+          <button
+            className="notificacao-idoso-link"
+            onClick={() => navigate("/doencas-idoso")}
+          >
+            Doenças
+          </button>
+
           {/* botão para consultas */}
           <button
             className="notificacao-idoso-link"
@@ -69,14 +77,6 @@
             onClick={() => navigate("/medicamentos-idoso")}
           >
             Medicamentos
-          </button>
-
-          {/* botão de página de doenças */}
-          <button
-            className="notificacao-idoso-link"
-            onClick={() => navigate("/doencas-idoso")}
-          >
-            Doenças
           </button>
 
           {/* botão de notificação */}

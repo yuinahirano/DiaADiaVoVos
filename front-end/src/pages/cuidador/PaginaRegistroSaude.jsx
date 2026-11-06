@@ -123,7 +123,7 @@ export default function PaginaRegistroSaude() {
         <button
           className="home-idoso-icone-btn"
           aria-label="Notificações"
-          onClick={() => navigate("/notificacoes-idoso")}
+          onClick={() => navigate("/notificacoes-cuidador")}
           style={styles.notifyButton}
         >
           <i className="bi bi-bell"></i>
