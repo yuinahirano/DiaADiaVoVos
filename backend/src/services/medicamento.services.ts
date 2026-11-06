@@ -5,17 +5,15 @@ import { TipoFrequencia } from "../enums/tipo-frequencia.enum";
 import { StatusMedicamento } from "../enums/status-medicamento.enum";
 
 export class MedicamentoService {
-  constructor(private _repository = new MedicamentoRepository(),
-    private _idosoRepository = new IdosoRepository()
-) {}
+  constructor(
+    private _repository = new MedicamentoRepository(),
+    private _idosoRepository = new IdosoRepository(),
+  ) {}
 
-<<<<<<< HEAD
-=======
   async selecionarPorIdIdoso(idIdoso: string) {
     return await this._repository.selecionarPorIdIdoso(idIdoso);
   }
 
->>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
   async selecionarTodos() {
     return await this._repository.selecionarTodos();
   }
@@ -44,7 +42,7 @@ export class MedicamentoService {
       tipoFrequencia,
       valorFrequencia,
       idIdoso,
-      observacoes
+      observacoes,
     );
     return await this._repository.criar({
       nome: medicamento.Nome,
@@ -72,8 +70,7 @@ export class MedicamentoService {
     id: string,
   ) {
     const idosoExistente = await this._idosoRepository.selecionarPorId(idIdoso);
-    if (idosoExistente.length === 0)
-      throw new Error("Idoso não encontrado");
+    if (idosoExistente.length === 0) throw new Error("Idoso não encontrado");
     const medicamentoExistente = await this._repository.selecionarPorId(id);
     if (medicamentoExistente.length === 0)
       throw new Error("Medicamento não encontrado");
@@ -87,7 +84,7 @@ export class MedicamentoService {
       idIdoso,
       status,
       observacoes,
-      id
+      id,
     );
 
     return await this._repository.editar(id, {
@@ -117,7 +114,7 @@ export class MedicamentoService {
     const proximoHorario = Medicamento.avancarHorario(
       new Date(medicamento.proximoHorario),
       medicamento.intervaloMinutos,
-      agora
+      agora,
     );
 
     await this._repository.registrarDose(id, agora, proximoHorario);

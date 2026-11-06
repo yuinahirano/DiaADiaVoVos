@@ -10,16 +10,8 @@
     "outDir": "./dist",
     "rootDir": "./",
     "sourceMap": true,
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "ignoreDeprecations": "5.0"
-=======
-    "ignoreDeprecations": "5.0",
-=======
     //"ignoreDeprecations": "6.0",
->>>>>>> develop
     "typeRoots": ["./node_modules/@types", "./src/@types"]
->>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
   },
   "ts-node": {
     "files": true

@@ -1,17 +1,5 @@
 import { Router } from "express";
 import { ReceitaMedicaController } from "../controller/receitaMedica.controller";
-<<<<<<< HEAD
-const receitaRoutes = Router();
-
-const receitaController = new (ReceitaMedicaController);
-
-receitaRoutes.get('/receita', receitaController.selecionar);
-receitaRoutes.get('/receita/:id', receitaController.selecionar);
-receitaRoutes.post('/receita', receitaController.criar);
-receitaRoutes.put('/receita/:id', receitaController.editar);
-receitaRoutes.delete('/receita/:id',receitaController.deletar);
-    
-=======
 import { authMiddleware } from "../middlewares/auth.middlewares";
 import { requireCuidador } from "../middlewares/role.middlewares";
 
@@ -32,5 +20,4 @@ receitaRoutes.post('/receita', requireCuidador, (req, res) => receitaController.
 receitaRoutes.put('/receita/:id', requireCuidador, (req, res) => receitaController.editar(req, res));
 receitaRoutes.delete('/receita/:id', requireCuidador, (req, res) => receitaController.deletar(req, res));
 
->>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
 export default receitaRoutes;

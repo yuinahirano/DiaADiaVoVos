@@ -31,41 +31,7 @@ export class MedicamentoRepository {
     const [rows] = await db.execute<IMedicamento[]>(sql, values);
     return rows;
   }
-<<<<<<< HEAD
-async criar(dados: Omit<IMedicamento, "id">): Promise<ResultSetHeader> {
-    console.log(    dados.nome,
-    dados.dosagem,
-    dados.horario,
-    dados.frequencia,
-    dados.observacoes,
-    dados.idIdoso,
-);
-    
-=======
   async selecionarPorIdIdoso(idIdoso: string): Promise<IMedicamento[]> {
-<<<<<<< HEAD
-  const sql = "SELECT * FROM medicamento WHERE id_idoso=?;";
-  const values = [idIdoso];
-  const [rows] = await db.execute<IMedicamento[]>(sql, values);
-  return rows;
-}
-async criar(dados: Omit<IMedicamento, "id">): Promise<ResultSetHeader> {
->>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
-  const sql = `INSERT INTO medicamento 
-          (nome, dosagem, horario, frequencia, observacoes, id_idoso)  
-            VALUES (?,?,?,?,?,?);`;
-  const values = [
-    dados.nome,
-    dados.dosagem,
-    dados.horario,
-    dados.frequencia,
-    dados.observacoes,
-    dados.idIdoso,
-  ];
-  const [rows] = await db.execute<ResultSetHeader>(sql, values);
-  return rows;
-}
-=======
     const sql = `SELECT id, nome, dosagem, horario,
                         tipo_frequencia AS tipoFrequencia,
                         valor_frequencia AS valorFrequencia,
@@ -116,7 +82,6 @@ async criar(dados: Omit<IMedicamento, "id">): Promise<ResultSetHeader> {
     const [rows] = await db.execute<ResultSetHeader>(sql, values);
     return rows;
   }
->>>>>>> develop
 
   async editar(
     id: string,

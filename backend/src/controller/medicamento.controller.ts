@@ -24,25 +24,6 @@ export class MedicamentoController {
     }
   };
 
-<<<<<<< HEAD
-  criar = async (req: Request, res: Response) => {
-    try {
-      const { nome, dosagem, horario, frequencia, observacoes, idIdoso } = req.body;
-      const novo = await this._service.criar(
-        nome, dosagem, horario, frequencia, observacoes, idIdoso
-      );
-      res.status(201).json({ novo });
-    } catch (error: unknown) {
-      console.error(error);
-      const message =
-        error instanceof Error ? error.message : "Erro desconhecido";
-      return res.status(500).json({
-        message: "Ocorreu um erro no servidor",
-        errorMessage: message,
-      });
-    }
-  };
-=======
   selecionarPorIdoso = async (req: Request, res: Response) => {
     try {
       const idIdoso = String(req.params.idIdoso);
@@ -59,26 +40,6 @@ export class MedicamentoController {
     }
   };
 
-<<<<<<< HEAD
-criar = async (req: Request, res: Response) => {
-  try {
-    const { nome, dosagem, horario, frequencia, observacoes, idIdoso } = req.body;
-    const novo = await this._service.criar(
-      nome, dosagem, horario, frequencia, idIdoso, observacoes
-    );
-    res.status(201).json({ novo });
-  } catch (error: unknown) {
-    console.error(error);
-    const message =
-      error instanceof Error ? error.message : "Erro desconhecido";
-    return res.status(500).json({
-      message: "Ocorreu um erro no servidor",
-      errorMessage: message,
-    });
-  }
-};
->>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
-=======
   selecionarPendentes = async (req: Request, res: Response) => {
     try {
       const result = await this._service.selecionarPendentes();
@@ -125,7 +86,6 @@ criar = async (req: Request, res: Response) => {
       });
     }
   };
->>>>>>> develop
 
   editar = async (req: Request, res: Response) => {
     try {

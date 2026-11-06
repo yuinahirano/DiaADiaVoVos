@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-// usuario.controller.ts
-=======
->>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
 import { Request, Response } from "express";
 import { UsuarioService, AppError } from "../services/usuario.services";
 
@@ -118,8 +114,4 @@ export class UsuarioController {
       return res.status(500).json({ message: "Ocorreu um erro no servidor", errorMessage: message });
     }
   };
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
