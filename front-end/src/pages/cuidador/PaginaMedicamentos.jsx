@@ -125,29 +125,7 @@ export default function MedicationPage() {
         {loading ? (
           <p style={styles.loadingText}>Carregando medicamentos...</p>
         ) : !medicamentos || medicamentos.length === 0 ? (
-          <div className="home-idoso-vazio">
-            <img
-              src={logoImg}
-              alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
-            />
-            <p className="home-idoso-vazio-texto">
-              Nenhum medicamento registrado
-            </p>
-          </div>
-        ) : (
-          <MedicamentosList
-            medicamentos={medicamentos}
-            onDelete={handleAbrirConfirmacao}
-            onEdit={handleAbrirEdicao}
-          />
-        )}
-      </main>
-
-      {error && <p>Não foi possível carregar os medicamentos.</p>}
-
-      {!loading && !error && medicamentos.length === 0 && (
-        <div className="medicamento-idoso-vazio">
+          <div className="medicamento-idoso-vazio">
           <img
             src={logoImg}
             alt="Dia a Dia Vovôs"
@@ -158,7 +136,16 @@ export default function MedicationPage() {
             Nenhum medicamento cadastrado
           </p>
         </div>
-      )}
+        ) : (
+          <MedicamentosList
+            medicamentos={medicamentos}
+            onDelete={handleAbrirConfirmacao}
+            onEdit={handleAbrirEdicao}
+          />
+        )}
+      </main>
+
+      {error && <p>Não foi possível carregar os medicamentos.</p>}
 
       {/* modal para cadastro */}
       <CadastrarMedicamento

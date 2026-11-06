@@ -219,13 +219,14 @@ export default function PaginaConsultas() {
         </div>
       )}
 
-      {/* MODAL DE CADASTRO/EDIÇÃO */}
+      {/* MODAL DE CADASTRO/EDIÇÃO 
       <CadastrarConsulta
         isOpen={isModalOpen}
         onClose={handleFecharModal}
         consultaEditando={consultaEditando}
       />
-
+      */}
+      
       {/* MODAL DE CONFIRMAÇÃO DE EXCLUSÃO */}
       {idParaDeletar != null && (
         <div style={styles.modalOverlay}>
