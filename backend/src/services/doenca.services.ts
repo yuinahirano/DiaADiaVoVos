@@ -15,6 +15,10 @@ export class DoencaService {
     return await this._repository.selecionarPorId(id);
   }
 
+  async selecionarPorUsuario(idUsuario: string) {
+    return await this._repository.selecionarPorUsuario(idUsuario);
+  }
+
   async criar(
     idIdoso: string,
     nome: string,

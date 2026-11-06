@@ -23,6 +23,7 @@ export default function PaginaDadosCuidador() {
     } finally {
       setLoading(false);
       localStorage.removeItem('userToken');
+      localStorage.removeItem('@DiaADiaVoVos:token');
       localStorage.removeItem('usuarioId');
       alert('Cadastro concluído com sucesso! Faça login para continuar.');
       navigate('/');

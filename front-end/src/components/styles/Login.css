@@ -4,5 +4,6 @@
 }
 
 .btn-cadastro-hover:hover {
-  color: #ffeb60 !important; /* Cor amarela ao passar o mouse */
+  color: #d0b400 !important; /* Cor amarela ao passar o mouse */
+  text-decoration: underline !important;
 }

@@ -24,6 +24,30 @@ export class IdosoController {
     }
   };
 
+  selecionarPorCuidador = async (req: Request, res: Response) => {
+    try {
+      const idCuidador = req.params.idCuidador
+        ? String(req.params.idCuidador)
+        : null;
+
+      if (!idCuidador) {
+        return res.status(400).json({ message: "idCuidador é obrigatório" });
+      }
+
+      const result =
+        await this._service.selecionarIdososPorCuidador(idCuidador);
+      return res.status(200).json({ result });
+    } catch (error) {
+      console.error(error);
+      const message =
+        error instanceof Error ? error.message : "Erro desconhecido";
+      return res.status(500).json({
+        message: "Ocorreu um erro no servidor",
+        errorMessage: message,
+      });
+    }
+  };
+
   criar = async (req: Request, res: Response) => {
     try {
       const { idIdoso, idCuidador, telefoneEmergencia } = req.body;

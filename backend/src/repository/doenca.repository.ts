@@ -15,6 +15,15 @@ export class DoencaRepository {
     return rows;
   }
 
+  async selecionarPorUsuario(idUsuario: string): Promise<IDoenca[]> {
+    const sql = `SELECT d.* FROM doenca d
+                 INNER JOIN idoso i ON i.id = d.id_idoso
+                 WHERE i.id_usuario=?;`;
+    const values = [idUsuario];
+    const [rows] = await db.execute<IDoenca[]>(sql, values);
+    return rows;
+  }
+
   async criar(dados: Omit<IDoenca, "id">): Promise<ResultSetHeader> {
     console.log(dados);
     

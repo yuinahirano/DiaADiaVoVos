@@ -26,6 +26,24 @@ export class DoencaController {
     }
   };
 
+  selecionarPorUsuario = async (req: Request, res: Response) => {
+    try {
+      const idUsuario = String(req.params.idUsuario);
+      const result = await this._service.selecionarPorUsuario(idUsuario);
+      return res.status(200).json({ result });
+    } catch (error) {
+      console.error(error);
+      const message =
+        error instanceof Error ? error.message : "Erro desconhecido";
+      return res
+        .status(500)
+        .json({
+          message: "Ocorreu um erro no servidor",
+          errorMessage: message,
+        });
+    }
+  };
+
   criar = async (req: Request, res: Response) => {
     try {
       const { idIdoso,nome,descricao} = req.body;

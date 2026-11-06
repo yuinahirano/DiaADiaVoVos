@@ -1,51 +1,198 @@
-.consultas-container {
-  min-height: 100vh;
-  background-color: #eaf1fd;
-  padding: 24px;
-}
-
-.home-idoso-consultas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 40px;
-}
-
+/* Card principal */
 .consulta-card {
-  background-color: #ffffff;
-  border-radius: 24px;
+  background-color: #FFFFFF;
+  border-radius: 28px;
   padding: 24px;
-  width: 300px;
-  min-height: 220px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
 }
 
-.consulta-card-titulo {
-  font-size: 1.3rem;
-  font-weight: 700;
-  margin: 0 0 20px 0;
-}
-
-.consulta-card-info {
+/* Cabeçalho */
+.consulta-card-topo {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  margin-top: auto;
 }
 
-.consulta-card-label {
+.consulta-horario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #FFE866;
+  color: #000000;
+  padding: 12px 18px;
+  border-radius: 30px;
+  font-size: 25px;
   font-weight: 700;
+}
+
+.consulta-icone-medico {
+  color: #29233D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Nome do médico */
+.consulta-card-titulo {
+  font-size: 25px;
+  font-weight: 700;
+  color: #000000;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
-.consulta-card-valor {
+/* Grade de informações */
+.consulta-detalhes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+/* Cards individuais */
+.consulta-detalhe {
+  background-color: #FFF4B8;
+  border-radius: 18px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #252525;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.consulta-detalhe > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.consulta-detalhe > div {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.consulta-detalhe strong {
+  font-size: 16px;
+  color: #000000;
+}
+
+.consulta-detalhe span {
+  font-size: 15px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* Descrição ocupa toda a largura */
+.consulta-descricao {
+  grid-column: 1 / -1;
+  background-color: #FFF8D6;
+}
+
+/* Comparecimento */
+.consulta-compareceu {
+  background-color: #F7F9FE;
+  border: 1px solid #E5EAF5;
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
   font-weight: 700;
+  color: #000000;
 }
 
-.home-idoso-vazio {
+.consulta-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  border: 2px solid #333333;
+  border-radius: 7px;
+  background-color: #FFFFFF;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.consulta-checkbox:checked {
+  background-color: #FFE866;
+  border-color: #D6B900;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='3'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E");
+}
+
+.consulta-checkbox:disabled {
+  cursor: default;
+}
+
+/* Botões */
+.consulta-card-acoes {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 4px;
+  box-sizing: border-box;
+}
+
+.consulta-card-acoes > button {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .consulta-card {
+    padding: 18px;
+    gap: 16px;
+  }
+
+  .consulta-card-titulo {
+    font-size: 22px;
+  }
+
+  .consulta-horario {
+    font-size: 21px;
+    padding: 10px 14px;
+  }
+
+  .consulta-detalhe {
+    padding: 12px;
+    gap: 7px;
+  }
+
+  .consulta-detalhe > svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .consulta-detalhe strong {
+    font-size: 14px;
+  }
+
+  .consulta-detalhe span {
+    font-size: 14px;
+  }
+}
+
+
+/* card vazio */
+.consulta-idoso-vazio {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -60,7 +207,8 @@
   max-width: 400px;
 }
 
-.home-idoso-vazio-logo {
+/* logo do card vazio */
+.consulta-idoso-vazio-logo {
   width: 140px;
   height: 140px;
   object-fit: contain;
@@ -68,61 +216,20 @@
   opacity: 0.85;
 }
 
-.home-idoso-vazio-texto {
+/* texto do card vazio */
+.consulta-idoso-vazio-texto {
   font-size: 1.2rem;
   font-weight: 700;
   color: #1a1a1a;
   margin: 0;
 }
 
-.consulta-card-acoes {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.notificacao-btn-aceitar,
-.notificacao-btn-recusar {
-  flex: 1;
+/* botão aitvo */
+.consulta-idoso-btn-ativo {
+  background-color: #FFE866;
   border: none;
-  border-radius: 12px;
-  padding: 10px 16px;
+  border-radius: 24px;
+  padding: 10px 24px;
   font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-
-.notificacao-btn-aceitar {
-  background-color: #8fd19e;
-  color: #1a1a1a;
-}
-
-.notificacao-btn-recusar {
-  background-color: #f28b82;
-  color: #1a1a1a;
-}
-
-.notificacoes-acoes {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-.notificacoes-btn-limpar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 16px;
-  background-color: #f28b82;
-  color: #1a1a1a;
-  font-weight: 700;
-  font-size: 0.95rem;
-  cursor: pointer;
-}
-
-.notificacoes-btn-limpar:hover {
-  opacity: 0.85;
+  font-size: 1rem;
 }

@@ -35,17 +35,23 @@ A paleta de cores prioriza uma interface clara, com contraste entre fundos, text
   Cor de Texto e Contornos - #1A2229
 </div>
 
+### Cores dos botões da home do perfil Idoso
 
+<div style="background-color:#ffe066; padding:10px; color:#1A2229; border-radius:10px; margin:2px;">
+  Cor Botão de Consulta  - #FFE066
+</div>
 
-## 📌 Aplicação das cores
+<div style="background-color:#c9aee6; padding:10px; color:#1A2229; border-radius:10px; margin:2px;">
+  Cor Botão de Medicamentos  - #C9AEE6
+</div>
 
-* **Fundo das páginas:** #EBF3FF.
-* **Cards e áreas de conteúdo:** #FFFFFF.
-* **Botões principais:** #FFD600.
-* **Botões de adicionar:** #FFDF6D.
-* **Campos de formulário:** #F0F4F8.
-* **Textos e bordas:** #1A2229.
-* **Ações de perigo e emergência:** #F44336.
+<div style="background-color:#a8d8b9; padding:10px; color:#1A2229; border-radius:10px; margin:2px;">
+  Cor Botão de Notificaçõs  - #A8D8B9
+</div>
+
+<div style="background-color:#f28b82; padding:10px; color:#1A2229; border-radius:10px; margin:2px;">
+  Cor Botão de Doenças  - #F28B82
+</div>
 
 ---
 

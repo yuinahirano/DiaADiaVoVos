@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { cadastrarUsuario } from '../service/userApi';
 import { api_auth } from '../service/api';
 
+// Mesma chave que o api.js usa para anexar o token nas requisições
+const TOKEN_KEY = '@DiaADiaVoVos:token';
+
 export function useCadastro() {
   const [formData, setFormData] = useState({
     nome: '',
@@ -38,6 +41,7 @@ export function useCadastro() {
 
     try {
       localStorage.removeItem('userToken');
+      localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem('usuarioId');
 
       const cpfLimpo = formData.cpf.replace(/\D/g, '');
@@ -47,10 +51,7 @@ export function useCadastro() {
         dataNascimento: padronizarData(formData.dataNascimento)
       };
 
-      console.log('--- Dados preenchidos para envio ---', dadosParaEnviar);
-
       const response = await cadastrarUsuario(dadosParaEnviar);
-      console.log('--- Resposta da API de Cadastro ---', response);
 
       try {
         const resLogin = await api_auth.post('/usuario/login', {
@@ -61,6 +62,10 @@ export function useCadastro() {
         const token = resLogin.data?.token || resLogin.data?.login?.token;
         if (token) {
           localStorage.setItem('userToken', token);
+          // também na chave que o api.js lê, senão o POST /idosos e /cuidadores
+          // da próxima tela vai sem Authorization e falha (erro que era ignorado)
+          localStorage.setItem(TOKEN_KEY, token);
+
           const payloadBase64 = token.split('.')[1];
           const payloadDecodificado = JSON.parse(atob(payloadBase64));
 

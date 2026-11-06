@@ -15,7 +15,7 @@ export function useMedicamentosIdoso() {
         setLoading(true);
         setError(null);
 
-        // 1. Identifica o id do usuário logado (pelo contexto ou pela API /me)
+        // 1. Identifica o id do usuário logado (contexto ou API /me)
         let idUsuarioLogado =
           user?.id || user?.idUsuario || user?.id_usuario || user?.sub;
 
@@ -37,7 +37,7 @@ export function useMedicamentosIdoso() {
           return;
         }
 
-        // 2. Busca e normaliza a lista de idosos
+        // 2. Acha o registro do idoso SOMENTE pelo id_usuario
         const resIdosos = await getIdosos().catch(() => []);
         const listaIdosos = Array.isArray(resIdosos)
           ? resIdosos
@@ -45,9 +45,7 @@ export function useMedicamentosIdoso() {
 
         const registroIdoso = listaIdosos.find(
           (i) =>
-            String(i.id_usuario) === String(idUsuarioLogado) ||
-            String(i.idUsuario) === String(idUsuarioLogado) ||
-            String(i.id) === String(idUsuarioLogado)
+            String(i.id_usuario ?? i.idUsuario) === String(idUsuarioLogado)
         );
 
         if (!registroIdoso) {
@@ -62,11 +60,8 @@ export function useMedicamentosIdoso() {
           ? resMeds
           : resMeds?.result || [];
 
-        const idIdosoReferencia = registroIdoso.id || registroIdoso.id_idoso;
-
         const medicamentosDoIdoso = listaMeds.filter(
-          (m) =>
-            String(m.id_idoso ?? m.idIdoso) === String(idIdosoReferencia)
+          (m) => String(m.id_idoso ?? m.idIdoso) === String(registroIdoso.id)
         );
 
         setMedicamentos(medicamentosDoIdoso);

@@ -25,8 +25,10 @@ export function useAddConsulta(consultaEditando) {
       setFormData({
         nomeMedico: consultaEditando.nome_medico || '',
         localConsulta: consultaEditando.local_consulta || '',
-        data: consultaEditando.data || '',
-        horario: consultaEditando.horario || '',
+        // input type="date" só aceita yyyy-mm-dd
+        data: consultaEditando.data ? consultaEditando.data.slice(0, 10) : '',
+        // input type="time" só aceita hh:mm
+        horario: consultaEditando.horario ? consultaEditando.horario.slice(0, 5) : '',
         descricao: consultaEditando.descricao || '',
         idIdoso: consultaEditando.id_idoso || ''
       });

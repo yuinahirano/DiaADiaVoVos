@@ -95,7 +95,6 @@ editar = async (req: Request, res: Response) => {
   try {
     const id = String(req.params.id);
     const { descricao, dataEmissao, dataVencimento, idConsulta } = req.body;
-    console.log(descricao, dataEmissao, dataVencimento, idConsulta, id);
     const editado = await this._service.editar(
       descricao, dataEmissao, idConsulta, id, dataVencimento
     );

@@ -59,7 +59,7 @@ export default function PaginaHomeCuidador() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "cuidador";
+  const primeiroNome = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "cuidador";
 
   useEffect(() => {
     async function carregarIdososDoCuidadorLogado() {
@@ -199,7 +199,7 @@ export default function PaginaHomeCuidador() {
       <header className="home-idoso-header w-100">
 
         {/* saudação */}
-        <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
+        <h1 className="home-idoso-titulo">Olá, {primeiroNome}</h1>
 
         {/* botão de vinculação */}
         <div className="d-flex align-items-center gap-3">
@@ -208,7 +208,7 @@ export default function PaginaHomeCuidador() {
             className="home-cuidador-btn-add-novo"
             onClick={() => navigate("/vincular-cuidador")}
           >
-            + Adicionar idoso
+            + Adicionar pessoa
           </button>
 
           {/* botão de configurações */}
@@ -220,13 +220,22 @@ export default function PaginaHomeCuidador() {
           >
             <i className="bi bi-gear-fill"></i>
           </button>
+
+          {/* botão de sair */}
+        <button
+          className="home-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
+        >
+          <i className="bi bi-box-arrow-right"></i>
+        </button>
         </div>
       </header>
 
       <main className="w-100 my-auto d-flex justify-content-center align-items-center py-4">
         {loading && (
           <p className="text-center fw-bold text-secondary fs-5">
-            Carregando idosos vinculados...
+            Carregando pessoas vinculados...
           </p>
         )}
 
@@ -235,7 +244,7 @@ export default function PaginaHomeCuidador() {
             <div className="home-cuidador-vazio-logo-circle">
               <img src={logoImg} alt="Dia a Dia Vovôs" />
             </div>
-            <span>Nenhum idoso vinculado a você</span>
+            <span>Nenhuma pessoa vinculada a você</span>
           </div>
         )}
 
@@ -251,7 +260,7 @@ export default function PaginaHomeCuidador() {
                 }}
                 onClick={() => handleSelecionarIdoso(idoso)}
               >
-                <span>{idoso.nomeExibicao}</span>
+                <span>{idoso.nomeExibicao.toUpperCase()}</span>
               </button>
             ))}
           </div>

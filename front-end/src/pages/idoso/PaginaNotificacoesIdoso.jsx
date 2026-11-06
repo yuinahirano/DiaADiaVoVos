@@ -1,165 +1,182 @@
-import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext";
-import { useNotificacoesIdoso } from "../../hooks/useNotificacoesIdoso";
-import logoImg from "../../assets/logo_DiaADia.png";
-import "../../components/styles/HomeIdoso.css";
-import "../../components/styles/Consultas.css";
+  import { useContext } from "react";
+  import { useNavigate } from "react-router-dom";
+  import { AuthContext } from "../../contexts/AuthContext";
+  import { useNotificacoesIdoso } from "../../hooks/useNotificacoesIdoso";
+  import logoImg from "../../assets/logo_DiaADia.png";
 
-function formatarData(dataIso) {
-  const data = new Date(dataIso);
+  //estilização
+  import "../../components/styles/Notificacao.css";
+  import "../../components/styles/Consultas.css";
 
-  return data.toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+  function formatarData(dataIso) {
+    const data = new Date(dataIso);
 
-function formatarStatus(status) {
-  const mapa = {
-    aceita: "Aceita",
-    pendente: "Pendente",
-    recusada: "Recusada",
-    cancelada: "Cancelada",
-  };
+    return data.toLocaleString("pt-BR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
 
-  return mapa[status] || status;
-}
+  function formatarStatus(status) {
+    const mapa = {
+      aceita: "Aceita",
+      pendente: "Pendente",
+      recusada: "Recusada",
+      cancelada: "Cancelada",
+    };
 
-export default function PaginaNotificacoesIdoso() {
-  const { user } = useContext(AuthContext);
-  const { notificacoes, loading, error, aceitar, recusar, limparSolicitacoes } =
-    useNotificacoesIdoso();
+    return mapa[status] || status;
+  }
 
-  const navigate = useNavigate();
-  const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
+  export default function PaginaNotificacoesIdoso() {
+    const { user } = useContext(AuthContext);
+    const { notificacoes, loading, error, aceitar, recusar, limparSolicitacoes } =
+      useNotificacoesIdoso(user?.id);
 
-  return (
-    <div className="home-idoso-container">
-      <header className="home-idoso-header">
-        <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
+    const navigate = useNavigate();
+    const primeiroNome = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
 
+    return (
+      <div className="notificacao-idoso-container">
+        <header className="notificacao-idoso-header">
+
+          {/* saudação */}
+          <h1 className="notificacao-idoso-titulo">Olá, {primeiroNome}</h1>
+
+          {/* botão para home */}
+          <button
+            className="notificacao-idoso-icone-btn"
+            aria-label="Início"
+            onClick={() => navigate("/home-idoso")}
+          >
+            <i className="bi bi-house-door-fill"></i>
+          </button>
+
+          {/* botão de página de doenças */}
+          <button
+            className="notificacao-idoso-link"
+            onClick={() => navigate("/doencas-idoso")}
+          >
+            Doenças
+          </button>
+
+          {/* botão para consultas */}
+          <button
+            className="notificacao-idoso-link"
+            onClick={() => navigate("/consultas-idoso")}
+          >
+            Consultas
+          </button>
+
+          {/* botão para medicamentos */}
+          <button
+            className="notificacao-idoso-link"
+            onClick={() => navigate("/medicamentos-idoso")}
+          >
+            Medicamentos
+          </button>
+
+          {/* botão de notificação */}
+          <button
+            className="notificacao-idoso-icone-btn"
+            aria-label="Notificações"
+          >
+            <i className="bi bi-bell-fill"></i>
+          </button>
+
+          {/* botão de sair */}
         <button
-          className="home-idoso-icone-btn"
-          aria-label="Início"
-          onClick={() => navigate("/home-idoso")}
+          className="notificacao-idoso-icone-btn"
+          aria-label="Sair"
+          onClick={() => navigate("/sair")}
         >
-          <i className="bi bi-house-door-fill"></i>
+          <i className="bi bi-box-arrow-right"></i>
         </button>
+        </header>
 
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/consultas")}
-        >
-          Consultas
-        </button>
-
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/medicamentos-idoso")}
-        >
-          Medicamentos
-        </button>
-
-        {/* botão de página de doenças */}
-        <button
-          className="home-idoso-link"
-          onClick={() => navigate("/doencas-idoso")}
-        >
-          Doenças
-        </button>
-
-        <button
-          className="home-idoso-icone-btn"
-          aria-label="Notificações"
-        >
-          <i className="bi bi-bell-fill"></i>
-        </button>
-      </header>
-
-      <div className="home-idoso-consultas">
-        {!loading && !error && notificacoes.length > 0 && (
-          <div className="notificacoes-acoes">
-            <button
-              className="notificacoes-btn-limpar"
-              onClick={limparSolicitacoes}
-            >
-              <i className="bi bi-trash3"></i>
-              Limpar notificações
-            </button>
-          </div>
-        )}
-
-        {loading && <p>Carregando notificações...</p>}
-
-        {error && <p>Não foi possível carregar as notificações.</p>}
-
-        {!loading && !error && notificacoes.length === 0 && (
-          <div className="home-idoso-vazio">
-            <img
-              src={logoImg}
-              alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
-            />
-
-            <p className="home-idoso-vazio-texto">
-              Nenhuma notificação no momento
-            </p>
-          </div>
-        )}
-
-        {!loading &&
-          !error &&
-          notificacoes.map((notificacao) => (
-            <div className="consulta-card" key={notificacao.id}>
-              <h2 className="consulta-card-titulo">Solicitação de cuidador</h2>
-
-              <div className="consulta-card-info">
-                <p className="consulta-card-label">
-                  Status:{" "}
-                  <span className="consulta-card-valor">
-                    {formatarStatus(notificacao.status)}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Contato de emergência:{" "}
-                  <span className="consulta-card-valor">
-                    {notificacao.contato_emergencia || "Não informado"}
-                  </span>
-                </p>
-
-                <p className="consulta-card-label">
-                  Expira em:{" "}
-                  <span className="consulta-card-valor">
-                    {formatarData(notificacao.expira_em)}
-                  </span>
-                </p>
-              </div>
-
-              {notificacao.status === "pendente" && (
-                <div className="consulta-card-acoes">
-                  <button
-                    className="notificacao-btn-aceitar"
-                    onClick={() => aceitar(notificacao.id)}
-                  >
-                    Aceitar
-                  </button>
-
-                  <button
-                    className="notificacao-btn-recusar"
-                    onClick={() => recusar(notificacao.id)}
-                  >
-                    Recusar
-                  </button>
-                </div>
-              )}
+        <div className="home-idoso-consultas">
+          {!loading && !error && notificacoes.length > 0 && (
+            <div className="notificacoes-acoes">
+              <button
+                className="notificacoes-btn-limpar"
+                onClick={limparSolicitacoes}
+              >
+                <i className="bi bi-trash3"></i>
+                Limpar notificações
+              </button>
             </div>
-          ))}
+          )}
+
+          {loading && <p>Carregando notificações...</p>}
+
+          {error && <p>Não foi possível carregar as notificações.</p>}
+
+          {!loading && !error && notificacoes.length === 0 && (
+            <div className="notificacao-idoso-vazio">
+              <img
+                src={logoImg}
+                alt="Dia a Dia Vovôs"
+                className="notificacao-idoso-vazio-logo"
+              />
+
+              <p className="notificacao-idoso-vazio-texto">
+                Nenhuma notificação no momento
+              </p>
+            </div>
+          )}
+
+          {!loading &&
+            !error &&
+            notificacoes.map((notificacao) => (
+              <div className="notificacao-card" key={notificacao.id}>
+                <h2 className="notificacao-card-titulo">Solicitação de cuidador</h2>
+
+                <div className="notificacao-card-info">
+                  <p className="notificacao-card-label">
+                    Status:{" "}
+                    <span className="notificacao-card-valor">
+                      {formatarStatus(notificacao.status)}
+                    </span>
+                  </p>
+
+                  <p className="notificacao-card-label">
+                    Contato de emergência:{" "}
+                    <span className="notificacao-card-valor">
+                      {notificacao.contato_emergencia || "Não informado"}
+                    </span>
+                  </p>
+
+                  <p className="notificacao-card-label">
+                    Expira em:{" "}
+                    <span className="notificacao-card-valor">
+                      {formatarData(notificacao.expira_em)}
+                    </span>
+                  </p>
+                </div>
+
+                {notificacao.status === "pendente" && (
+                  <div className="notificacao-card-acoes">
+                    <button
+                      className="notificacao-btn-aceitar"
+                      onClick={() => aceitar(notificacao.id)}
+                    >
+                      Aceitar
+                    </button>
+
+                    <button
+                      className="notificacao-btn-recusar"
+                      onClick={() => recusar(notificacao.id)}
+                    >
+                      Recusar
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }

@@ -4,6 +4,8 @@ const idosoCuidadorRoutes = Router();
 
 const cuiadorController = new IdosoController();
 
+idosoCuidadorRoutes.get('/idosoCuidador/cuidador/:idCuidador', cuiadorController.selecionarPorCuidador);
+
 idosoCuidadorRoutes.get('/idosoCuidador', cuiadorController.selecionar);
 idosoCuidadorRoutes.get('/idosoCuidador/:id', cuiadorController.selecionar);
 idosoCuidadorRoutes.post('/idosoCuidador', cuiadorController.criar);

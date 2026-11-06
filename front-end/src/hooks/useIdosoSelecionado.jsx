@@ -41,7 +41,7 @@ export function useIdosoSelecionado() {
 
         setIdoso({
           id: registroIdoso.id,
-          nome: usuarioIdoso?.nome || "Idoso",
+          nome: usuarioIdoso?.nome.toUpperCase() || "Idoso",
           tipoSanguineo: registroIdoso.tipo_sanguineo ?? registroIdoso.tipoSanguineo,
           telefone: registroIdoso.telefone,
           pcd: registroIdoso.pcd,

@@ -34,3 +34,9 @@ export async function criarSolicitacaoCuidador({ emailIdoso, idCuidador, contato
   });
   return resposta.data.result ?? resposta.data;
 }
+
+// NOVA: solicitações enviadas pelo cuidador (ajuste a rota se for diferente no backend)
+export async function getNotificacoesCuidador(idCuidador) {
+  const resposta = await api_auth.get(`/solicitacaoCuidador/cuidador/${idCuidador}`);
+  return resposta.data.result ?? resposta.data;
+}

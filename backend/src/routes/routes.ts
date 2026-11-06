@@ -24,6 +24,12 @@ import adminRoutes from "./admin.routes";
 >>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f
 =======
 import solicitacaoCuidadorRoutes from "./solicitacaoRelacionamento.routes";
+<<<<<<< HEAD
+>>>>>>> develop
+=======
+import PulseiraRoutes from "./pulseira.routes";
+import LeituraRoutes from "./leitura.routes";
+import solicitacaoPulseiraRoutes from "./solicitacaoPulseira.routes";
 >>>>>>> develop
 
 const router = Router();
@@ -48,6 +54,9 @@ router.use('/', receitaRoutes);
 router.use('/', enderecoRoutes);
 router.use('/', adminRoutes);
 router.use('/', solicitacaoCuidadorRoutes);
+router.use('/', PulseiraRoutes)
+router.use('/', LeituraRoutes)
+router.use('/', solicitacaoPulseiraRoutes)
 
 export default router;
 >>>>>>> 6267fb6640d639d94f17324c76df5f279f3f574f

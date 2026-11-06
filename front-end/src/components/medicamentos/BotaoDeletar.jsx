@@ -1,27 +1,31 @@
-import imagemLixeira from '../../assets/lixeira.png';
-
 export default function ButtonDelete({ onClick }) {
   return (
-    <button style={styles.btnDelete} onClick={onClick} aria-label="Excluir">
-        <i className="bi bi-trash-fill"></i>
+    <button
+      style={styles.btnDelete}
+      onClick={onClick}
+      aria-label="Excluir"
+    >
+      <i className="bi bi-trash-fill"></i>
+      <span>Excluir</span>
     </button>
   );
 }
 
-//estilização
 const styles = {
   btnDelete: {
-    backgroundColor: "#ffe5e5",
-    color: "#dc3545",
+    backgroundColor: "#FFE5E5",
+    color: "#DC3545",
     border: "none",
-    borderRadius: "50%",
-    width: "40px",
-    height: "40px",
+    borderRadius: "14px",
+    flex: 1,
+    height: "48px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    gap: "8px",
     cursor: "pointer",
     fontSize: "16px",
+    fontWeight: "600",
     transition: "background-color 0.2s",
   },
 };

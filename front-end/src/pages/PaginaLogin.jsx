@@ -15,6 +15,7 @@ export default function PaginaLogin() {
     e.preventDefault();
     setLoading(true);
 
+    // lógica para definir qual o role/papel/tipo de perfil do usuário para direcionar corretamente para as páginas corretas
     try {
       const { user } = await login(email, senha);
 
@@ -48,6 +49,8 @@ export default function PaginaLogin() {
         className="bg-white p-4 p-md-5 w-100 shadow-sm text-center"
         style={{ maxWidth: "460px", borderRadius: "35px" }}
       >
+
+        {/* LOGO */}
         <div className="mb-4 text-center">
           <img
             src={logoImg}
@@ -60,6 +63,7 @@ export default function PaginaLogin() {
           />
         </div>
 
+        {/* formulário de login */}
         <form onSubmit={handleLogin}>
           <div className="mb-3">
             <input
@@ -106,6 +110,7 @@ export default function PaginaLogin() {
             {loading ? "Entrando..." : "Entrar"}
           </button>
 
+          {/* link para se cadastrar */}
           <button
             type="button"
             onClick={() => navigate("/cadastro")}

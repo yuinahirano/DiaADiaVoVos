@@ -6,7 +6,7 @@ import "../../App.css";
 export default function PaginaHomeIdoso() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
+  const primeiroNome = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
 
   return (
     <div className="home-idoso-container">
@@ -14,8 +14,8 @@ export default function PaginaHomeIdoso() {
       {/* barra de navegação */}
       <header className="home-idoso-header">
 
-{/* saudação */}
-        <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
+        {/* saudação */}
+        <h1 className="home-idoso-titulo">Olá, {primeiroNome}</h1>
 
         {/* botão de notificação */}
         <button
@@ -26,7 +26,7 @@ export default function PaginaHomeIdoso() {
           <i className="bi bi-bell"></i>
         </button>
 
-{/* botão de sair */}
+        {/* botão de sair */}
         <button
           className="home-idoso-icone-btn"
           aria-label="Sair"

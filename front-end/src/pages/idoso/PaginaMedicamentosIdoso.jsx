@@ -3,55 +3,55 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useMedicamentosIdoso } from "../../hooks/useMedicamentosIdoso";
 import logoImg from "../../assets/logo_DiaADia.png";
-import "../../components/styles/HomeIdoso.css";
-import "../../components/styles/Consultas.css";
 import MedicamentosListIdoso from "../../components/medicamentos/MedicamentosListIdoso";
+
+//estilização
+import "../../components/styles/Medicamentos.css";
 
 export default function PaginaMedicamentosIdoso() {
   const { user } = useContext(AuthContext);
   const { medicamentos, loading, error } = useMedicamentosIdoso();
   const navigate = useNavigate();
-  const primeiroNome = user?.nome ? user.nome.split(" ")[0] : "";
+  const primeiroNome = user?.nome ? user.nome.toUpperCase().split(" ")[0] : "";
 
   return (
-    <div className="home-idoso-container">
+    <div className="medicamento-idoso-container">
       {/* barra de navegação */}
-      <header className="home-idoso-header">
-
+      <header className="medicamento-idoso-header">
         {/* saudação */}
-        <h1 className="home-idoso-titulo">Olá {primeiroNome}</h1>
+        <h1 className="medicamento-idoso-titulo">Olá, {primeiroNome}</h1>
 
-{/* botão de home */}
+        {/* botão de home */}
         <button
-          className="home-idoso-icone-btn"
+          className="medicamento-idoso-icone-btn"
           aria-label="Início"
           onClick={() => navigate("/home-idoso")}
         >
           <i className="bi bi-house-door-fill"></i>
         </button>
-
-{/* botão de consultas */}
+        
+        {/* botão de doenças */}
         <button
-          className="home-idoso-link"
-          onClick={() => navigate("/consultas-idoso")}
-        >
-          Consultas
-        </button>
-
-{/* botão de medicamentos - ATIVO */}
-        <button className="home-idoso-btn-ativo">Medicamentos</button>
-
-{/* botão de doenças */}
-        <button
-          className="home-idoso-link"
+          className="medicamento-idoso-link"
           onClick={() => navigate("/doencas-idoso")}
         >
           Doenças
         </button>
 
-{/* botão de notificações */}
+        {/* botão de consultas */}
         <button
-          className="home-idoso-icone-btn"
+          className="medicamento-idoso-link"
+          onClick={() => navigate("/consultas-idoso")}
+        >
+          Consultas
+        </button>
+
+        {/* botão de medicamentos - ATIVO */}
+        <button className="medicamento-idoso-btn-ativo">Medicamentos</button>
+
+        {/* botão de notificações */}
+        <button
+          className="medicamento-idoso-icone-btn"
           aria-label="Notificações"
           onClick={() => navigate("/notificacoes-idoso")}
         >
@@ -60,35 +60,34 @@ export default function PaginaMedicamentosIdoso() {
 
         {/* botão de sair */}
         <button
-          className="home-idoso-icone-btn"
+          className="medicamento-idoso-icone-btn"
           aria-label="Sair"
           onClick={() => navigate("/sair")}
         >
           <i className="bi bi-box-arrow-right"></i>
         </button>
-        
       </header>
 
-      <div className="home-idoso-consultas">
+      <div className="medicamento-idoso-consultas">
         {loading && <p>Carregando medicamentos...</p>}
 
         {error && <p>Não foi possível carregar os medicamentos.</p>}
 
         {!loading && !error && medicamentos.length === 0 && (
-          <div className="home-idoso-vazio">
+          <div className="medicamento-idoso-vazio">
             <img
               src={logoImg}
               alt="Dia a Dia Vovôs"
-              className="home-idoso-vazio-logo"
+              className="medicamento-idoso-vazio-logo"
             />
-            <p className="home-idoso-vazio-texto">
+            <p className="medicamento-idoso-vazio-texto">
               Nenhum medicamento cadastrado
             </p>
           </div>
         )}
         {!loading && !error && medicamentos.length > 0 && (
-    <MedicamentosListIdoso medicamentos={medicamentos} />
-  )}
+          <MedicamentosListIdoso medicamentos={medicamentos} />
+        )}
       </div>
     </div>
   );
